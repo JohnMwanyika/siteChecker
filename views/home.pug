@@ -1,0 +1,29 @@
+extends layout 
+block content
+    .container.d-flex.justify-content-center
+        .card.mt-5.p-4
+            form(action='/search' method='post')
+                .input-group.mb-3
+                    input.form-control(type="search" name='site' placeholder="Enter web url to check status")
+                    .input-group-append
+                        button.btn.btn-primary#search
+                            i.fas.fa-search
+            span.text.mb-4 88 branding projects
+            .d-flex.flex-row.justify-content-between.mb-3
+                .d-flex.flex-column.p-3
+                    p.mb-1 Logo and marketing material design for Bakery
+                    small.text-muted 8 days remaining
+                .price.pt-3.pl-3
+                    span.mb-2 Fixed
+                    h5
+                        span $
+                        | 1,500
+            .d-flex.flex-row.justify-content-between.mx-1
+                .d-flex.flex-column.p-3
+                    p.mb-1 Need to create brand guidelines for my brand
+                    small.text-muted 12 days remaining
+                .price.pt-3.pl-3
+                    span.mb-2 Hourly
+                    h5
+                        span $
+                        | 40
