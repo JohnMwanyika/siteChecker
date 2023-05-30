@@ -1,7 +1,6 @@
 require('dotenv').config();
 const axios = require("axios");
 module.exports = async function sendSms(phone, message) {
-// async function axiosSendText(phone, message) {
   
   var data = JSON.stringify({
     response_type: "json",
@@ -28,4 +27,4 @@ module.exports = async function sendSms(phone, message) {
   })
 };
 
-// axiosSendText(+254707438654,"Short text");
+// sendSms(+254793712929,"Message from API");

@@ -1,23 +1,24 @@
 extends layout 
 block content
     .container.d-flex.justify-content-center
+        #spinner
         .card.mt-5.p-4
-            form(action='/search' method='post')
+            form(action='/search' method='post')#myForm
                 .input-group.mb-3
                     input.form-control(type="search" name='site' placeholder="Enter web url to check status")
                     .input-group-append
                         button.btn.btn-primary#search
                             i.fas.fa-search
-            span.text.mb-4 88 branding projects
-            .d-flex.flex-row.justify-content-between.mb-3
-                .d-flex.flex-column.p-3
-                    p.mb-1 Logo and marketing material design for Bakery
-                    small.text-muted 8 days remaining
-                .price.pt-3.pl-3
-                    span.mb-2 Fixed
-                    h5
-                        span $
-                        | 1,500
+            span.text.mb-4 Search results
+            .d-flex.flex-row.justify-content-between.mb-3#resultsContainer
+                //- .d-flex.flex-column.p-3
+                    //- p.mb-1 Logo and marketing material design for Bakery
+                    //- small.text-muted 8 days remaining
+                    //- .price.pt-3.pl-3
+                        span.mb-2 Fixed
+                        h5
+                            span $
+                            | 1,500
             .d-flex.flex-row.justify-content-between.mx-1
                 .d-flex.flex-column.p-3
                     p.mb-1 Need to create brand guidelines for my brand
@@ -27,3 +28,106 @@ block content
                     h5
                         span $
                         | 40
+
+    script(type="text/javascript" src="/javascripts/spin.js")
+    script.
+
+        var opts = {
+            lines: 13, // The number of lines to draw
+            length: 38, // The length of each line
+            width: 17, // The line thickness
+            radius: 45, // The radius of the inner circle
+            scale: 0.2, // Scales overall size of the spinner
+            corners: 1, // Corner roundness (0..1)
+            speed: 1, // Rounds per second
+            rotate: 0, // The rotation offset
+            animation: 'spinner-line-shrink', // The CSS animation name for the lines
+            direction: 1, // 1: clockwise, -1: counterclockwise
+            color: '#000000', // CSS color or array of colors
+            fadeColor: 'transparent', // CSS color or array of colors
+            top: '25%', // Top position relative to parent
+            left: '50%', // Left position relative to parent
+            shadow: '0 0 1px transparent', // Box-shadow for the lines
+            zIndex: 2000000000, // The z-index (defaults to 2e9)
+            className: 'spinner', // The CSS class to assign to the spinner
+            position: 'absolute', // Element positioning
+        };
+        var target = document.getElementById('spinner');
+        var spinner = new Spinner(opts).spin(target);
+        spinner.stop();
+        var form = $("#myForm");
+        var submit = $('#search');
+        submit.click(function(e){
+            e.preventDefault();
+            checkSite();
+        });
+
+        const checkSite = () =>{
+            $.ajax({
+                url:'/search',
+                type:'post',
+                data: form.serialize(),
+                beforeSend: function(){
+                    spinner.spin(target);
+                    //- loading.show(function(){
+                    //-     $("#submitbtn").prop("disabled", true);
+                    //- });
+                },
+                complete: function(){
+                    spinner.stop();
+                    //- loading.hide(function(){
+                    //-     $("#submitbtn").removeAttr('disabled');
+                    //- });
+                },
+                timeout: 25000,
+            }).then(function(data){
+                if(data.status == "success"){
+                    // Display the result in the resultsContainer
+                    var resultsContainer = $('#resultsContainer');
+                    resultsContainer.empty(); // Clear previous content
+                    //- resultsContainer.text(data.data);
+                    var resultElement = $(`
+                            <div class="d-flex flex-column p-3">
+                                <p class="mb-1">${data.data}</p>
+                                <small class="text-muted">8 days remaining</small>
+                            </div>
+                            <div class="price pt-3 pl-3">
+                                <span class="mb-2">Fixed</span>
+                                <h5><span>$</span><span>90</span></h5>
+                            </div>
+                    `);
+                    resultsContainer.append(resultElement);
+                    // Animate the result element
+                    resultElement.animate({
+                        opacity: 1
+                    }, 500);
+                    //- //- toastr["success"]("Your password reset request has been sent successfully", "Success")
+                }else{
+                    // Display the result in the resultsContainer
+                    var resultsContainer = $('#resultsContainer');
+                    resultsContainer.empty(); // Clear previous content
+                    //- resultsContainer.text(data.data);
+                    var resultElement = $(`
+                            <div class="d-flex flex-column p-3">
+                                <p class="mb-1">${data.data}</p>
+                                <small class="text-muted">8 days remaining</small>
+                            </div>
+                            <div class="price pt-3 pl-3">
+                                <span class="mb-2">Fixed</span>
+                                <h5><span>$</span><span>90</span></h5>
+                            </div>
+                    `);
+                    resultsContainer.append(resultElement);
+                    console.log('Site is down')
+                    //- toastr[data.status](data.data, data.status)
+                }
+                console.log(JSON.stringify(data))
+                }).catch(function(error){
+                    console.log('Cannot connect to mail')
+                    toastr["error"]("Cannot connect to WhatsApp", "Failed")
+                    console.log(JSON.stringify(request.statusText))
+                })
+        };
+
+
+

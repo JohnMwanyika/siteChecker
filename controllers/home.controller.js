@@ -1,6 +1,7 @@
 const {
     checkWebsiteStatus
 } = require('../utils/intervalCheck')
+// import Spin from 'spin.js';
 
 module.exports = {
     home: async (req, res) => {
@@ -24,7 +25,7 @@ module.exports = {
                 } else {
                     console.log(isUp)
                     res.json({
-                        status: 'warning',
+                        status: 'danger',
                         data: `Sorry ${site} cant be reached at the moment`
                     })
                 }
