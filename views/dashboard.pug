@@ -1,1 +1,316 @@
 extends dashLayout
+block content
+    .row
+        .col-xl-3.col-sm-6.mb-xl-0.mb-4
+            .card
+                .card-header.p-3.pt-2
+                    .icon.icon-lg.icon-shape.bg-gradient-dark.shadow-dark.text-center.border-radius-xl.mt-n4.position-absolute
+                        i.material-icons.opacity-10 weekend
+                    .text-end.pt-1
+                        p.text-sm.mb-0.text-capitalize Today's Money
+                        h4.mb-0 $53k
+                hr.dark.horizontal.my-0
+                .card-footer.p-3
+                    p.mb-0
+                        span.text-success.text-sm.font-weight-bolder +55% 
+                        | than last week
+        .col-xl-3.col-sm-6.mb-xl-0.mb-4
+            .card
+                .card-header.p-3.pt-2
+                    .icon.icon-lg.icon-shape.bg-gradient-primary.shadow-primary.text-center.border-radius-xl.mt-n4.position-absolute
+                        i.material-icons.opacity-10 person
+                    .text-end.pt-1
+                        p.text-sm.mb-0.text-capitalize Today's Users
+                        h4.mb-0 2,300
+                hr.dark.horizontal.my-0
+                .card-footer.p-3
+                    p.mb-0
+                        span.text-success.text-sm.font-weight-bolder +3% 
+                        | than last month
+        .col-xl-3.col-sm-6.mb-xl-0.mb-4
+            .card
+                .card-header.p-3.pt-2
+                    .icon.icon-lg.icon-shape.bg-gradient-success.shadow-success.text-center.border-radius-xl.mt-n4.position-absolute
+                        i.material-icons.opacity-10 person
+                    .text-end.pt-1
+                        p.text-sm.mb-0.text-capitalize New Clients
+                        h4.mb-0 3,462
+                hr.dark.horizontal.my-0
+                .card-footer.p-3
+                    p.mb-0
+                        span.text-danger.text-sm.font-weight-bolder -2%
+                        |  than yesterday
+        .col-xl-3.col-sm-6
+            .card
+                .card-header.p-3.pt-2
+                    .icon.icon-lg.icon-shape.bg-gradient-info.shadow-info.text-center.border-radius-xl.mt-n4.position-absolute
+                        i.material-icons.opacity-10 weekend
+                    .text-end.pt-1
+                        p.text-sm.mb-0.text-capitalize Sales
+                        h4.mb-0 $103,430
+                hr.dark.horizontal.my-0
+                .card-footer.p-3
+                    p.mb-0
+                        span.text-success.text-sm.font-weight-bolder +5% 
+                        | than yesterday
+    .row.mt-4
+        .col-lg-4.col-md-6.mt-4.mb-4
+            .card.z-index-2
+                .card-header.p-0.position-relative.mt-n4.mx-3.z-index-2.bg-transparent
+                    .bg-gradient-primary.shadow-primary.border-radius-lg.py-3.pe-1
+                        .chart
+                            canvas#chart-bars.chart-canvas(height="170")
+                .card-body
+                    h6.mb-0 Website Views
+                    p.text-sm Last Campaign Performance
+                    hr.dark.horizontal
+                    .d-flex
+                        i.material-icons.text-sm.my-auto.me-1 schedule
+                        p.mb-0.text-sm campaign sent 2 days ago
+        .col-lg-4.col-md-6.mt-4.mb-4
+            .card.z-index-2
+                .card-header.p-0.position-relative.mt-n4.mx-3.z-index-2.bg-transparent
+                    .bg-gradient-success.shadow-success.border-radius-lg.py-3.pe-1
+                        .chart
+                            canvas#chart-line.chart-canvas(height="170")
+                .card-body
+                    h6.mb-0 Daily Sales
+                    p.text-sm
+                        | (
+                        span.font-weight-bolder +15%
+                        | ) increase in today sales.
+                    hr.dark.horizontal
+                    .d-flex
+                        i.material-icons.text-sm.my-auto.me-1 schedule
+                        p.mb-0.text-sm updated 4 min ago
+        .col-lg-4.mt-4.mb-3
+            .card.z-index-2
+                .card-header.p-0.position-relative.mt-n4.mx-3.z-index-2.bg-transparent
+                    .bg-gradient-dark.shadow-dark.border-radius-lg.py-3.pe-1
+                        .chart
+                            canvas#chart-line-tasks.chart-canvas(height="170")
+                .card-body
+                    h6.mb-0 Completed Tasks
+                    p.text-sm Last Campaign Performance
+                    hr.dark.horizontal
+                    .d-flex
+                        i.material-icons.text-sm.my-auto.me-1 schedule
+                        p.mb-0.text-sm just updated
+    .row.mb-4
+        .col-lg-8.col-md-6.mb-md-0.mb-4
+            .card
+                .card-header.pb-0
+                    .row
+                        .col-lg-6.col-7
+                            h6 Projects
+                            p.text-sm.mb-0
+                                i.fa.fa-check.text-info(aria-hidden="true")
+                                span.font-weight-bold.ms-1 30 done
+                                |  this month
+
+                        .col-lg-6.col-5.my-auto.text-end
+                            .dropdown.float-lg-end.pe-4
+                                a.cursor-pointer#dropdownTable(data-bs-toggle="dropdown" aria-expanded="false")
+                                    i.fa.fa-ellipsis-v.text-secondary
+                                ul.dropdown-menu.px-2.py-3.ms-sm-n4.ms-n5(aria-labelledby="dropdownTable")
+                                    li
+                                        a.dropdown-item.border-radius-md(href="javascript:;") Action
+                                    li
+                                        a.dropdown-item.border-radius-md(href="javascript:;") Another action
+                                    li
+                                        a.dropdown-item.border-radius-md(href="javascript:;") Something else here
+                .card-body.px-0.pb-2
+                    .table-responsive
+                        table.table.align-items-center.mb-0
+                            thead
+                                tr
+                                    th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Companies
+                                    th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 Members
+                                    th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Budget
+                                    th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Completion
+                            tbody
+                                tr
+                                    td
+                                        .d-flex.px-2.py-1
+                                            div
+                                                img.avatar.avatar-sm.me-3(src="../assets/img/small-logos/logo-xd.svg" alt="xd")
+                                            .d-flex.flex-column.justify-content-center
+                                                h6.mb-0.text-sm Material XD Version
+                                    td
+                                        .avatar-group.mt-2
+                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson")
+                                                img(src="../assets/img/team-1.jpg" alt="team1")
+                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Romina Hadid")
+                                                img(src="../assets/img/team-2.jpg" alt="team2")
+                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Alexander Smith")
+                                                img(src="../assets/img/team-3.jpg" alt="team3")
+                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe")
+                                                img(src="../assets/img/team-4.jpg" alt="team4")
+                                    td.align-middle.text-center.text-sm
+                                        span.text-xs.font-weight-bold $14,000 
+                                    td.align-middle
+                                        .progress-wrapper.w-75.mx-auto
+                                            .progress-info
+                                                .progress-percentage
+                                                    span.text-xs.font-weight-bold 60%
+                                            .progress
+                                                .progress-bar.bg-gradient-info.w-60(role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100")
+                                tr
+                                    td
+                                        .d-flex.px-2.py-1
+                                            div
+                                                img.avatar.avatar-sm.me-3(src="../assets/img/small-logos/logo-atlassian.svg" alt="atlassian")
+                                            .d-flex.flex-column.justify-content-center
+                                                h6.mb-0.text-sm Add Progress Track
+                                    td
+                                        .avatar-group.mt-2
+                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Romina Hadid")
+                                                img(src="../assets/img/team-2.jpg" alt="team5")
+                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe")
+                                                img(src="../assets/img/team-4.jpg" alt="team6")
+                                    td.align-middle.text-center.text-sm
+                                        span.text-xs.font-weight-bold $3,000 
+                                    td.align-middle
+                                        .progress-wrapper.w-75.mx-auto
+                                            .progress-info
+                                                .progress-percentage
+                                                    span.text-xs.font-weight-bold 10%
+                                            .progress
+                                                .progress-bar.bg-gradient-info.w-10(role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100")
+                                tr
+                                    td
+                                        .d-flex.px-2.py-1
+                                            div
+                                                img.avatar.avatar-sm.me-3(src="../assets/img/small-logos/logo-slack.svg" alt="team7")
+                                            .d-flex.flex-column.justify-content-center
+                                                h6.mb-0.text-sm Fix Platform Errors
+                                    td
+                                        .avatar-group.mt-2
+                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Romina Hadid")
+                                                img(src="../assets/img/team-3.jpg" alt="team8")
+                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe")
+                                                img(src="../assets/img/team-1.jpg" alt="team9")
+                                    td.align-middle.text-center.text-sm
+                                        span.text-xs.font-weight-bold Not set 
+                                    td.align-middle
+                                        .progress-wrapper.w-75.mx-auto
+                                            .progress-info
+                                                .progress-percentage
+                                                    span.text-xs.font-weight-bold 100%
+                                            .progress
+                                                .progress-bar.bg-gradient-success.w-100(role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100")
+                                tr
+                                    td
+                                        .d-flex.px-2.py-1
+                                            div
+                                                img.avatar.avatar-sm.me-3(src="../assets/img/small-logos/logo-spotify.svg" alt="spotify")
+                                            .d-flex.flex-column.justify-content-center
+                                                h6.mb-0.text-sm Launch our Mobile App
+                                    td
+                                        .avatar-group.mt-2
+                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson")
+                                                img(src="../assets/img/team-4.jpg" alt="user1")
+                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Romina Hadid")
+                                                img(src="../assets/img/team-3.jpg" alt="user2")
+                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Alexander Smith")
+                                                img(src="../assets/img/team-4.jpg" alt="user3")
+                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe")
+                                                img(src="../assets/img/team-1.jpg" alt="user4")
+                                    td.align-middle.text-center.text-sm
+                                        span.text-xs.font-weight-bold $20,500 
+                                    td.align-middle
+                                        .progress-wrapper.w-75.mx-auto
+                                            .progress-info
+                                                .progress-percentage
+                                                    span.text-xs.font-weight-bold 100%
+                                            .progress
+                                                .progress-bar.bg-gradient-success.w-100(role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100")
+                                tr
+                                    td
+                                        .d-flex.px-2.py-1
+                                            div
+                                                img.avatar.avatar-sm.me-3(src="../assets/img/small-logos/logo-jira.svg" alt="jira")
+                                            .d-flex.flex-column.justify-content-center
+                                                h6.mb-0.text-sm Add the New Pricing Page
+                                    td
+                                        .avatar-group.mt-2
+                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson")
+                                                img(src="../assets/img/team-4.jpg" alt="user5")
+                                    td.align-middle.text-center.text-sm
+                                        span.text-xs.font-weight-bold $500 
+                                    td.align-middle
+                                        .progress-wrapper.w-75.mx-auto
+                                            .progress-info
+                                                .progress-percentage
+                                                    span.text-xs.font-weight-bold 25%
+                                            .progress
+                                                .progress-bar.bg-gradient-info.w-25(role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="25")
+                                tr
+                                    td
+                                        .d-flex.px-2.py-1
+                                            div
+                                                img.avatar.avatar-sm.me-3(src="../assets/img/small-logos/logo-invision.svg" alt="invision")
+                                            .d-flex.flex-column.justify-content-center
+                                                h6.mb-0.text-sm Redesign New Online Shop
+                                    td
+                                        .avatar-group.mt-2
+                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson")
+                                                img(src="../assets/img/team-1.jpg" alt="user6")
+                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe")
+                                                img(src="../assets/img/team-4.jpg" alt="user7")
+                                    td.align-middle.text-center.text-sm
+                                        span.text-xs.font-weight-bold $2,000 
+                                    td.align-middle
+                                        .progress-wrapper.w-75.mx-auto
+                                            .progress-info
+                                                .progress-percentage
+                                                    span.text-xs.font-weight-bold 40%
+                                            .progress
+                                                .progress-bar.bg-gradient-info.w-40(role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="40")
+        .col-lg-4.col-md-6
+            .card.h-100
+                .card-header.pb-0
+                    h6 Orders overview
+                    p.text-sm
+                        i.fa.fa-arrow-up.text-success(aria-hidden="true")
+                        span.font-weight-bold 24%
+                        |  this month
+
+                .card-body.p-3
+                    .timeline.timeline-one-side
+                        .timeline-block.mb-3
+                            span.timeline-step
+                                i.material-icons.text-success.text-gradient notifications
+                            .timeline-content
+                                h6.text-dark.text-sm.font-weight-bold.mb-0 $2400, Design changes
+                                p.text-secondary.font-weight-bold.text-xs.mt-1.mb-0 22 DEC 7:20 PM
+                        .timeline-block.mb-3
+                            span.timeline-step
+                                i.material-icons.text-danger.text-gradient code
+                            .timeline-content
+                                h6.text-dark.text-sm.font-weight-bold.mb-0 New order #1832412
+                                p.text-secondary.font-weight-bold.text-xs.mt-1.mb-0 21 DEC 11 PM
+                        .timeline-block.mb-3
+                            span.timeline-step
+                                i.material-icons.text-info.text-gradient shopping_cart
+                            .timeline-content
+                                h6.text-dark.text-sm.font-weight-bold.mb-0 Server payments for April
+                                p.text-secondary.font-weight-bold.text-xs.mt-1.mb-0 21 DEC 9:34 PM
+                        .timeline-block.mb-3
+                            span.timeline-step
+                                i.material-icons.text-warning.text-gradient credit_card
+                            .timeline-content
+                                h6.text-dark.text-sm.font-weight-bold.mb-0 New card added for order #4395133
+                                p.text-secondary.font-weight-bold.text-xs.mt-1.mb-0 20 DEC 2:20 AM
+                        .timeline-block.mb-3
+                            span.timeline-step
+                                i.material-icons.text-primary.text-gradient key
+                            .timeline-content
+                                h6.text-dark.text-sm.font-weight-bold.mb-0 Unlock packages for development
+                                p.text-secondary.font-weight-bold.text-xs.mt-1.mb-0 18 DEC 4:54 AM
+                        .timeline-block
+                            span.timeline-step
+                                i.material-icons.text-dark.text-gradient payments
+                            .timeline-content
+                                h6.text-dark.text-sm.font-weight-bold.mb-0 New order #9583120
+                                p.text-secondary.font-weight-bold.text-xs.mt-1.mb-0 17 DEC

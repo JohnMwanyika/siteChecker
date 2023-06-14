@@ -3,6 +3,7 @@ const { sequelize } = require('../config/config');
 const { User } = require('./user.model');
 const { UserStatus } = require('./userStatus');
 const { Website } = require('./websites.model');
+const { SiteStatus } = require('./siteStatus');
 
 // define all the associations
 UserStatus.hasMany(User, { foreignKey: 'statusId' });
@@ -10,6 +11,10 @@ User.belongsTo(UserStatus, { foreignKey: 'statusId' });
 
 User.hasMany(Website, { foreignKey: 'createdBy' });
 Website.belongsTo(User, { foreignKey: 'createdBy' });
+
+// site
+SiteStatus.hasMany(Website, { foreignKey: 'statusId' });
+Website.belongsTo(SiteStatus, { foreignKey: 'statusId' });
 
 
 async function syncDb() {
