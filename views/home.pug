@@ -10,7 +10,7 @@ block content
                         button.btn.btn-primary#search
                             i.fas.fa-search
             span.text.mb-4 Search results
-            .d-flex.flex-row.justify-content-between.mb-3#resultsContainer
+            #resultsContainer
                 //- .d-flex.flex-column.p-3
                     //- p.mb-1 Logo and marketing material design for Bakery
                     //- small.text-muted 8 days remaining
@@ -19,7 +19,7 @@ block content
                         h5
                             span $
                             | 1,500
-            .d-flex.flex-row.justify-content-between.mx-1
+            //- .d-flex.flex-row.justify-content-between.mx-1
                 .d-flex.flex-column.p-3
                     p.mb-1 Need to create brand guidelines for my brand
                     small.text-muted 12 days remaining
@@ -84,44 +84,45 @@ block content
                 if(data.status == "success"){
                     // Display the result in the resultsContainer
                     var resultsContainer = $('#resultsContainer');
-                    resultsContainer.empty(); // Clear previous content
+                    //- resultsContainer.empty(); // Clear previous content
                     //- resultsContainer.text(data.data);
                     var resultElement = $(`
-                            <div class="d-flex flex-column p-3">
-                                <p class="mb-1">${data.data}</p>
-                                <small class="text-muted">8 days remaining</small>
-                            </div>
-                            <div class="price pt-3 pl-3">
-                                <span class="mb-2">Fixed</span>
-                                <h5><span>$</span><span>90</span></h5>
+                            <div class="d-flex flex-row justify-content-between mb-3">
+                                <div class="d-flex flex-column p-3">
+                                    <p class="mb-1">${data.data}</p>
+                                    <small class="text-muted">8 days remaining</small>
+                                </div>
+                                <div class="price pt-3 pl-3">
+                                    <span class="mb-2 text-${data.status}">${data.status}</span>
+                                    <h5><span>200</span></h5>
+                                </div>
                             </div>
                     `);
                     resultsContainer.append(resultElement);
                     // Animate the result element
-                    resultElement.animate({
-                        opacity: 1
-                    }, 500);
+                    //- resultElement.animate({
+                    //-     opacity: 1
+                    //- }, 500);
                     //- //- toastr["success"]("Your password reset request has been sent successfully", "Success")
                 }else{
                     // Display the result in the resultsContainer
                     var resultsContainer = $('#resultsContainer');
-                    resultsContainer.empty(); // Clear previous content
                     //- resultsContainer.text(data.data);
                     var resultElement = $(`
-                            <div class="d-flex flex-column p-3">
-                                <p class="mb-1">${data.data}</p>
-                                <small class="text-muted">8 days remaining</small>
-                            </div>
-                            <div class="price pt-3 pl-3">
-                                <span class="mb-2">Fixed</span>
-                                <h5><span>$</span><span>90</span></h5>
+                            <div class="d-flex flex-row justify-content-between mb-3">
+                                <div class="d-flex flex-column p-3">
+                                    <p class="mb-1">${data.data}</p>
+                                    <small class="text-muted">8 days remaining</small>
+                                </div>
+                                <div class="price pt-3 pl-3">
+                                    <span class="mb-2 text-${data.status}">Not Found</span>
+                                    <h5><span>404</span></h5>
+                                </div>
                             </div>
                     `);
                     resultsContainer.append(resultElement);
-                    console.log('Site is down')
                     //- toastr[data.status](data.data, data.status)
                 }
-                console.log(JSON.stringify(data))
                 }).catch(function(error){
                     console.log('Cannot connect to mail')
                     toastr["error"]("Cannot connect to WhatsApp", "Failed")
