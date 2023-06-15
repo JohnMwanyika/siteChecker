@@ -2,11 +2,17 @@ extends dashlayout
 block content
     .row
         .col-12
+            button.btn.btn-icon.btn-3.btn-primary(type="button" data-bs-toggle="modal" data-bs-target="#modal-form").mb-3.float-right
+                span.btn-inner--icon
+                    i.material-icons add
+                span.btn-inner--text Add
+            include includes/modals/addSite
             .card.my-4
                 .card-header.p-0.position-relative.mt-n4.mx-3.z-index-2
                     .bg-gradient-primary.shadow-primary.border-radius-lg.pt-4.pb-3
                         h6.text-white.text-capitalize.ps-3 My Websites
                 .card-body.px-0.pb-2
+
                     .table-responsive.p-0
                         table.table.align-items-center.mb-0(id='datatable-search').table-flush
                             thead
@@ -28,7 +34,7 @@ block content
                                                     p.text-xs.text-secondary.mb-0 #{site.url}
                                         td
                                             p.text-xs.font-weight-bold.mb-0 https://#{site.url}
-                                            p.text-xs.text-secondary.mb-0 Organization
+                                            p.text-xs.text-secondary.mb-0 #{site.organization}
                                         td.align-middle.text-center.text-sm
                                             span.badge.badge-sm(class=`bg-gradient-${site.SiteStatus.color}`) #{site.SiteStatus.status}
                                         td.align-middle.text-center

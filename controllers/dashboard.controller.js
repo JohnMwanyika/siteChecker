@@ -14,5 +14,15 @@ module.exports = {
         const siteData = allSites.map(site => site.toJSON());
         console.log(siteData)
         res.render('websites', { title: "My Sites", sites: allSites })
+    },
+    newSite: async (req, res) => {
+        console.log(req.body)
+        const { name, url, organization } = req.body;
+        try {
+            const newSite = await Website.create({ name, url, organization })
+            res.redirect('/dashboard/sites')
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
