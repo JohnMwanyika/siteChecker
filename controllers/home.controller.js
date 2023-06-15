@@ -26,7 +26,7 @@ module.exports = {
                     console.log(isUp)
                     res.json({
                         status: 'danger',
-                        data: `Sorry ${site} cant be reached at the moment`
+                        data: `Sorry ${site} can't be reached at the moment`
                     })
                 }
 
@@ -39,5 +39,11 @@ module.exports = {
                 })
             })
 
+    },
+    signUpForm: (req, res) => {
+        res.render('/authentication/signUp', { title: 'Sign Up' });
+    },
+    signInForm: (req, res) => {
+        res.render('/authentication/signIn', { title: 'Sign In' });
     }
 }

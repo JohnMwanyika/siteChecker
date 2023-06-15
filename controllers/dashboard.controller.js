@@ -8,18 +8,18 @@ module.exports = {
         const allSites = await Website.findAll({
             include: [
                 { model: SiteStatus, required: true },
-                { model: User, required: true }
+                { model: User, required: false }
             ]
         })
         const siteData = allSites.map(site => site.toJSON());
-        console.log(siteData)
+        // console.log(siteData)
         res.render('websites', { title: "My Sites", sites: allSites })
     },
     newSite: async (req, res) => {
         console.log(req.body)
         const { name, url, organization } = req.body;
         try {
-            const newSite = await Website.create({ name, url, organization })
+            const newSite = await Website.create({ name, url, organization, statusId: 3 })
             res.redirect('/dashboard/sites')
         } catch (error) {
             console.log(error)
