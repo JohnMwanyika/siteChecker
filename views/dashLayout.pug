@@ -7,22 +7,23 @@
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <title>
-        Material Dashboard 2 by Creative Tim
+        | #{title}
     </title>
-    <!--     Fonts and icons     -->
+    //- <!--     Fonts and icons     -->
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
-    <!-- Nucleo Icons -->
+    //- <!-- Nucleo Icons -->
     <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
     <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
-    <!-- Font Awesome Icons -->
+    //- <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <!-- Material Icons -->
+    //- <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    <!-- CSS Files -->
-    <link id="pagestyle" href="/assets/css/material-dashboard.css?v=3.1.0" rel="stylesheet" />
-    <!-- Nepcha Analytics (nepcha.com) -->
-    <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
+    //- <!-- CSS Files -->
+    //- <link id="pagestyle" href="/assets/css/material-dashboard.css?v=3.1.0" rel="stylesheet" />
+    //- main dashboard style
+    <link id="pagestyle" href="/assets/css/material-dashboard.minaf3e.css?v=3.0.6" rel="stylesheet" />
     //- <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
+
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -44,6 +45,16 @@
     <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
     <script src="/assets/js/plugins/chartjs.min.js"></script>
     <script src="/assets/js/chartData.js"></script>
+    <script src="/assets/js/plugins/datatables.js"></script>
+    script.
+        const dataTableBasic = new simpleDatatables.DataTable("#datatable-search", {
+            searchable: true,
+            fixedHeight: false
+        });
+        const dataTableone = new simpleDatatables.DataTable("#datatable-one", {
+            searchable: true,
+            fixedHeight: false
+        });
 
     <script>
         |var win = navigator.platform.indexOf('Win') > -1;
@@ -58,6 +69,7 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="../assets/js/material-dashboard.min.js?v=3.1.0"></script>
+    //- <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v52afc6f149f6479b8c77fa569edb01181681764108816" integrity="sha512-jGCTpDpBAYDGNYR5ztKt4BQPGef1P0giN6ZGVUi835kFF88FOmmn8jBQWNgrNd8g/Yu421NdgWhwQoaOPFflDw==" data-cf-beacon='{"rayId":"7d72e6dd8fd33cf5","version":"2023.4.0","r":1,"b":1,"token":"1b7cbb72744b40c580f8633c6b62637e","si":100}' crossorigin="anonymous"></script>
 </body>
 
 </html>

@@ -1,11 +1,10 @@
 const express = require('express');
-const { getDashboard } = require('../controllers/dashboard.controller');
+const { getDashboard, getSites } = require('../controllers/dashboard.controller');
 
 const router = express.Router();
 
 
-router.get('/', (req,res)=>{
-    res.render('dashboard')
-});
+router.get('/', getDashboard);
+router.get('/sites', getSites);
 
 module.exports = router;
