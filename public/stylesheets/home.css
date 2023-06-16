@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@500&display=swap');
 
 body{
-	background-color: #E7E9F5;
+	/* background-color: #E7E9F5; */
+	background-color: #a4acda;
 	font-family: 'Heebo', sans-serif;
 }
 .card{

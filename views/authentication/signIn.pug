@@ -1,0 +1,68 @@
+extends authenticationLayout
+block content
+    .page-header.align-items-start.min-vh-100(style="background-image: url(\'https://images.unsplash.com/photo-1497294815431-9365093b7331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80\');")
+        span.mask.bg-gradient-dark.opacity-6
+        .container.my-auto
+            .row
+                .col-lg-4.col-md-8.col-12.mx-auto
+                    .card.z-index-0.fadeIn3.fadeInBottom
+                        .card-header.p-0.position-relative.mt-n4.mx-3.z-index-2
+                            .bg-gradient-primary.shadow-primary.border-radius-lg.py-3.pe-1
+                                h4.text-white.font-weight-bolder.text-center.mt-2.mb-0 Sign in
+                                .row.mt-3
+                                    .col-2.text-center.ms-auto
+                                        a.btn.btn-link.px-3(href="javascript:;")
+                                            i.fa.fa-facebook.text-white.text-lg
+                                    .col-2.text-center.px-1
+                                        a.btn.btn-link.px-3(href="javascript:;")
+                                            i.fa.fa-github.text-white.text-lg
+                                    .col-2.text-center.me-auto
+                                        a.btn.btn-link.px-3(href="javascript:;")
+                                            i.fa.fa-google.text-white.text-lg
+                        .card-body
+                            if (errors)
+                                p.mb-0.text-danger #{errors}
+                            form.text-start(role="form" method="post" action="/signin")
+                                .input-group.input-group-outline.my-3
+                                    label.form-label Email
+                                    input.form-control(type="email" name="email" onfocus="focused(this)" onfocusout="defocused(this)")
+                                .input-group.input-group-outline.mb-3
+                                    label.form-label Password
+                                    input.form-control(type="password" name="password" onfocus="focused(this)" onfocusout="defocused(this)")
+                                .form-check.form-switch.d-flex.align-items-center.mb-3
+                                    input.form-check-input#rememberMe(type="checkbox", checked)
+                                    label.form-check-label.mb-0.ms-3(for="rememberMe") Remember me
+                                .text-center
+                                    button.btn.bg-gradient-primary.w-100.my-4.mb-2(type="submit") Sign in
+                                p.mt-4.text-sm.text-center
+                                    | Don't have an account?
+
+                                    a.text-primary.text-gradient.font-weight-bold(href="/signup") Sign up
+        footer.footer.position-absolute.bottom-2.py-2.w-100
+            .container
+                .row.align-items-center.justify-content-lg-between
+                    .col-12.col-md-6.my-auto
+                        .copyright.text-center.text-sm.text-white.text-lg-start
+                            | ©
+
+                            script.
+
+                                document.write(new Date().getFullYear())
+
+                            | ,made with 
+                            i.fa.fa-heart(aria-hidden="true")
+                            |  by
+
+                            a.font-weight-bold.text-white(href="https://www.creative-tim.com" target="_blank") Creative Tim
+                            | for a better web.
+
+                    .col-12.col-md-6
+                        ul.nav.nav-footer.justify-content-center.justify-content-lg-end
+                            li.nav-item
+                                a.nav-link.text-white(href="https://www.creative-tim.com" target="_blank") Creative Tim
+                            li.nav-item
+                                a.nav-link.text-white(href="https://www.creative-tim.com/presentation" target="_blank") About Us
+                            li.nav-item
+                                a.nav-link.text-white(href="https://www.creative-tim.com/blog" target="_blank") Blog
+                            li.nav-item
+                                a.nav-link.pe-0.text-white(href="https://www.creative-tim.com/license" target="_blank") License

@@ -1,6 +1,7 @@
 extends layout 
 block content
-    .container.d-flex.justify-content-center
+    //- .page-header.align-items-start.min-vh-100(style="background-image: url(\'https://images.unsplash.com/photo-1497294815431-9365093b7331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80\');")
+    .container.d-flex.justify-content-center.mt-5
         #spinner
         .card.mt-5.p-4
             form(action='/search' method='post')#myForm
@@ -11,23 +12,6 @@ block content
                             i.fas.fa-search
             span.text.mb-4 Search results
             #resultsContainer
-                //- .d-flex.flex-column.p-3
-                    //- p.mb-1 Logo and marketing material design for Bakery
-                    //- small.text-muted 8 days remaining
-                    //- .price.pt-3.pl-3
-                        span.mb-2 Fixed
-                        h5
-                            span $
-                            | 1,500
-            //- .d-flex.flex-row.justify-content-between.mx-1
-                .d-flex.flex-column.p-3
-                    p.mb-1 Need to create brand guidelines for my brand
-                    small.text-muted 12 days remaining
-                .price.pt-3.pl-3
-                    span.mb-2 Hourly
-                    h5
-                        span $
-                        | 40
 
     script(type="text/javascript" src="/javascripts/spin.js")
     script.
@@ -90,7 +74,7 @@ block content
                             <div class="d-flex flex-row justify-content-between mb-3">
                                 <div class="d-flex flex-column p-3">
                                     <p class="mb-1">${data.data}</p>
-                                    <small class="text-muted">8 days remaining</small>
+                                    <small class="text-muted">Load time 5 seconds</small>
                                 </div>
                                 <div class="price pt-3 pl-3">
                                     <span class="mb-2 text-${data.status}">${data.status}</span>
@@ -112,7 +96,7 @@ block content
                             <div class="d-flex flex-row justify-content-between mb-3">
                                 <div class="d-flex flex-column p-3">
                                     <p class="mb-1">${data.data}</p>
-                                    <small class="text-muted">8 days remaining</small>
+                                    <small class="text-muted">Load time 5 seconds</small>
                                 </div>
                                 <div class="price pt-3 pl-3">
                                     <span class="mb-2 text-${data.status}">Not Found</span>

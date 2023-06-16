@@ -5,11 +5,15 @@ const {
   search,
   signUpForm,
   signInForm
-} = require('../controllers/home.controller')
+} = require('../controllers/home.controller');
+const { signUp } = require('../controllers/signup.controller');
+const { login } = require('../controllers/loginLogout.controller');
 /* GET home page. */
 router.get('/', home);
 router.post('/search', search);
-router.get('/sign-up', signUpForm);
-router.get('/sig-in', signInForm);
+router.get('/signup', signUpForm);
+router.get('/signin', signInForm);
+router.post('/signup', signUp);
+router.post('/signin', login)
 
 module.exports = router;

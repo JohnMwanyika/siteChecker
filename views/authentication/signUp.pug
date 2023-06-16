@@ -1,1 +1,46 @@
 extends authenticationLayout
+block content
+    section
+        .page-header.min-vh-100
+            .container
+                .row
+                    .col-6.d-lg-flex.d-none.h-100.my-auto.pe-0.position-absolute.top-0.start-0.text-center.justify-content-center.flex-column
+                        .position-relative.bg-gradient-primary.h-100.m-3.px-7.border-radius-lg.d-flex.flex-column.justify-content-center(style="background-image: url(\'../assets/img/illustrations/illustration-signup.jpg\'); background-size: cover;").
+
+
+                    .col-xl-4.col-lg-5.col-md-7.d-flex.flex-column.ms-auto.me-auto.ms-lg-auto.me-lg-5
+                        .card.card-plain
+                            .card-header
+                                h4.font-weight-bolder Sign Up
+                                p.mb-0 Enter your email and password to register
+                                if (errors)
+                                    p.mb-0.text-danger #{errors}
+                            .card-body
+                                form(role="form" method="post" action="/signup")
+                                    .input-group.input-group-outline.mb-3
+                                        label.form-label First Name
+                                        input.form-control(type="text" name="firstName" required)
+                                    .input-group.input-group-outline.mb-3
+                                        label.form-label Last Name
+                                        input.form-control(type="text" name="lastName" required)
+                                    .input-group.input-group-outline.mb-3
+                                        label.form-label Email
+                                        input.form-control(type="email" name="email" required)
+                                    .input-group.input-group-outline.mb-3
+                                        label.form-label Phone
+                                        input.form-control(type="number" name="phone" required)
+                                    .input-group.input-group-outline.mb-3
+                                        label.form-label Password
+                                        input.form-control(type="password" name="password" required)
+                                    .form-check.form-check-info.text-start.ps-0
+                                        input.form-check-input#flexCheckDefault(type="checkbox", checked)
+                                        label.form-check-label(for="flexCheckDefault")
+                                            | I agree to the 
+                                            a.text-dark.font-weight-bolder(href="javascript:;") Terms and Conditions
+                                    .text-center
+                                        button.btn.btn-lg.bg-gradient-primary.btn-lg.w-100.mt-4.mb-0(type="submit") Sign Up
+                            .card-footer.text-center.pt-0.px-lg-2.px-1
+                                p.mb-2.text-sm.mx-auto
+                                    | Already have an account?
+
+                                    a.text-primary.text-gradient.font-weight-bold(href="/signin") Sign in

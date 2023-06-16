@@ -19,7 +19,7 @@ module.exports = {
         console.log('this is the hashed password', hashedPassword);
 
         console.log(req.body);
-        if (req.session.user.Role.name == 'Super Admin') {
+        // if (req.session.user.Role.name == 'Super Admin') {
 
             // const hashedPass = await bcrypt.hash('Welcome2023', saltRounds);
 
@@ -47,7 +47,7 @@ module.exports = {
             }).then((createdUser) => {
                 // console.log(createdUser)
                 if (createdUser) {
-                    res.redirect('/dashboard/users?success=user_created');
+                    res.redirect('/signin?success=user_created');
                 }
 
             }).catch((error) => {
@@ -58,7 +58,7 @@ module.exports = {
                     }
                 })
             });
-        }
+        // }
         // ############################ FEATURE ##################################
         // check if user is a registered county staff with an email address
         // const countyStaff = await Mail.findOne({
