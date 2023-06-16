@@ -12,17 +12,34 @@ module.exports = {
             ]
         })
         const siteData = allSites.map(site => site.toJSON());
+        const notify = req.query.notify == 'update_true' ? { info: 'Website updated successfully', type: 'success' } : ''
         // console.log(siteData)
-        res.render('websites', { title: "My Sites", sites: allSites })
+        res.render('websites', { title: "My Sites", sites: allSites, notify })
     },
     newSite: async (req, res) => {
         console.log(req.body)
         const { name, url, organization } = req.body;
         try {
-            const newSite = await Website.create({ name, url, organization, statusId: 3 })
+            const newSite = await Website.create({ name, url, organization, statusId: 3, createdBy: req.session.user.id })
             res.redirect('/dashboard/sites')
         } catch (error) {
             console.log(error)
         }
+    },
+    updateSite: async (req, res) => {
+        const { name, url, organization } = req.body;
+        try {
+            const updatedSite = await Website.update({
+                name, url, organization
+            }, {
+                where: {
+                    id: req.params.id
+                }
+            });
+            res.redirect('/dashboard/sites?notify=update_true')
+        } catch (error) {
+            console.log(error);
+        }
+
     }
 }

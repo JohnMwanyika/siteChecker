@@ -8,6 +8,9 @@ block content
                 span.btn-inner--text Add
             include includes/modals/addSite
             .card.my-4
+                if (notify)
+                    include authentication/mixins/alert
+                    +alert(notify)
                 .card-header.p-0.position-relative.mt-n4.mx-3.z-index-2
                     .bg-gradient-primary.shadow-primary.border-radius-lg.pt-4.pb-3
                         h6.text-white.text-capitalize.ps-3 My Websites
@@ -40,9 +43,10 @@ block content
                                         td.align-middle.text-center
                                             span.text-secondary.text-xs.font-weight-bold #{site.User.firstName}
                                         td.align-middle
-                                            a.text-secondary.font-weight-bold.text-xs(href="javascript:;" data-toggle="tooltip" data-original-title="Edit user").
+                                            a.text-secondary.font-weight-bold.text-xs(href="javascript:;" data-toggle="tooltip" data-bs-toggle="modal" data-bs-target=`#modal-form${site.id}`).
 
                                                 Edit
+                                            include includes/modals/editSite
         //- .row
             .col-12
                 .card.my-4
