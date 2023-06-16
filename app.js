@@ -5,12 +5,12 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
-const { checkSession } = require('./middlewares/auth.mid')
+// const { checkSession } = require('./middlewares/auth.mid')
 // define the connection string
 const { sequelize } = require('./config/config');
 // getting routers from reouter folder
 const indexRouter = require('./routes/index.route');
-const dashboardRouter = require('./routes/dashboard.route');
+// const dashboardRouter = require('./routes/dashboard.route');
 const usersRouter = require('./routes/users');
 
 const app = express();
@@ -38,7 +38,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/dashboard', checkSession, dashboardRouter);
+// app.use('/dashboard', checkSession, dashboardRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
