@@ -20,7 +20,10 @@ block content
                                         a.btn.btn-link.px-3(href="javascript:;")
                                             i.fa.fa-google.text-white.text-lg
                         .card-body
-                            if (errors)
+                            if (error)
+                                include mixins/alert
+                                + alert(error)
+                            //- if (errors)
                                 p.mb-0.text-danger #{errors}
                             form.text-start(role="form" method="post" action="/signin")
                                 .input-group.input-group-outline.my-3

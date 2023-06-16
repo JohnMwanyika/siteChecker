@@ -12,10 +12,13 @@ block content
                         .card.card-plain
                             .card-header
                                 h4.font-weight-bolder Sign Up
-                                p.mb-0 Enter your email and password to register
-                                if (errors)
-                                    p.mb-0.text-danger #{errors}
+                                //- p.mb-0 Enter your email and password to register
+                                //- if (errors)
+                                //-     p.mb-0.text-danger #{errors}
                             .card-body
+                                if (error)
+                                    include mixins/alert
+                                    + alert(error)
                                 form(role="form" method="post" action="/signup")
                                     .input-group.input-group-outline.mb-3
                                         label.form-label First Name

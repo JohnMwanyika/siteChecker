@@ -1,0 +1,20 @@
+mixin alert(object)
+    .alert(class=`alert-${object.type}`).text-white(role="alert")
+        span.alert-icon.align-middle
+            if (object.type==="success")
+                span.material-icons.text-md.
+                   circle_check
+            if (object.type==="danger")
+                span.material-icons.text-md.
+                    error 
+            if (object.type==="warning")
+                span.material-icons.text-md.
+                    warning 
+
+        span.alert-text
+            strong  #{object.type.toUpperCase()}
+            |  #{object.info}!
+
+        //- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        //-     <span aria-hidden="true"></span>
+        //- </button>

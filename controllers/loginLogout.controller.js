@@ -34,10 +34,9 @@ module.exports = {
             return res.redirect('/signin?error=invalid_credentials');
         }
 
-        console.log('Setting user session')
-        // req.session.user = user;
+        console.log('Setting user session');
+        req.session.user = user;
         res.redirect('/dashboard');
-
     },
     logout: async (req, res) => {
         req.session.destroy((err) => {

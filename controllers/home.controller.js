@@ -41,16 +41,17 @@ module.exports = {
 
     },
     signUpForm: (req, res) => {
-        const errors =
-            req.query.error == "user_exists" ? "A user with similar email exists, proceed to log into your account or try another email" : ""
-        res.render('authentication/signUp', { title: 'Sign Up', errors });
+        const error =
+            req.query.error == "user_exists" ? { info: "A user with similar email exists, proceed to log into your account or try another email", type: "danger" } : ""
+        res.render('authentication/signUp', { title: 'Sign Up', error });
     },
     signInForm: (req, res) => {
-        const errors =
-            req.query.error == "no_user" ? "The credentials entered do not match any record" :
-                req.query.error == "invalid_credentials" ? "Your password is incorrect" :
-                    req.query.error == "inactive" ? "Your account is inactive, contact admin for more information on how to unlock your account."
-                        : ""
-        res.render('authentication/signIn', { title: 'Sign In', errors });
+        const error =
+            req.query.error == "no_user" ? { info: "The credentials entered do not match any record", type: "danger" } :
+                req.query.error == "invalid_credentials" ? { info: "Your password is incorrect", type: 'danger' } :
+                    req.query.error == "inactive" ? { info: "Your account is inactive, contact admin for more information on how to unlock your account.", type: "warning" } :
+                        req.query.error == "no_session" ? { info: "Your session is required for this operation to continue", type: "warning" }
+                            : ""
+        res.render('authentication/signIn', { title: 'Sign In', error });
     }
 }
