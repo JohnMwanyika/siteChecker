@@ -5,7 +5,10 @@ nav.navbar.navbar-main.navbar-expand-lg.px-0.mx-4.shadow-none.border-radius-xl#n
                 li.breadcrumb-item.text-sm
                     a.opacity-5.text-dark(href="javascript:;") Pages
                 li.breadcrumb-item.text-sm.text-dark.active(aria-current="page") Dashboard
-            h6.font-weight-bolder.mb-0 Dashboard
+            if (title != 'Dashboard')
+                h6.font-weight-bolder.mb-0 Dashboard / #{title}
+            else
+                h6.font-weight-bolder.mb-0 Dashboard
         .collapse.navbar-collapse.mt-sm-0.mt-2.me-md-0.me-sm-4#navbar
             .ms-md-auto.pe-md-3.d-flex.align-items-center
                 .input-group.input-group-outline

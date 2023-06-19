@@ -4,7 +4,8 @@ const { User } = require('../models/user.model');
 const { UserStatus } = require('../models/userStatus');
 const { Website } = require('../models/websites.model');
 const { SiteStatus } = require('../models/siteStatus');
-const { Role } = require('./role.model')
+const { Role } = require('./role.model');
+const { Team } = require('./team.model');
 
 // define all the associations
 UserStatus.hasMany(User, { foreignKey: 'statusId' });
@@ -20,7 +21,8 @@ Website.belongsTo(User, { foreignKey: 'createdBy' });
 SiteStatus.hasMany(Website, { foreignKey: 'statusId' });
 Website.belongsTo(SiteStatus, { foreignKey: 'statusId' });
 
-// Role
+// Team.hasMany(User);
+Team.belongsToMany(User, { through: 'user_team' });
 
 
 async function syncDb() {

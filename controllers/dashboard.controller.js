@@ -41,5 +41,12 @@ module.exports = {
             console.log(error);
         }
 
+    },
+    createTeam: async (req, res) => {
+        const { title, description } = req.body;
+        const [userId] = req.body
+    },
+    allTeams: async (req, res) => {
+        res.render('teams', { title: 'All Teams' });
     }
 }

@@ -47,140 +47,26 @@ block content
 
                                                 Edit
                                             include includes/modals/editSite
-        //- .row
-            .col-12
-                .card.my-4
-                    .card-header.p-0.position-relative.mt-n4.mx-3.z-index-2
-                        .bg-gradient-primary.shadow-primary.border-radius-lg.pt-4.pb-3
-                            h6.text-white.text-capitalize.ps-3 Projects table
-                    .card-body.px-0.pb-2
-                        .table-responsive.p-0
-                            table.table.align-items-center.justify-content-center.mb-0(id='datatable-one')
-                                thead
-                                    tr
-                                        th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Project
-                                        th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 Budget
-                                        th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 Status
-                                        th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.text-center.opacity-7.ps-2 Completion
-                                        th
-                                tbody
-                                    tr
-                                        td
-                                            .d-flex.px-2
-                                                div
-                                                    img.avatar.avatar-sm.rounded-circle.me-2(src="../assets/img/small-logos/logo-asana.svg" alt="spotify")
-                                                .my-auto
-                                                    h6.mb-0.text-sm Asana
-                                        td
-                                            p.text-sm.font-weight-bold.mb-0 $2,500
-                                        td
-                                            span.text-xs.font-weight-bold working
-                                        td.align-middle.text-center
-                                            .d-flex.align-items-center.justify-content-center
-                                                span.me-2.text-xs.font-weight-bold 60%
-                                                div
-                                                    .progress
-                                                        .progress-bar.bg-gradient-info(role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;")
-                                        td.align-middle
-                                            button.btn.btn-link.text-secondary.mb-0
-                                                i.fa.fa-ellipsis-v.text-xs
-                                    tr
-                                        td
-                                            .d-flex.px-2
-                                                div
-                                                    img.avatar.avatar-sm.rounded-circle.me-2(src="../assets/img/small-logos/github.svg" alt="invision")
-                                                .my-auto
-                                                    h6.mb-0.text-sm Github
-                                        td
-                                            p.text-sm.font-weight-bold.mb-0 $5,000
-                                        td
-                                            span.text-xs.font-weight-bold done
-                                        td.align-middle.text-center
-                                            .d-flex.align-items-center.justify-content-center
-                                                span.me-2.text-xs.font-weight-bold 100%
-                                                div
-                                                    .progress
-                                                        .progress-bar.bg-gradient-success(role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;")
-                                        td.align-middle
-                                            button.btn.btn-link.text-secondary.mb-0(aria-haspopup="true" aria-expanded="false")
-                                                i.fa.fa-ellipsis-v.text-xs
-                                    tr
-                                        td
-                                            .d-flex.px-2
-                                                div
-                                                    img.avatar.avatar-sm.rounded-circle.me-2(src="../assets/img/small-logos/logo-atlassian.svg" alt="jira")
-                                                .my-auto
-                                                    h6.mb-0.text-sm Atlassian
-                                        td
-                                            p.text-sm.font-weight-bold.mb-0 $3,400
-                                        td
-                                            span.text-xs.font-weight-bold canceled
-                                        td.align-middle.text-center
-                                            .d-flex.align-items-center.justify-content-center
-                                                span.me-2.text-xs.font-weight-bold 30%
-                                                div
-                                                    .progress
-                                                        .progress-bar.bg-gradient-danger(role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="30" style="width: 30%;")
-                                        td.align-middle
-                                            button.btn.btn-link.text-secondary.mb-0(aria-haspopup="true" aria-expanded="false")
-                                                i.fa.fa-ellipsis-v.text-xs
-                                    tr
-                                        td
-                                            .d-flex.px-2
-                                                div
-                                                    img.avatar.avatar-sm.rounded-circle.me-2(src="../assets/img/small-logos/bootstrap.svg" alt="webdev")
-                                                .my-auto
-                                                    h6.mb-0.text-sm Bootstrap
-                                        td
-                                            p.text-sm.font-weight-bold.mb-0 $14,000
-                                        td
-                                            span.text-xs.font-weight-bold working
-                                        td.align-middle.text-center
-                                            .d-flex.align-items-center.justify-content-center
-                                                span.me-2.text-xs.font-weight-bold 80%
-                                                div
-                                                    .progress
-                                                        .progress-bar.bg-gradient-info(role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="80" style="width: 80%;")
-                                        td.align-middle
-                                            button.btn.btn-link.text-secondary.mb-0(aria-haspopup="true" aria-expanded="false")
-                                                i.fa.fa-ellipsis-v.text-xs
-                                    tr
-                                        td
-                                            .d-flex.px-2
-                                                div
-                                                    img.avatar.avatar-sm.rounded-circle.me-2(src="../assets/img/small-logos/logo-slack.svg" alt="slack")
-                                                .my-auto
-                                                    h6.mb-0.text-sm Slack
-                                        td
-                                            p.text-sm.font-weight-bold.mb-0 $1,000
-                                        td
-                                            span.text-xs.font-weight-bold canceled
-                                        td.align-middle.text-center
-                                            .d-flex.align-items-center.justify-content-center
-                                                span.me-2.text-xs.font-weight-bold 0%
-                                                div
-                                                    .progress
-                                                        .progress-bar.bg-gradient-success(role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="0" style="width: 0%;")
-                                        td.align-middle
-                                            button.btn.btn-link.text-secondary.mb-0(aria-haspopup="true" aria-expanded="false")
-                                                i.fa.fa-ellipsis-v.text-xs
-                                    tr
-                                        td
-                                            .d-flex.px-2
-                                                div
-                                                    img.avatar.avatar-sm.rounded-circle.me-2(src="../assets/img/small-logos/devto.svg" alt="xd")
-                                                .my-auto
-                                                    h6.mb-0.text-sm Devto
-                                        td
-                                            p.text-sm.font-weight-bold.mb-0 $2,300
-                                        td
-                                            span.text-xs.font-weight-bold done
-                                        td.align-middle.text-center
-                                            .d-flex.align-items-center.justify-content-center
-                                                span.me-2.text-xs.font-weight-bold 100%
-                                                div
-                                                    .progress
-                                                        .progress-bar.bg-gradient-success(role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;")
-                                        td.align-middle
-                                            button.btn.btn-link.text-secondary.mb-0(aria-haspopup="true" aria-expanded="false")
-                                                i.fa.fa-ellipsis-v.text-xs
+
+    //- script(src="/assets/js/core/jquery.min.js")                                     
+    script.
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        
+        //- toastr[response.data.status](response.data.data, response.data.status)
+        toastr['success']('Conratulations', 'success')
