@@ -1,0 +1,36 @@
+//- mixin teamForm(method,action,team)
+.modal.fade(id=`modal-form${team.id}` tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true")
+    .modal-dialog.modal-dialog-centered.modal-sm(role="document")
+        .modal-content
+            .modal-body.p-0
+                .card.card-plain
+                    .card-header.pb-0.text-left
+                        h5 Edit Team
+                        p.mb-0 #{team.name}
+                    .card-body
+                        form(role="form text-left" method='post' action=`/dashboard/teams/${team.id}`)
+                            .input-group.input-group-outline.my-3
+                                label.form-label Name
+                                input.form-control(type="text" name='title' value=`${team.name}` onfocus="focused(this)" onfocusout="defocused(this)")
+                            .input-group.input-group-outline.my-3
+                                label.form-label Description
+                                textarea.form-control(name="description" onfocus="focused(this)" onfocusout="def")
+                                    | #{team.description}
+                                //- input.form-control(type="text" name='url' onfocus="focused(this)" onfocusout="defocused(this)")
+                            .input-group.input-group-outline.my-3
+                                label.form-label organization
+                                select.form-control(id=`users${team.id}` name="userIds", multiple)
+                                    each user in team.Users
+                                        option(selected value=`${user.id}`) #{user.firstName} #{user.lastName}
+                                    each user in users
+                                        option(value=`${user.id}`) #{user.firstName} #{user.lastName}
+
+                            .text-center
+                                button.btn.btn-round.bg-gradient-info.btn-lg.w-100.mt-4.mb-0(type="submit") Submit
+                    .card-footer.text-center.pt-0.px-lg-2.px-1
+script.
+    new MultiSelectTag(`users#{team.id}`, {
+        rounded: true,    // default true
+        shadow: false      // default false
+    })
+

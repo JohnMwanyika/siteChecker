@@ -34,4 +34,4 @@ async function syncDb() {
 //   .then(data => console.log(data))
 //   .catch(err => console.error(err));
 
-module.exports = { User, UserStatus, Website, SiteStatus };
+module.exports = { User, UserStatus, Website, SiteStatus,Team };

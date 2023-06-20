@@ -22,11 +22,12 @@
     //- <link id="pagestyle" href="/assets/css/material-dashboard.css?v=3.1.0" rel="stylesheet" />
     //- main dashboard style
     <link id="pagestyle" href="/assets/css/material-dashboard.minaf3e.css?v=3.0.6" rel="stylesheet" />
-    //- jquery
-    //- script(scrc="/assets/js/core/jquery.min.js")
     //- toaterjs
     script(src="/assets/toaster/toastr.js")
     link(rel="stylesheet" href="/assets/toaster/toastr.css")
+    //- multi-select tag files
+    <link rel="stylesheet" href="/assets/src/css/multi-select-tag.css">
+    script(src="/assets/src/js/multi-select-tag.js")
     
 
 </head>
@@ -51,7 +52,11 @@
     <script src="/assets/js/plugins/chartjs.min.js"></script>
     <script src="/assets/js/chartData.js"></script>
     <script src="/assets/js/plugins/datatables.js"></script>
-    
+    script.
+        new MultiSelectTag('user', {
+            rounded: true,    // default true
+            shadow: false      // default false
+        })
     script.
         const dataTableBasic = new simpleDatatables.DataTable("#datatable-search", {
             searchable: true,
