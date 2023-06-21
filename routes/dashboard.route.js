@@ -16,7 +16,7 @@ router.get('/teams', allTeams);
 router.post('/teams/:teamId', updateTeam)
 router.get('/teams/remove/:teamId', removeTeam);
 
-router.post('/monitoring/start', startMonitoring);
+router.post('/monitoring/start/:siteId', startMonitoring);
 router.delete('/monitoring/:id')
 
 // Profile

@@ -72,33 +72,33 @@ block content
             "hideMethod": "fadeOut"
         };
         // this function toggles between activating and deactivating a user on flipping the switch
-        function handleCheckboxChange(siteId,teamId checkbox) {
-            if (!checkbox.checked) {
-                axios.post(`/dashboard/monitoring/start`, {
-                    siteId:siteId
+        function handleCheckboxChange(siteId,teamId,checkbox) {
+            if (checkbox.checked) {
+                axios.post(`/dashboard/monitoring/start/${siteId}`, {
                     teamId:teamId,
                     interval:1,
                     }, )
                     .then((response) => {
-                        toastr[response.data.status](response.data.data, response.data.status);
-                        setTimeout(() => {
-                            location.reload();
-                        }, 3000);
+                        //- toastr[response.data.status](response.data.data, response.data.status);
+                        //- setTimeout(() => {
+                        //-     location.reload();
+                        //- }, 3000);
                         console.log(response);
                     })
 
-            } else {
-                axios.post(`/dashboard/users/update_status/${userId}`, {
-                    statusId: 2
-                    })
-                    .then((response) => {
-                        toastr[response.data.status](response.data.data, response.data.status);
-                        setTimeout(() => {
-                            location.reload();
-                        }, 3000);
-                        console.log(response);
-                    })
-            }
+            } 
+            //- else {
+            //-     axios.post(`/dashboard/monitoring/start/${siteId}`, {
+            //-         statusId: 2
+            //-         })
+            //-         .then((response) => {
+            //-             toastr[response.data.status](response.data.data, response.data.status);
+            //-             setTimeout(() => {
+            //-                 location.reload();
+            //-             }, 3000);
+            //-             console.log(response);
+            //-         })
+            //- }
         }
 
 
