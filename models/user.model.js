@@ -25,7 +25,8 @@ const User = sequelize.define('User', {
     roleId: {
         type: DataTypes.INTEGER,
         allowNull: true,
-    }
+    },
+    avatarPath:DataTypes.STRING,
 })
 
 module.exports = { User };

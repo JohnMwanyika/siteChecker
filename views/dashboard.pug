@@ -105,8 +105,8 @@ block content
                             h6 Monitored Websites
                             p.text-sm.mb-0
                                 i.fa.fa-check.text-info(aria-hidden="true")
-                                span.font-weight-bold.ms-1 30 done
-                                |  this month
+                                span.font-weight-bold.ms-1 #{allSites.length} services
+                                |  monitoring
 
                         .col-lg-6.col-5.my-auto.text-end
                             .dropdown.float-lg-end.pe-4
@@ -124,149 +124,42 @@ block content
                         table.table.align-items-center.mb-0
                             thead
                                 tr
-                                    th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Companies
-                                    th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 Members
-                                    th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Budget
-                                    th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Completion
+                                    th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Websites/APIs
+                                    th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 Monitoring Team
+                                    th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Check Interval(Minutes)
+                                    th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Created By
+                                    th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Status
                             tbody
-                                tr
-                                    td
-                                        .d-flex.px-2.py-1
-                                            div
-                                                img.avatar.avatar-sm.me-3(src="../assets/img/small-logos/logo-xd.svg" alt="xd")
-                                            .d-flex.flex-column.justify-content-center
-                                                h6.mb-0.text-sm Material XD Version
-                                    td
-                                        .avatar-group.mt-2
-                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson")
-                                                img(src="../assets/img/team-1.jpg" alt="team1")
-                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Romina Hadid")
-                                                img(src="../assets/img/team-2.jpg" alt="team2")
-                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Alexander Smith")
-                                                img(src="../assets/img/team-3.jpg" alt="team3")
-                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe")
-                                                img(src="../assets/img/team-4.jpg" alt="team4")
-                                    td.align-middle.text-center.text-sm
-                                        span.text-xs.font-weight-bold $14,000 
-                                    td.align-middle
-                                        .progress-wrapper.w-75.mx-auto
-                                            .progress-info
-                                                .progress-percentage
-                                                    span.text-xs.font-weight-bold 60%
-                                            .progress
-                                                .progress-bar.bg-gradient-info.w-60(role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100")
-                                tr
-                                    td
-                                        .d-flex.px-2.py-1
-                                            div
-                                                img.avatar.avatar-sm.me-3(src="../assets/img/small-logos/logo-atlassian.svg" alt="atlassian")
-                                            .d-flex.flex-column.justify-content-center
-                                                h6.mb-0.text-sm Add Progress Track
-                                    td
-                                        .avatar-group.mt-2
-                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Romina Hadid")
-                                                img(src="../assets/img/team-2.jpg" alt="team5")
-                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe")
-                                                img(src="../assets/img/team-4.jpg" alt="team6")
-                                    td.align-middle.text-center.text-sm
-                                        span.text-xs.font-weight-bold $3,000 
-                                    td.align-middle
-                                        .progress-wrapper.w-75.mx-auto
-                                            .progress-info
-                                                .progress-percentage
-                                                    span.text-xs.font-weight-bold 10%
-                                            .progress
-                                                .progress-bar.bg-gradient-info.w-10(role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100")
-                                tr
-                                    td
-                                        .d-flex.px-2.py-1
-                                            div
-                                                img.avatar.avatar-sm.me-3(src="../assets/img/small-logos/logo-slack.svg" alt="team7")
-                                            .d-flex.flex-column.justify-content-center
-                                                h6.mb-0.text-sm Fix Platform Errors
-                                    td
-                                        .avatar-group.mt-2
-                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Romina Hadid")
-                                                img(src="../assets/img/team-3.jpg" alt="team8")
-                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe")
-                                                img(src="../assets/img/team-1.jpg" alt="team9")
-                                    td.align-middle.text-center.text-sm
-                                        span.text-xs.font-weight-bold Not set 
-                                    td.align-middle
-                                        .progress-wrapper.w-75.mx-auto
-                                            .progress-info
-                                                .progress-percentage
-                                                    span.text-xs.font-weight-bold 100%
-                                            .progress
-                                                .progress-bar.bg-gradient-success.w-100(role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100")
-                                tr
-                                    td
-                                        .d-flex.px-2.py-1
-                                            div
-                                                img.avatar.avatar-sm.me-3(src="../assets/img/small-logos/logo-spotify.svg" alt="spotify")
-                                            .d-flex.flex-column.justify-content-center
-                                                h6.mb-0.text-sm Launch our Mobile App
-                                    td
-                                        .avatar-group.mt-2
-                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson")
-                                                img(src="../assets/img/team-4.jpg" alt="user1")
-                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Romina Hadid")
-                                                img(src="../assets/img/team-3.jpg" alt="user2")
-                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Alexander Smith")
-                                                img(src="../assets/img/team-4.jpg" alt="user3")
-                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe")
-                                                img(src="../assets/img/team-1.jpg" alt="user4")
-                                    td.align-middle.text-center.text-sm
-                                        span.text-xs.font-weight-bold $20,500 
-                                    td.align-middle
-                                        .progress-wrapper.w-75.mx-auto
-                                            .progress-info
-                                                .progress-percentage
-                                                    span.text-xs.font-weight-bold 100%
-                                            .progress
-                                                .progress-bar.bg-gradient-success.w-100(role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100")
-                                tr
-                                    td
-                                        .d-flex.px-2.py-1
-                                            div
-                                                img.avatar.avatar-sm.me-3(src="../assets/img/small-logos/logo-jira.svg" alt="jira")
-                                            .d-flex.flex-column.justify-content-center
-                                                h6.mb-0.text-sm Add the New Pricing Page
-                                    td
-                                        .avatar-group.mt-2
-                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson")
-                                                img(src="../assets/img/team-4.jpg" alt="user5")
-                                    td.align-middle.text-center.text-sm
-                                        span.text-xs.font-weight-bold $500 
-                                    td.align-middle
-                                        .progress-wrapper.w-75.mx-auto
-                                            .progress-info
-                                                .progress-percentage
-                                                    span.text-xs.font-weight-bold 25%
-                                            .progress
-                                                .progress-bar.bg-gradient-info.w-25(role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="25")
-                                tr
-                                    td
-                                        .d-flex.px-2.py-1
-                                            div
-                                                img.avatar.avatar-sm.me-3(src="../assets/img/small-logos/logo-invision.svg" alt="invision")
-                                            .d-flex.flex-column.justify-content-center
-                                                h6.mb-0.text-sm Redesign New Online Shop
-                                    td
-                                        .avatar-group.mt-2
-                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson")
-                                                img(src="../assets/img/team-1.jpg" alt="user6")
-                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe")
-                                                img(src="../assets/img/team-4.jpg" alt="user7")
-                                    td.align-middle.text-center.text-sm
-                                        span.text-xs.font-weight-bold $2,000 
-                                    td.align-middle
-                                        .progress-wrapper.w-75.mx-auto
-                                            .progress-info
-                                                .progress-percentage
-                                                    span.text-xs.font-weight-bold 40%
-                                            .progress
-                                                .progress-bar.bg-gradient-info.w-40(role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="40")
+                                each site in allSites
+                                    tr
+                                        td
+                                            .d-flex.px-2.py-1
+                                                div
+                                                    img.avatar.avatar-sm.me-3(src="../assets/img/small-logos/logo-xd.svg" alt="xd")
+                                                //- site Name
+                                                .d-flex.flex-column.justify-content-center
+                                                    h6.mb-0.text-sm #{site.Website.name} 
+                                        td
+                                            .avatar-group.mt-2
+                                                | #{site.Team.name}
+                                                br
+                                                each user in site.Team.Users
+                                                    a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title=`${user.firstName} ${user.lastName}`)
+                                                        img(src="../assets/img/team-1.jpg" alt="team1")
+                                        td.align-middle.text-center.text-sm
+                                            span.text-xs.font-weight-bold #{site.interval} Minutes
+                                        td.align-middle.text-center.text-sm
+                                            span.text-xs.font-weight-bold #{site.User.firstName} #{site.User.lastName}
+                                        td.align-middle.text-center.text-sm
+                                            span.text-xs.font-weight-bold #{site.Monitor_Status.name}
+                                        //- td.align-middle
+                                            .progress-wrapper.w-75.mx-auto
+                                                .progress-info
+                                                    .progress-percentage
+                                                        span.text-xs.font-weight-bold 60%
+                                                .progress
+                                                    .progress-bar.bg-gradient-info.w-60(role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100")
+
         .col-lg-4.col-md-6
             .card.h-100
                 .card-header.pb-0

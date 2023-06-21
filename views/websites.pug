@@ -22,6 +22,7 @@ block content
                                 tr
                                     th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Name
                                     th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 URL
+                                    th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 Monitor State
                                     th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Status
                                     th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Created By
                                     th.text-secondary.opacity-7 Action
@@ -38,6 +39,9 @@ block content
                                         td
                                             p.text-xs.font-weight-bold.mb-0 https://#{site.url}
                                             p.text-xs.text-secondary.mb-0 #{site.organization}
+                                        td.align-middle.text-center.text-sm
+                                            .form-check.form-switch.ps-0.ms-auto.my-auto
+                                                input.form-check-input.mt-1.ms-auto(type="checkbox", onchange=`handleCheckboxChange(${site.id},3,this)`)
                                         td.align-middle.text-center.text-sm
                                             span.badge.badge-sm(class=`bg-gradient-${site.SiteStatus.color}`) #{site.SiteStatus.status}
                                         td.align-middle.text-center
@@ -67,6 +71,36 @@ block content
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         };
-        
+        // this function toggles between activating and deactivating a user on flipping the switch
+        function handleCheckboxChange(siteId,teamId checkbox) {
+            if (!checkbox.checked) {
+                axios.post(`/dashboard/monitoring/start`, {
+                    siteId:siteId
+                    teamId:teamId,
+                    interval:1,
+                    }, )
+                    .then((response) => {
+                        toastr[response.data.status](response.data.data, response.data.status);
+                        setTimeout(() => {
+                            location.reload();
+                        }, 3000);
+                        console.log(response);
+                    })
+
+            } else {
+                axios.post(`/dashboard/users/update_status/${userId}`, {
+                    statusId: 2
+                    })
+                    .then((response) => {
+                        toastr[response.data.status](response.data.data, response.data.status);
+                        setTimeout(() => {
+                            location.reload();
+                        }, 3000);
+                        console.log(response);
+                    })
+            }
+        }
+
+
         //- toastr[response.data.status](response.data.data, response.data.status)
         toastr['success']('Conratulations', 'success')
