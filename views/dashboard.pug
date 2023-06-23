@@ -114,11 +114,12 @@ block content
                                     i.fa.fa-ellipsis-v.text-secondary .
                                 ul.dropdown-menu.px-2.py-3.ms-sm-n4.ms-n5(aria-labelledby="dropdownTable")
                                     li
-                                        a.dropdown-item.border-radius-md(href="javascript:;") Add New
+                                        a.dropdown-item.border-radius-md(href="javascript:;" data-bs-toggle="modal" data-bs-target=`#addMonitor`) Add New
                                     li
                                         a.dropdown-item.border-radius-md(href="javascript:;") Another action
                                     li
                                         a.dropdown-item.border-radius-md(href="javascript:;") Something else here
+                                include includes/modals/createMonitor
                 .card-body.px-0.pb-2
                     .table-responsive
                         table.table.align-items-center.mb-0

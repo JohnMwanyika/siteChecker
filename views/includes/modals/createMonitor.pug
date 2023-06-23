@@ -1,27 +1,60 @@
-.kanban-item.border-radius-md(data-eid="_task_1_title_id" data-class="border-radius-md")
-    p.text.mb-0 Click me to change title
-.modal-dialog
-    .modal-content
-        .modal-header
-            h5.h5.modal-title Task details
-            button.btn-close.text-dark(type="button" data-bs-dismiss="modal" aria-label="Close")
-                span(aria-hidden="true") ×
-        .pt-4.modal-body
-            input#jkanban-task-id.d-none
-            .input-group.input-group-static.mb-4
-                label Task Assignee
-                input.form-control#jkanban-task-title(placeholder="Task Title" type="text" onfocus="focused(this)" onfocusout="defocused(this)")
-            .input-group.input-group-static.mb-4
-                label Task Assignee
-                input.form-control#jkanban-task-assignee(placeholder="User" type="text" onfocus="focused(this)" onfocusout="defocused(this)")
-            .input-group.input-group-static
-                textarea.form-control#jkanban-task-description(placeholder="Task Description" rows="4")
-            .alert.alert-success.d-none Changes saved!
-            .text-end
-                button.m-1.btn.btn-primary#jkanban-update-task(data-toggle="modal" data-target="#jkanban-info-modal").
+//- .kanban-item.border-radius-md(data-eid="_task_1_title_id" data-class="border-radius-md")
+//-     p.text.mb-0 Click me to change title
+.modal.fade(data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" id=`addMonitor`)
+    .modal-dialog
+        .modal-content
+            .modal-header
+                h5.h5.modal-title Start a new monitor
+                button.btn-close.text-dark(type="button" data-bs-dismiss="modal" aria-label="Close")
+                    span(aria-hidden="true") ×
+            .pt-4.modal-body
 
-                    Save changes
+                .input-group.input-group-static.mb-4.text-start
+                    label Select Website/API
+                    select.form-control#website-choices(name="siteId" placeholder="Departure")
+                        for site in websites
+                            option(value=`${site.id}`, selected) #{site.name}
 
-                button.m-1.btn.btn-secondary(data-dismiss="modal" data-target="#jkanban-info-modal").
+                .input-group.input-group-static.mb-4.text-start
+                    label Select Monitoring Team
+                    select.form-control#team-choices(name="siteId" placeholder="Departure")
+                        for team in teams
+                            option(value=`${team.id}`, selected) #{team.name}
 
-                    Close
+                .input-group.input-group-static.mb-4
+                    label Check Interval
+                    input.form-control(placeholder="in minutes" name="interval" type="number" onfocus="focused(this)" onfocusout="defocused(this)")
+                //- .input-group.input-group-static.mb-4
+                    label Task Assignee
+                    input.form-control#jkanban-task-assignee(placeholder="User" type="text" onfocus="focused(this)" onfocusout="defocused(this)")
+                //- .input-group.input-group-static
+                    textarea.form-control#jkanban-task-description(placeholder="Task Description" rows="4")
+                .alert.alert-success.d-none Changes saved!
+                .text-end
+                    button.m-1.btn.btn-primary#jkanban-update-task(data-toggle="modal" data-target="#jkanban-info-modal").
+
+                        Save changes
+
+                    button.m-1.btn.btn-secondary(data-dismiss="modal" data-target="#jkanban-info-modal").
+
+                        Close
+
+
+//- .col-12.col-md-5.ms-auto.mt-3.text-start
+//-     div
+//-         label.form-label.mb-0.ms-0 Country
+//-         .choices(data-type="select-one" tabindex="0" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false")
+//-             .choices__inner
+//-                 select.form-control.choices__input#choices-country(name="choices-country" tabindex="-1" data-choice="active", hidden)
+//-                     option(value="Argentina") Argentina
+//-                 .choices__list.choices__list--single
+//-                     .choices__item.choices__item--selectable(data-item, data-id="1" data-value="Argentina" data-custom-properties="null" aria-selected="true") Argentina
+//-             .choices__list.choices__list--dropdown(aria-expanded="false")
+//-                 input.choices__input.choices__input--cloned(type="text" autocomplete="off" autocapitalize="none" spellcheck="false" role="textbox" aria-autocomplete="list" aria-label="false", placeholder)
+//-                 .choices__list(role="listbox")
+//-                     #choices--choices-country-item-choice-1.choices__item.choices__item--choice.choices__item--selectable.is-highlighted(role="option", data-choice, data-id="1" data-value="Albania" data-select-text="Press to select", data-choice-selectable, aria-selected="true") Albania
+//-                     #choices--choices-country-item-choice-2.choices__item.choices__item--choice.choices__item--selectable(role="option", data-choice, data-id="2" data-value="Algeria" data-select-text="Press to select", data-choice-selectable) Algeria
+//-                     #choices--choices-country-item-choice-3.choices__item.choices__item--choice.choices__item--selectable(role="option", data-choice, data-id="3" data-value="Andorra" data-select-text="Press to select", data-choice-selectable) Andorra
+//-                     #choices--choices-country-item-choice-4.choices__item.choices__item--choice.choices__item--selectable(role="option", data-choice, data-id="4" data-value="Angola" data-select-text="Press to select", data-choice-selectable) Angola
+//-                     #choices--choices-country-item-choice-5.choices__item.choices__item--choice.is-selected.choices__item--selectable(role="option", data-choice, data-id="5" data-value="Argentina" data-select-text="Press to select", data-choice-selectable) Argentina
+//-                     #choices--choices-country-item-choice-6.choices__item.choices__item--choice.choices__item--selectable(role="option", data-choice, data-id="6" data-value="Brasil" data-select-text="Press to select", data-choice-selectable) Brasil

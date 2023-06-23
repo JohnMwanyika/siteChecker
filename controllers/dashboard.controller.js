@@ -4,6 +4,11 @@ const { Website, SiteStatus, User, Team, Monitor, Monitor_Status } = require('..
 module.exports = {
     getDashboard: async (req, res) => {
         try {
+            // get allwebstires
+            const websites = await Website.findAll();
+            // get all monitoring team
+            const teams = await Team.findAll();
+            // get all sites being monitored
             const allSites = await Monitor.findAll({
                 include: [
                     { model: Team, include: [{ model: User }] }, //include: { model: User, required: true } },
@@ -12,8 +17,9 @@ module.exports = {
                     { model: Monitor_Status }
                 ]
             });
+
             // console.log(allSites)
-            res.render('dashboard', { title: "Dashboard", allSites });
+            res.render('dashboard', { title: "Dashboard", allSites, websites,teams });
         } catch (error) {
             console.log(error)
         }
@@ -146,84 +152,6 @@ module.exports = {
             // res.redirect('/dashboard/teams?info=error');
         }
     },
-    // startMonitoring: async (req, res) => {
-    //     console.log('################### REQUEST HAS BEEN RECIEVED ######################');
-    //     const { siteId } = req.params; // websiteId for monitoring
-
-    //     const { teamId, interval } = req.body; // Monitor data from client REQUEST BODY
-
-    //     const userId = req.session.user.id; //Currently logged in user
-
-    //     await Website.findByPk(siteId)
-    //         .then((website) => {
-    //             // check if the website passed exists
-    //             if (!website) {
-    //                 res.json({
-    //                     status: 'error',
-    //                     data: 'Website not found'
-    //                 })
-    //             }
-    //             // Find if there is a monitor ongoing for this website
-    //             Monitor.findOne({ where: { siteId: siteId } })
-    //                 .then((monitor) => {
-    //                     if (monitor) {
-    //                         return res.json({
-    //                             status: 'warning',
-    //                             data: 'Monitoring for this website is already in progress.'
-    //                         })
-    //                     } else {
-    //                         return Monitor.create({ siteId, teamId, interval, statusId: 2, createdBy: userId })
-    //                             .then((monitor) => {
-    //                                 // start monitoring logic
-    //                                 const monitoriingInterval = setInterval(() => {
-    //                                     // retrieve the website url
-    //                                     const websiteUrl = `https://${website.url}`
-    //                                     checkWebsiteStatus(websiteUrl)
-    //                                         .then((isUp) => {
-    //                                             if (!isUp) {
-    //                                                 console.log(`Mayday! Mayday! ${websiteUrl} is has just collapsed.`)
-    //                                                 return res.json({
-    //                                                     status: 'danger',
-    //                                                     data: `Mayday! Mayday! ${websiteUrl} is has just collapsed.`
-    //                                                 });
-    //                                             } 
-    //                                             else {
-    //                                                 console.log(`Hurray!! ${websiteUrl} is up and operational.`)
-    //                                                 return res.json({
-    //                                                     status: 'success',
-    //                                                     data: `Hurray!! ${websiteUrl} is up and operational.`
-    //                                                 });
-    //                                             }
-    //                                         })
-    //                                         .catch((error) => {
-    //                                             console.log(error)
-    //                                             return res.json({
-    //                                                 status: 'error',
-    //                                                 data: error.message //Return default error
-    //                                             })
-    //                                         });
-    //                                 }, monitor.interval * 10 * 1000)
-    //                                 console.log(`############## Monitoring has been started for ${website.url} ##############`)
-    //                             })
-    //                             .catch((error) => {
-    //                                 console.log(error)
-    //                                 res.json({
-    //                                     status: 'error',
-    //                                     data: error.message //Return default error
-    //                                 })
-    //                             });
-    //                     }
-
-    //                 })
-    //                 .catch((error) => {
-    //                     console.log(error)
-    //                     res.json({
-    //                         status: 'error',
-    //                         data: error.message //Return default error
-    //                     })
-    //                 })
-    //         })
-    // },
     startMonitoring: async (req, res) => {
         console.log('################### REQUEST HAS BEEN RECEIVED ######################');
         const { siteId } = req.params; // websiteId for monitoring

@@ -57,6 +57,17 @@
     <script src="/assets/js/plugins/chartjs.min.js"></script>
     <script src="/assets/js/chartData.js"></script>
     <script src="/assets/js/plugins/datatables.js"></script>
+    <script src="/assets/js/plugins/choices.min.js"></script>
+    script(type="text/javascript").
+        if (document.getElementById('website-choices')) {
+            var website = document.getElementById('website-choices');
+            const website1 = new Choices(website, {});
+            }
+        if (document.getElementById('team-choices')) {
+            var team = document.getElementById('team-choices');
+            const team1 = new Choices(team, {});
+            }
+            
     script.
         new MultiSelectTag('user', {
             rounded: true,    // default true
@@ -84,7 +95,8 @@
     //- <!-- Github buttons -->
     //- <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="../assets/js/material-dashboard.min.js?v=3.1.0"></script>
+    <script src="../assets/js/material-dashboard.minaf3e.js?v=3.0.6"></script>
+    //- <script src="../assets/js/material-dashboard.min.js?v=3.1.0"></script>
     //- <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v52afc6f149f6479b8c77fa569edb01181681764108816" integrity="sha512-jGCTpDpBAYDGNYR5ztKt4BQPGef1P0giN6ZGVUi835kFF88FOmmn8jBQWNgrNd8g/Yu421NdgWhwQoaOPFflDw==" data-cf-beacon='{"rayId":"7d72e6dd8fd33cf5","version":"2023.4.0","r":1,"b":1,"token":"1b7cbb72744b40c580f8633c6b62637e","si":100}' crossorigin="anonymous"></script>
 </body>
 
