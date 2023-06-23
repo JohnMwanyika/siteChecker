@@ -19,7 +19,7 @@ module.exports = {
             });
 
             // console.log(allSites)
-            res.render('dashboard', { title: "Dashboard", allSites, websites,teams });
+            res.render('dashboard', { title: "Dashboard", allSites, websites, teams });
         } catch (error) {
             console.log(error)
         }
@@ -66,14 +66,18 @@ module.exports = {
     },
     createTeam: async (req, res) => {
         const { title, description, userIds } = req.body;
+        try {
+            const newTeam = await Team.create({
+                name: title,
+                description
+            })
+            await newTeam.addUsers(userIds)
+            console.log(req.body)
+            res.redirect('/dashboard/teams');
+        } catch (error) {
+            console.log(error)
+        }
 
-        const newTeam = await Team.create({
-            name: title,
-            description
-        })
-        await newTeam.addUsers(userIds)
-        console.log(req.body)
-        res.redirect('/dashboard/teams');
     },
     allTeams: async (req, res) => {
         try {
@@ -131,6 +135,9 @@ module.exports = {
                     status: 'error',
                     data: 'Team does not exist or has been deleted!'
                 })
+            }
+            if (team.name === 'Default Team') {
+                return res.json({ status: 'warning', data: 'This is a system-generated team and cannot be removed' })
             }
             const removedTeam = await Team.destroy({
                 where: {
@@ -212,8 +219,10 @@ module.exports = {
 
                         if (isUp) {
                             console.log(`Hurray!! ${websiteUrl} is up and operational.`);
+                            res.json({ status: 'success', data: `${websiteUrl} is up and operational.` });
                         } else {
                             console.log(`Mayday! Mayday! ${websiteUrl} has just collapsed.`);
+                            res.json({ status: 'success', data: `${websiteUrl} is up and operational.` });
                         }
                     } else {
                         clearInterval(monitoringInterval);

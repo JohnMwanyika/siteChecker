@@ -4,6 +4,7 @@ const Team = sequelize.define("Team", {
     name: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique:'name'
     },
     description: DataTypes.TEXT
 })
