@@ -21,9 +21,10 @@
                                 label.form-label organization
                                 select.form-control(id=`users${team.id}` name="userIds", multiple)
                                     each user in team.Users
-                                        option(selected value=`${user.id}`) #{user.firstName} #{user.lastName}
-                                    each user in users
-                                        option(value=`${user.id}`) #{user.firstName} #{user.lastName}
+                                        option( selected value=`${user.id}`) #{user.firstName} #{user.lastName}
+                                    each newuser in users
+                                        option(value=`${newuser.id}`) #{newuser.firstName} #{newuser.lastName}
+
 
                             .text-center
                                 button.btn.btn-round.bg-gradient-info.btn-lg.w-100.mt-4.mb-0(type="submit") Submit

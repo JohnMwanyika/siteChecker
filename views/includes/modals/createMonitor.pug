@@ -1,0 +1,27 @@
+.kanban-item.border-radius-md(data-eid="_task_1_title_id" data-class="border-radius-md")
+    p.text.mb-0 Click me to change title
+.modal-dialog
+    .modal-content
+        .modal-header
+            h5.h5.modal-title Task details
+            button.btn-close.text-dark(type="button" data-bs-dismiss="modal" aria-label="Close")
+                span(aria-hidden="true") ×
+        .pt-4.modal-body
+            input#jkanban-task-id.d-none
+            .input-group.input-group-static.mb-4
+                label Task Assignee
+                input.form-control#jkanban-task-title(placeholder="Task Title" type="text" onfocus="focused(this)" onfocusout="defocused(this)")
+            .input-group.input-group-static.mb-4
+                label Task Assignee
+                input.form-control#jkanban-task-assignee(placeholder="User" type="text" onfocus="focused(this)" onfocusout="defocused(this)")
+            .input-group.input-group-static
+                textarea.form-control#jkanban-task-description(placeholder="Task Description" rows="4")
+            .alert.alert-success.d-none Changes saved!
+            .text-end
+                button.m-1.btn.btn-primary#jkanban-update-task(data-toggle="modal" data-target="#jkanban-info-modal").
+
+                    Save changes
+
+                button.m-1.btn.btn-secondary(data-dismiss="modal" data-target="#jkanban-info-modal").
+
+                    Close

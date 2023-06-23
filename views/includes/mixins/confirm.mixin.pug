@@ -1,0 +1,67 @@
+mixin confirmDelete(delMessage,cancelMessage)
+    script.
+        const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-danger',
+            cancelButton: 'btn btn-success'
+        },
+        buttonsStyling: false
+        })
+
+        function showConfirm(title,teamID){
+            const id = teamID;
+            swalWithBootstrapButtons.fire({
+                title: `Sure to delete '${title}' team?`,
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                //- confirmButtonAriaLabel: 'delete functionality',
+                cancelButtonText: 'No, cancel!',
+                //- cancelButtonAriaLabel:'cancel functionality',
+                reverseButtons: true
+            }).then(async(result) => {
+                if (result.isConfirmed) {
+                    //- handle it here
+                    const result =await deleteTeam(`${id}`);
+                    console.log(result)
+                    swalWithBootstrapButtons.fire(
+                        `Delete ${result.data.status}!`,
+                        `${result.data.data}`,
+                        `${result.data.status}`
+                    )
+                }
+                else if (result.dismiss === Swal.DismissReason.cancel) {
+                    swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        `#{cancelMessage}`,
+                        'error'
+                    )
+                }
+            }) 
+        }
+
+        //- function to handle the deletion
+        async function deleteTeam(Id){
+            let result = {};
+            try{
+                result = await axios.delete(`/dashboard/teams/remove/${Id}`);
+            }catch(error){
+                result = error;
+            }
+            return result
+            //- axios.delete(`/dashboard/teams/remove/${Id}`)
+            //- .then((response) => {
+            //-     if(response){
+            //-         result = response 
+            //-         //- console.log(result)
+            //-         return result;
+            //-     }  
+            //- })
+            //- .catch((error) =>{
+            //-     result = error;
+            //-     //- console.log(result)
+            //-     return result;
+            //- })
+            //- return result;
+        }

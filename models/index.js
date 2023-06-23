@@ -38,6 +38,7 @@ Monitor.belongsTo(User,{foreignKey: 'createdBy'});
 Team.hasMany(Monitor,{foreignKey: 'teamId'});
 Monitor.belongsTo(Team,{foreignKey: 'teamId'});
 
+console.log(Object.getOwnPropertyNames(Team.prototype))
 async function syncDb() {
   await sequelize.sync({ alter: true });
   return 'Database synced successfully';

@@ -1,20 +1,21 @@
 .ms-auto.d-flex
     .pe-4.mt-1.position-relative
         p.text-secondary.text-xs.font-weight-bold.mb-2 Team members:
-        .d-flex.align-items-center.justify-content-center
+        .d-flex.align-items-start.justify-content-start
             .avatar-group
-                each user in team.Users
-                    a.avatar.avatar-sm.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title=`${user.firstName} ${user.lastName}`)
-                        img(alt="Image placeholder" src="../../assets/img/team-1.jpg")
-                //- a.avatar.avatar-sm.rounded-circle(href="javascript:;" data-toggle="tooltip" data-original-title="Audrey Love")
-                //-     img.rounded-circle(alt="Image placeholder" src="../../assets/img/team-2.jpg")
-                //- a.avatar.avatar-sm.rounded-circle(href="javascript:;" data-toggle="tooltip" data-original-title="Michael Lewis")
-                //-     img.rounded-circle(alt="Image placeholder" src="../../assets/img/team-3.jpg")
-                //- a.avatar.avatar-sm.rounded-circle(href="javascript:;" data-toggle="tooltip" data-original-title="Lucia Linda")
-                //-     img.rounded-circle(alt="Image placeholder" src="../../assets/img/team-4.jpg")
-                //- a.avatar.avatar-sm.rounded-circle(href="javascript:;" data-toggle="tooltip" data-original-title="Ronald Miller")
-                    img.rounded-circle(alt="Image placeholder" src="../../assets/img/team-5.jpg")
+                if (team.Users.length > 0)
+                    each user in team.Users
+                        a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title=`${user.firstName} ${user.lastName}`)
+                            img(alt="Image placeholder" src="../../assets/img/team-1.jpg")
+                else 
+                    .bg-light.py-1.px-1
+                        small No users found.
         hr.vertical.dark.mt-0
-    .ps-4
-        a.btn.bg-gradient-primary.btn-icon-only.mb-0.mt-3(href=`/dashboard/teams/remove/${team.id}`)
+    .ps-4.me-4
+        //- href=`/dashboard/teams/remove/${team.id}`
+        a.btn.bg-gradient-primary.btn-icon-only.mb-0.mt-4(, onclick=`showConfirm('${team.name}',${team.id})`)
             i.material-icons.text-lg delete
+        //- a.btn.bg-gradient-info.btn-icon-only.mb-0.mt-1(data-bs-toggle="modal" data-bs-target=`#modal-form${team.id}`)
+        //-     i.material-icons.text-lg edit_note
+include ./mixins/confirm.mixin.pug
++confirmDelete('Team has been deleted successfully.','Your team is safe.')

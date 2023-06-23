@@ -2,7 +2,7 @@
 // Email: habibmhamadi@gmail.com
 
 
-function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
+function MultiSelectTag(el, customs = { shadow: false, rounded: true }) {
     var element = null
     var options = null
     var customSelectContainer = null
@@ -26,7 +26,7 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
         setValues()
 
         button.addEventListener('click', () => {
-            if(drawer.classList.contains('hidden')) {
+            if (drawer.classList.contains('hidden')) {
                 initOptions()
                 enableItemSelection()
                 drawer.classList.remove('hidden')
@@ -35,23 +35,23 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
         })
 
         input.addEventListener('keyup', (e) => {
-                initOptions(e.target.value)
-                enableItemSelection()
+            initOptions(e.target.value)
+            enableItemSelection()
         })
 
         input.addEventListener('keydown', (e) => {
-            if(e.key === 'Backspace' && !e.target.value && inputContainer.childElementCount > 1) {
+            if (e.key === 'Backspace' && !e.target.value && inputContainer.childElementCount > 1) {
                 const child = body.children[inputContainer.childElementCount - 2].firstChild
                 const option = options.find((op) => op.value == child.dataset.value)
                 option.selected = false
                 removeTag(child.dataset.value)
                 setValues()
             }
-            
+
         })
-        
-        window.addEventListener('click', (e) => {   
-            if (!customSelectContainer.contains(e.target)){
+
+        window.addEventListener('click', (e) => {
+            if (!customSelectContainer.contains(e.target)) {
                 drawer.classList.add('hidden')
             }
         });
@@ -62,7 +62,7 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
         // Create custom elements
         options = getOptions();
         element.classList.add('hidden')
-        
+
         // .multi-select-tag
         customSelectContainer = document.createElement('div')
         customSelectContainer.classList.add('mult-select-tag')
@@ -74,13 +74,13 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
         // body
         body = document.createElement('div')
         body.classList.add('body')
-        if(customs.shadow) {
+        if (customs.shadow) {
             body.classList.add('shadow')
         }
-        if(customs.rounded) {
+        if (customs.rounded) {
             body.classList.add('rounded')
         }
-        
+
         // .input-container
         inputContainer = document.createElement('div')
         inputContainer.classList.add('input-container')
@@ -115,17 +115,17 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
 
         drawer = document.createElement('div');
         drawer.classList.add(...['drawer', 'hidden'])
-        if(customs.shadow) {
+        if (customs.shadow) {
             drawer.classList.add('shadow')
         }
-        if(customs.rounded) {
+        if (customs.rounded) {
             drawer.classList.add('rounded')
         }
         drawer.append(inputBody)
         ul = document.createElement('ul');
-        
+
         drawer.appendChild(ul)
-    
+
         customSelectContainer.appendChild(wrapper)
         customSelectContainer.appendChild(drawer)
 
@@ -148,12 +148,12 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
                 const li = document.createElement('li')
                 li.innerHTML = option.label
                 li.dataset.value = option.value
-                
+
                 // For search
-                if(val && option.label.toLowerCase().startsWith(val.toLowerCase())) {
+                if (val && option.label.toLowerCase().startsWith(val.toLowerCase())) {
                     ul.appendChild(li)
                 }
-                else if(!val) {
+                else if (!val) {
                     ul.appendChild(li)
                 }
             }
@@ -167,12 +167,12 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
         const itemLabel = document.createElement('div');
         itemLabel.classList.add('item-label');
         itemLabel.innerHTML = option.label
-        itemLabel.dataset.value = option.value 
+        itemLabel.dataset.value = option.value
         const itemClose = new DOMParser().parseFromString(`<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="item-close-svg">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>`, 'image/svg+xml').documentElement
- 
+
         itemClose.addEventListener('click', (e) => {
             const unselectOption = options.find((op) => op.value == option.value)
             unselectOption.selected = false
@@ -180,7 +180,7 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
             initOptions()
             setValues()
         })
-    
+
         itemDiv.appendChild(itemLabel)
         itemDiv.appendChild(itemClose)
         inputContainer.append(itemDiv)
@@ -188,7 +188,7 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
 
     function enableItemSelection() {
         // Add click listener to the list items
-        for(var li of ul.children) {
+        for (var li of ul.children) {
             li.addEventListener('click', (e) => {
                 options.find((o) => o.value == e.target.dataset.value).selected = true
                 input.value = null
@@ -201,8 +201,8 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
 
     function isTagSelected(val) {
         // If the item is already selected
-        for(var child of inputContainer.children) {
-            if(!child.classList.contains('input-body') && child.firstChild.dataset.value == val) {
+        for (var child of inputContainer.children) {
+            if (!child.classList.contains('input-body') && child.firstChild.dataset.value == val) {
                 return true
             }
         }
@@ -210,18 +210,18 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
     }
     function removeTag(val) {
         // Remove selected item
-        for(var child of inputContainer.children) {
-            if(!child.classList.contains('input-body') && child.firstChild.dataset.value == val) {
+        for (var child of inputContainer.children) {
+            if (!child.classList.contains('input-body') && child.firstChild.dataset.value == val) {
                 inputContainer.removeChild(child)
             }
         }
     }
     function setValues() {
         // Update element final values
-        for(var i = 0; i < options.length; i++) {
+        for (var i = 0; i < options.length; i++) {
             element.options[i].selected = options[i].selected
         }
-     
+
     }
     function getOptions() {
         // Map element options
