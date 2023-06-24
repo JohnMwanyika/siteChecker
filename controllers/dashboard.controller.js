@@ -66,16 +66,25 @@ module.exports = {
     },
     createTeam: async (req, res) => {
         const { title, description, userIds } = req.body;
+        // Trim leading and trailing spaces from the inputs
+        const trimmedTitle = title.trim();
+        const trimmedUserIds = userIds.map((id) => id.trim());
+
+        // Check if the trimmed inputs are empty
+        if (!trimmedTitle || !trimmedUserIds.length) {
+            return res.status(400).json({ status: 'error', info: 'Invalid request' });
+        }
         try {
             const newTeam = await Team.create({
-                name: title,
+                name: trimmedTitle,
                 description
             })
-            await newTeam.addUsers(userIds)
+            await newTeam.addUsers(trimmedUserIds)
             console.log(req.body)
             res.redirect('/dashboard/teams');
         } catch (error) {
             console.log(error)
+            res.redirect('/dashboard/teams?info=error')
         }
 
     },
@@ -136,8 +145,8 @@ module.exports = {
                     data: 'Team does not exist or has been deleted!'
                 })
             }
-            if (team.name === 'Default Team') {
-                return res.json({ status: 'warning', data: 'This is a system-generated team and cannot be removed' })
+            if (team.name === 'Default') {
+                return res.json({ status: 'error', data: 'This is a system-generated team and cannot be removed' })
             }
             const removedTeam = await Team.destroy({
                 where: {
@@ -161,8 +170,8 @@ module.exports = {
     },
     startMonitoring: async (req, res) => {
         console.log('################### REQUEST HAS BEEN RECEIVED ######################');
-        const { siteId } = req.params; // websiteId for monitoring
-        const { teamId, interval } = req.body; // Monitor data from client REQUEST BODY
+        // const { siteId } = req.params; // websiteId for monitoring
+        const { siteId, teamId, interval } = req.body; // Monitor data from client REQUEST BODY
         const userId = req.session.user.id; // Currently logged-in user
 
         try {
@@ -173,6 +182,26 @@ module.exports = {
                     status: 'error',
                     data: 'Website not found',
                 });
+            }
+            // find tema details
+            const selectedTeam = await Team.findOne({ include: [{ model: User }], where: { id: teamId } });
+            console.log('selected team and users #########', selectedTeam)
+
+            // if (selectedTeam) {
+            //     // return res.json({ status: 'error', data: 'Team does not exist' })
+            //     if (selectedTeam.Users.length < 1) {
+            //         return res.json({ status: 'error', data: 'Add members to the selected team before starting a monitor!' })
+            //     }
+            // }
+            // find default team
+            const defaultTeam = await Team.findOne({ include: [{ model: User }], where: { name: 'Default' } });
+            console.log('Default team and users #########', defaultTeam)
+            if (!defaultTeam || !teamId) {
+                return res.json({ status: 'error', data: 'Default team is not set or Invalid team selected' })
+            }
+            // check if team has members to notify before monitoring
+            if (defaultTeam.Users.length < 1) {
+                return res.json({ status: 'error', data: 'Add members to the selected team before starting a monitor!' })
             }
 
             // Check if there is an ongoing monitor for this website
@@ -187,7 +216,7 @@ module.exports = {
             // Create a new monitor for the website
             const createdMonitor = await Monitor.create({
                 siteId,
-                teamId,
+                teamId: teamId || defaultTeam.id,
                 interval,
                 statusId: 2,
                 createdBy: userId,
@@ -219,10 +248,11 @@ module.exports = {
 
                         if (isUp) {
                             console.log(`Hurray!! ${websiteUrl} is up and operational.`);
-                            res.json({ status: 'success', data: `${websiteUrl} is up and operational.` });
+                            // Create a success outcome to the result table
+                            // res.json({ status: 'success', data: `${websiteUrl} is up and operational.` });
                         } else {
                             console.log(`Mayday! Mayday! ${websiteUrl} has just collapsed.`);
-                            res.json({ status: 'success', data: `${websiteUrl} is up and operational.` });
+                            // res.json({ status: 'error', data: `${websiteUrl} is down and unreachable.` });
                         }
                     } else {
                         clearInterval(monitoringInterval);

@@ -67,8 +67,12 @@
             var team = document.getElementById('team-choices');
             const team1 = new Choices(team, {});
             }
-            
-    script.
+        var NewUsers = document.getElementById(`users`);
+        const Users = new Choices(NewUsers, {
+            placeholder:'Select Team Members',
+            searchChoices:true
+        });  
+    //- script.
         new MultiSelectTag('user', {
             rounded: true,    // default true
             shadow: false      // default false

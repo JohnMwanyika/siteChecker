@@ -1,6 +1,6 @@
 //- mixin teamForm(method,action,team)
 .modal.fade(id=`modal-form${team.id}` tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true")
-    .modal-dialog.modal-dialog-centered.modal-sm(role="document")
+    .modal-dialog.modal-dialog-centered(role="document")
         .modal-content
             .modal-body.p-0
                 .card.card-plain
@@ -9,16 +9,15 @@
                         p.mb-0 #{team.name}
                     .card-body
                         form(role="form text-left" method='post' action=`/dashboard/teams/${team.id}`)
-                            .input-group.input-group-outline.my-3
-                                label.form-label Name
+                            .input-group.input-group-dynamic.my-3
+                                label.form-label Title
                                 input.form-control(type="text" name='title' value=`${team.name}` onfocus="focused(this)" onfocusout="defocused(this)")
-                            .input-group.input-group-outline.my-3
-                                label.form-label Description
-                                textarea.form-control(name="description" onfocus="focused(this)" onfocusout="def")
+                            .input-group.input-group-static.my-3
+                                textarea.form-control#description(name="description" onfocus="focused(this)" onfocusout="def" placeholder="A short description about the group")
                                     | #{team.description}
                                 //- input.form-control(type="text" name='url' onfocus="focused(this)" onfocusout="defocused(this)")
                             .input-group.input-group-outline.my-3
-                                label.form-label organization
+                                label.form-label Select Team Members
                                 select.form-control(id=`users${team.id}` name="userIds", multiple)
                                     each user in team.Users
                                         option( selected value=`${user.id}`) #{user.firstName} #{user.lastName}
@@ -29,6 +28,8 @@
                             .text-center
                                 button.btn.btn-round.bg-gradient-info.btn-lg.w-100.mt-4.mb-0(type="submit") Submit
                     .card-footer.text-center.pt-0.px-lg-2.px-1
+
+
 script.
     new MultiSelectTag(`users#{team.id}`, {
         rounded: true,    // default true

@@ -8,36 +8,32 @@
                 button.btn-close.text-dark(type="button" data-bs-dismiss="modal" aria-label="Close")
                     span(aria-hidden="true") ×
             .pt-4.modal-body
+                form(action="/dashboard/monitoring/start" method="post")
 
-                .input-group.input-group-static.mb-4.text-start
-                    label Select Website/API
-                    select.form-control#website-choices(name="siteId" placeholder="Departure")
-                        for site in websites
-                            option(value=`${site.id}`, selected) #{site.name}
+                    .input-group.input-group-static.mb-4.text-start
+                        label Select Website/API
+                        select.form-control#website-choices(name="siteId" placeholder="Departure")
+                            for site in websites
+                                option(value=`${site.id}`, selected) #{site.name}
 
-                .input-group.input-group-static.mb-4.text-start
-                    label Select Monitoring Team
-                    select.form-control#team-choices(name="siteId" placeholder="Departure")
-                        for team in teams
-                            option(value=`${team.id}`, selected) #{team.name}
+                    .input-group.input-group-static.mb-4.text-start
+                        label Select Monitoring Team
+                        select.form-control#team-choices(name="teamId" placeholder="Departure")
+                            for team in teams
+                                option(value=`${team.id}`, selected) #{team.name}
 
-                .input-group.input-group-static.mb-4
-                    label Check Interval
-                    input.form-control(placeholder="in minutes" name="interval" type="number" onfocus="focused(this)" onfocusout="defocused(this)")
-                //- .input-group.input-group-static.mb-4
-                    label Task Assignee
-                    input.form-control#jkanban-task-assignee(placeholder="User" type="text" onfocus="focused(this)" onfocusout="defocused(this)")
-                //- .input-group.input-group-static
-                    textarea.form-control#jkanban-task-description(placeholder="Task Description" rows="4")
-                .alert.alert-success.d-none Changes saved!
-                .text-end
-                    button.m-1.btn.btn-primary#jkanban-update-task(data-toggle="modal" data-target="#jkanban-info-modal").
+                    .input-group.input-group-static.mb-4
+                        label Check Interval
+                        input.form-control(placeholder="in minutes" name="interval" type="number" onfocus="focused(this)" onfocusout="defocused(this)")
 
-                        Save changes
+                    .text-end
+                        button.m-1.btn.btn-primary#jkanban-update-task(data-toggle="modal" type="submit" data-target="#jkanban-info-modal").
 
-                    button.m-1.btn.btn-secondary(data-dismiss="modal" data-target="#jkanban-info-modal").
+                            Save changes
 
-                        Close
+                        button.m-1.btn.btn-secondary(data-dismiss="modal" data-target="#jkanban-info-modal").
+
+                            Close
 
 
 //- .col-12.col-md-5.ms-auto.mt-3.text-start

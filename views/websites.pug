@@ -42,10 +42,10 @@ block content
                                         td.align-middle.text-center.text-sm
                                             if (site.statusId == 1)
                                                 .form-check.form-switch.ps-0.ms-auto.my-auto
-                                                    input.form-check-input.mt-1.ms-auto(type="checkbox", onchange=`handleCheckboxChange(${site.id},3,this)`)
+                                                    input.form-check-input.mt-1.ms-auto(type="checkbox", onchange=`handleCheckboxChange(${site.id},45,this)`)
                                             else
                                                 .form-check.form-switch.ps-0.ms-auto.my-auto
-                                                    input.form-check-input.mt-1.ms-auto(type="checkbox", onchange=`handleCheckboxChange(${site.id},3,this)` checked)
+                                                    input.form-check-input.mt-1.ms-auto(type="checkbox", onchange=`handleCheckboxChange(${site.id},45,this)` checked)
                                         td.align-middle.text-center.text-sm
                                             span.badge.badge-sm(class=`bg-gradient-${site.SiteStatus.color}`) #{site.SiteStatus.status}
                                         td.align-middle.text-center
@@ -78,7 +78,8 @@ block content
         // this function toggles between activating monitoring for a particular site
         function handleCheckboxChange(siteId,teamId,checkbox) {
             if (checkbox.checked) {
-                axios.post(`/dashboard/monitoring/start/${siteId}`, {
+                axios.post(`/dashboard/monitoring/start`, {
+                    siteId:siteId,
                     teamId:teamId,
                     interval:1,
                     }, )
