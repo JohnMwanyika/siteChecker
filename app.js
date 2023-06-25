@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
+// function to resume monitoring when server restarts
+const { initializeMonitoring } = require('./utils/autoMonitor')
 // const { checkSession } = require('./middlewares/auth.mid')
 // define the connection string
 const { sequelize } = require('./config/config');
@@ -57,4 +59,11 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+const port = process.env.PORT
+// Start the server
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+  // Call the initialization logic for monitoring
+  initializeMonitoring();
+});
+// module.exports = app;

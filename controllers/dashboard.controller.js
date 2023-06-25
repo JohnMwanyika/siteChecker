@@ -257,6 +257,10 @@ module.exports = {
                     } else {
                         clearInterval(monitoringInterval);
                         console.log(`##Site has stoped monitoring`)
+                        return res.json({
+                            status:'warning',
+                            data:`${websiteUrl} has stopped monitoring`
+                        })
                     }
 
                 } catch (error) {
