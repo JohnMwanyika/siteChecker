@@ -33,6 +33,7 @@ async function startMonitoringLogic(siteId, teamId, interval, userId) {
         // if (selectedTeam.Users.length < 1) {
         //     return { status: 'error', data: 'Add members to the selected team before starting a monitor!' }
         // }
+
         // Check if there is an ongoing monitor for this website
         const monitor = await Monitor.findOne({ where: { siteId }, include: [{ model: Website }] });
         if (monitor) {
@@ -52,6 +53,7 @@ async function startMonitoringLogic(siteId, teamId, interval, userId) {
 
         // change website status to monitoring
         const updatedWebsite = website.setSiteStatus(2);
+
 
         // Start monitoring logic
         const monitoringInterval = setInterval(async () => {
@@ -122,5 +124,72 @@ async function startMonitoringLogic(siteId, teamId, interval, userId) {
 // startMonitoringLogic(2, 45, 1, 1)
 //     .then(data => console.log(data))
 //     .catch(error => console.error(error))
+async function startIntervalCheck(siteId, teamId, interval, userId) {
+    const monitoringSite = await Monitor.findOne({
+        include: [
+            { model: Website }
+        ],
+        where: {
+            siteId: siteId
+        }
+    })
+    // Start monitoring logic
+    const monitoringInterval = setInterval(async () => {
 
-module.exports = { startMonitoringLogic };
+        try {
+            // getting the site details to aquire url
+            const monitoringSite = await Monitor.findOne({
+                include: [
+                    { model: Website }
+                ],
+                where: {
+                    siteId: siteId
+                }
+            })
+
+            // check if this site is still being monitored
+            if (monitoringSite) {
+                const monitorUrl = monitoringSite.Website.url
+                const websiteUrl = `https://${monitorUrl}`;
+
+                // CHECK WEBSITE STATUS FUNCTION#######################################################################
+                const isUp = await checkWebsiteStatus(websiteUrl);
+                if (isUp) {
+                    console.log(`Hurray!! ${websiteUrl} is up and operational.`);
+                    // Create a success outcome to the result table
+                    // res.json({ status: 'success', data: `${websiteUrl} is up and operational.` });
+                } else {
+                    console.log(`Mayday! Mayday! ${websiteUrl} has just collapsed.`);
+                    // res.json({ status: 'error', data: `${websiteUrl} is down and unreachable.` });
+                }
+                // CHECK WEBSITE STATUS FUNCTION#######################################################################
+
+            } else {
+                // const stoppedMonitor = website.url
+                console.log(`******** Site has stoped monitoring`)
+                clearInterval(monitoringInterval);
+                // console.log(`********${createdMonitor.Website.url}****** has stoped monitoring`)
+                return {
+                    status: 'warning',
+                    data: `SIe has stopped monitoring`
+                }
+            }
+
+        } catch (error) {
+            console.log(error);
+            return {
+                status: 'error',
+                data: error.message, // Return default error
+            };
+        }
+    }, monitoringSite.interval * 10 * 1000); //multiply the seconds passed by seconds and again by miliseconds
+
+    console.log(`############## Monitoring has been started for ${monitoringSite.Website.url} ##############`);
+    return {
+        status: 'success',
+        data: `Monitoring started for ${monitoringSite.Website.url} cheking after every ${monitoringSite.interval} minute(s)`,
+    }
+}
+
+
+module.exports = { startMonitoringLogic, startIntervalCheck };
