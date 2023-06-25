@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize(process.env.CONN_STRING);
+const sequelize = new Sequelize(process.env.CONN_STRING, { logging: false }) // Disable query logging);
 
 const authenticate = async () => {
     await sequelize.authenticate();
