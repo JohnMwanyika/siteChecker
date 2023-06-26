@@ -153,9 +153,9 @@ async function startIntervalCheck(siteId, teamId, interval, userId) {
                 const websiteUrl = `https://${monitorUrl}`;
 
                 // CHECK WEBSITE STATUS FUNCTION#######################################################################
-                const isUp = await checkWebsiteStatus(websiteUrl);
-                if (isUp) {
-                    console.log(`Hurray!! ${websiteUrl} is up and operational.`);
+                const siteResult = await checkWebsiteStatus(websiteUrl, timeout = 10000);
+                if (siteResult.status === true) {
+                    console.log(`Hurray!! ${websiteUrl} is up and operational took ${siteResult.responseTime} seconds.`);
                     // Create a success outcome to the result table
                     // res.json({ status: 'success', data: `${websiteUrl} is up and operational.` });
                 } else {

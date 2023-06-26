@@ -258,8 +258,8 @@ module.exports = {
                         clearInterval(monitoringInterval);
                         console.log(`##Site has stoped monitoring`)
                         return res.json({
-                            status:'warning',
-                            data:`${websiteUrl} has stopped monitoring`
+                            status: 'warning',
+                            data: `${monitoringSite.Website.url} has stopped monitoring`
                         })
                     }
 
