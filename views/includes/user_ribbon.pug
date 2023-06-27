@@ -12,9 +12,12 @@
                         small No users found.
         hr.vertical.dark.mt-0
     .ps-4.me-4
-        //- href=`/dashboard/teams/remove/${team.id}`
-        a.btn.bg-gradient-primary.btn-icon-only.mb-0.mt-4(, onclick=`showConfirm('${team.name}',${team.id})`)
-            i.material-icons.text-lg delete
+        if (team.name == 'Default')
+            a.btn.bg-gradient-secondary.btn-icon-only.mb-0.mt-4.disabled(onclick=`showConfirm('${team.name}',${team.id})`)
+                i.material-icons.text-lg delete
+        else
+            a.btn.bg-gradient-primary.btn-icon-only.mb-0.mt-4(onclick=`showConfirm('${team.name}',${team.id})`)
+                i.material-icons.text-lg delete
         //- a.btn.bg-gradient-info.btn-icon-only.mb-0.mt-1(data-bs-toggle="modal" data-bs-target=`#modal-form${team.id}`)
         //-     i.material-icons.text-lg edit_note
 include ./mixins/confirm.mixin.pug

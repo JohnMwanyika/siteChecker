@@ -15,16 +15,28 @@ block content
                         include includes/modals/addTeam
                         //- +teamForm('post','/dashboard/teams',undefined)
                 each team in allTeams
-                    .col-sm-3.my-3.mt-3
-                        .card
-                            .card-header.p-0.position-relative.mt-n4.mx-3.z-index-2
-                                .bg-gradient-success.shadow-success.border-radius-lg.py-2.pe-1.d-flex.align-items-center.text-center
-                                    a.mx-auto.my-3(href="javascript:;" data-bs-toggle="modal" data-bs-target=`#modal-form${team.id}`)
-                                        h6.text-white.font-weight-normal #{team.name}
-                            .card-body.py-3
-                                p.text-sm.mb-0 #{team.description}
-                                include includes/user_ribbon
-                            include includes/modals/editTeam
+                    if (team.name == 'Default')
+                        .col-sm-3.my-3.mt-3
+                            .card
+                                .card-header.p-0.position-relative.mt-n4.mx-3.z-index-2
+                                    .bg-gradient-primary.shadow-success.border-radius-lg.py-2.pe-1.d-flex.align-items-center.text-center
+                                        a.mx-auto.my-3(href="javascript:;" data-bs-toggle="modal" data-bs-target=`#modal-form${team.id}`)
+                                            h6.text-white.font-weight-normal #{team.name}
+                                .card-body.py-3
+                                    p.text-sm.mb-0 #{team.description}
+                                    include includes/user_ribbon
+                                include includes/modals/editTeam
+                    else
+                        .col-sm-3.my-3.mt-3
+                            .card
+                                .card-header.p-0.position-relative.mt-n4.mx-3.z-index-2
+                                    .bg-gradient-success.shadow-success.border-radius-lg.py-2.pe-1.d-flex.align-items-center.text-center
+                                        a.mx-auto.my-3(href="javascript:;" data-bs-toggle="modal" data-bs-target=`#modal-form${team.id}`)
+                                            h6.text-white.font-weight-normal #{team.name}
+                                .card-body.py-3
+                                    p.text-sm.mb-0 #{team.description}
+                                    include includes/user_ribbon
+                                include includes/modals/editTeam
                 //- .col-sm-3.my-3
                     .card
                         .card-header.p-0.position-relative.mt-n4.mx-3.z-index-2

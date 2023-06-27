@@ -95,10 +95,15 @@ block content
             else {
                 axios.get(`/dashboard/monitoring/stop/${siteId}`)
                     .then((response) => {
-                        Toast.fire({icon:response.data.status,title:response.data.data});
-                        setTimeout(() => {
+                        if(response.data.status == 'warning'){
+                            Toast.fire({icon:response.data.status,title:response.data.data});
+                        }else{
+                            Toast.fire({icon:response.data.status,title:response.data.data});
+                            setTimeout(() => {
                             location.reload();
                         }, 3000);
+                        }
+
                         console.log(response);
                     })
             }

@@ -28,6 +28,9 @@ module.exports = {
     getSites: async (req, res) => {
         console.log(Website)
         const allSites = await Website.findAll({
+            order:[
+                ['name','ASC']
+            ],
             include: [
                 { model: SiteStatus, required: true },
                 { model: User, required: false }
@@ -92,9 +95,9 @@ module.exports = {
         try {
             const users = await User.findAll();
             const allTeams = await Team.findAll({
-                orderBy: {
-                    createdAt: 'DESC'
-                },
+                order: [
+                    ['createdAt', 'DESC']
+                ],
                 include: {
                     model: User,
                 }
