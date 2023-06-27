@@ -121,10 +121,8 @@ async function startMonitoringLogic(siteId, teamId, interval, userId) {
 
 }
 
-// startMonitoringLogic(2, 45, 1, 1)
-//     .then(data => console.log(data))
-//     .catch(error => console.error(error))
-async function startIntervalCheck(siteId, teamId, interval, userId) {
+
+async function startIntervalCheck(siteId, teamId) {
     const monitoringSite = await Monitor.findOne({
         include: [
             { model: Website }
@@ -154,10 +152,13 @@ async function startIntervalCheck(siteId, teamId, interval, userId) {
 
                 // CHECK WEBSITE STATUS FUNCTION#######################################################################
                 const siteResult = await checkWebsiteStatus(websiteUrl, timeout = 10000);
+                console.log(siteResult)
                 if (siteResult.status === true) {
                     console.log(`Hurray!! ${websiteUrl} is up and operational took ${siteResult.responseTime} seconds.`);
                     // Create a success outcome to the result table
                     // res.json({ status: 'success', data: `${websiteUrl} is up and operational.` });
+                } else if (siteResult.status === 'timeout') {
+                    console.log(`Mayday! ${websiteUrl} is taking too long to respond try again took over 10 seconds.`);
                 } else {
                     console.log(`Mayday! Mayday! ${websiteUrl} has just collapsed.`);
                     // res.json({ status: 'error', data: `${websiteUrl} is down and unreachable.` });
@@ -190,6 +191,123 @@ async function startIntervalCheck(siteId, teamId, interval, userId) {
         data: `Monitoring started for ${monitoringSite.Website.url} cheking after every ${monitoringSite.interval} minute(s)`,
     }
 }
+
+var interval;
+async function scheduleSiteCheck(siteIdw, teamId) {
+    try {
+        // const activeMonitors = await Monitor.findAll();
+        // if (activeMonitors.length < 1) {
+        //     console.log('There are no services being monitored at the moment')
+        //     return {
+        //         status: 'warning',
+        //         data: 'There are no services being monitored at the moment'
+        //     }
+        // }
+        // console.log(activeMonitors)
+        // // Start monitoring for each active monitor
+        // activeMonitors.forEach(async (monitor) => {
+        //     console.log(monitor)
+        //     const { siteId } = monitor;
+
+        //     const monitoringSite = await Monitor.findOne({
+        //         include: [
+        //             { model: Website }
+        //         ],
+        //         where: {
+        //             siteId: siteId
+        //         }
+        //     })
+        // })
+        // Start monitoring logic
+        
+        const monitoringInterval = setInterval(async () => {
+
+            const activeMonitors = await Monitor.findAll();
+            if (activeMonitors.length < 1) {
+                console.log('There are no services being monitored at the moment')
+                return {
+                    status: 'warning',
+                    data: 'There are no services being monitored at the moment'
+                }
+            }
+            console.log(activeMonitors)
+            // Start monitoring for each active monitor
+            activeMonitors.forEach(async (monitor) => {
+                // console.log(monitor)
+                const { siteId } = monitor;
+
+                try {
+                    // getting the site details to aquire url
+                    const monitoringSite = await Monitor.findOne({
+                        include: [
+                            { model: Website }
+                        ],
+                        where: {
+                            siteId: siteId
+                        }
+                    })
+                    interval = monitoringSite.interval;
+                    // check if this site is still being monitored
+                    if (monitoringSite) {
+                        const monitorUrl = monitoringSite.Website.url
+                        const websiteUrl = `https://${monitorUrl}`;
+                        
+                        console.log('Current monitoring site interval is ', interval)
+
+                        // CHECK WEBSITE STATUS FUNCTION#######################################################################
+                        const siteResult = await checkWebsiteStatus(websiteUrl, timeout = 10000);
+                        
+                        // console.log(siteResult)
+                        if (siteResult.status === true) {
+                            console.log(`Hurray!! ${websiteUrl} is up and operational took ${siteResult.responseTime} seconds.`);
+                            // Create a success outcome to the result table
+                            // res.json({ status: 'success', data: `${websiteUrl} is up and operational.` });
+                        } else if (siteResult.status === 'timeout') {
+                            console.log(`Mayday! ${websiteUrl} seems to be up but its taking too long to respond try again, took over 10 seconds.`);
+                        } else {
+                            console.log(`Mayday! Mayday! ${websiteUrl} has just collapsed.`);
+                            // res.json({ status: 'error', data: `${websiteUrl} is down and unreachable.` });
+                        }
+                        // CHECK WEBSITE STATUS FUNCTION#######################################################################
+
+                    } else {
+                        // const stoppedMonitor = website.url
+                        console.log(`******** Site has stoped monitoring`)
+                        clearInterval(monitoringInterval);
+                        // console.log(`********${createdMonitor.Website.url}****** has stoped monitoring`)
+                        return {
+                            status: 'warning',
+                            data: `SIe has stopped monitoring`
+                        }
+                    }
+
+                } catch (error) {
+                    console.log(error);
+                    return {
+                        status: 'error',
+                        data: error.message, // Return default error
+                    };
+                }
+
+            })
+            console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',interval)
+
+        }, interval * 60 * 1000); //multiply the seconds passed by seconds and again by miliseconds
+        console.log(`############## Monitoring has been started for ${monitoringSite.Website.url} ##############`);
+        return {
+            status: 'success',
+            data: `Monitoring started for ${monitoringSite.Website.url} cheking after every ${interval} minute(s)`,
+        }
+
+    } catch (error) {
+        console.log('Oops!! An error occured', error)
+    }
+
+}
+
+// scheduleSiteCheck()
+//     .then(data => console.log(data))
+//     .catch(err => console.log(err));
 
 
 module.exports = { startMonitoringLogic, startIntervalCheck };

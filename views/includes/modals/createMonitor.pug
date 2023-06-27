@@ -8,7 +8,7 @@
                 button.btn-close.text-dark(type="button" data-bs-dismiss="modal" aria-label="Close")
                     span(aria-hidden="true") ×
             .pt-4.modal-body
-                form(action="/dashboard/monitoring/start" method="post")
+                form(action="/dashboard/monitoring/start" method="post" id="newMonitor")
 
                     .input-group.input-group-static.mb-4.text-start
                         label Select Website/API
@@ -24,33 +24,100 @@
 
                     .input-group.input-group-static.mb-4
                         label Check Interval
-                        input.form-control(placeholder="in minutes" name="interval" type="number" onfocus="focused(this)" onfocusout="defocused(this)")
+                        input.form-control#interval(placeholder="in minutes" name="interval" type="number" onfocus="focused(this)" onfocusout="defocused(this)")
 
                     .text-end
-                        button.m-1.btn.btn-primary#jkanban-update-task(data-toggle="modal" type="submit" data-target="#jkanban-info-modal").
-
-                            Save changes
+                        button.m-1.btn.btn-primary#submitbtn(data-toggle="modal" type="submit" data-target="#jkanban-info-modal")
+                            | Save changes 
+                            span.spinner-border.spinner-border-sm(role="status" aria-hidden="true")#spina
 
                         button.m-1.btn.btn-secondary(type="button" data-bs-dismiss="modal" data-target="#addMonitor").
 
                             Close
+script.
+    let loading = $('#spina').hide();
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-right',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
 
 
-//- .col-12.col-md-5.ms-auto.mt-3.text-start
-//-     div
-//-         label.form-label.mb-0.ms-0 Country
-//-         .choices(data-type="select-one" tabindex="0" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false")
-//-             .choices__inner
-//-                 select.form-control.choices__input#choices-country(name="choices-country" tabindex="-1" data-choice="active", hidden)
-//-                     option(value="Argentina") Argentina
-//-                 .choices__list.choices__list--single
-//-                     .choices__item.choices__item--selectable(data-item, data-id="1" data-value="Argentina" data-custom-properties="null" aria-selected="true") Argentina
-//-             .choices__list.choices__list--dropdown(aria-expanded="false")
-//-                 input.choices__input.choices__input--cloned(type="text" autocomplete="off" autocapitalize="none" spellcheck="false" role="textbox" aria-autocomplete="list" aria-label="false", placeholder)
-//-                 .choices__list(role="listbox")
-//-                     #choices--choices-country-item-choice-1.choices__item.choices__item--choice.choices__item--selectable.is-highlighted(role="option", data-choice, data-id="1" data-value="Albania" data-select-text="Press to select", data-choice-selectable, aria-selected="true") Albania
-//-                     #choices--choices-country-item-choice-2.choices__item.choices__item--choice.choices__item--selectable(role="option", data-choice, data-id="2" data-value="Algeria" data-select-text="Press to select", data-choice-selectable) Algeria
-//-                     #choices--choices-country-item-choice-3.choices__item.choices__item--choice.choices__item--selectable(role="option", data-choice, data-id="3" data-value="Andorra" data-select-text="Press to select", data-choice-selectable) Andorra
-//-                     #choices--choices-country-item-choice-4.choices__item.choices__item--choice.choices__item--selectable(role="option", data-choice, data-id="4" data-value="Angola" data-select-text="Press to select", data-choice-selectable) Angola
-//-                     #choices--choices-country-item-choice-5.choices__item.choices__item--choice.is-selected.choices__item--selectable(role="option", data-choice, data-id="5" data-value="Argentina" data-select-text="Press to select", data-choice-selectable) Argentina
-//-                     #choices--choices-country-item-choice-6.choices__item.choices__item--choice.choices__item--selectable(role="option", data-choice, data-id="6" data-value="Brasil" data-select-text="Press to select", data-choice-selectable) Brasil
+
+    $("#submitbtn").click(function(event){
+        event.preventDefault();
+        //- get form
+        var form = $("#newMonitor");
+        //- make sure empty form is not submitted
+        if ($('#website-choices').val() == "" || $('#team-choices').val() == "") {
+            Toast.fire({
+                icon: "error",
+                title: "All fields are required"
+            });
+        }else if ($('#interval').val() < 5 ){
+            Toast.fire({
+                icon: "error",
+                title: "Check interval cannot be less than 5 minutes"
+            });
+        }else{
+            $.ajax({
+                url:form.attr('action'),
+                type:form.attr('method'),
+                data: form.serialize(),
+                beforeSend: function(){
+                    loading.show(function(){
+                        $("#submitbtn").prop("disabled", true);
+                    });
+                },
+                complete: function(){
+                    loading.hide(function(){
+                        $("#submitbtn").removeAttr('disabled');
+                    });
+                    //- listenToCallback();
+                },
+                success: function(data){
+                    console.log(data.data)
+                    if(data.status == "success"){
+                        form[0].reset();
+                        window.location.reload()
+                    }
+                    Toast.fire({
+                        icon:data.status,
+                        title:data.data
+                    });
+                    //- alert(data);
+                    //- if(data.response.ResponseCode == '0'){
+                    //-     //- Clears The form fields
+                    //-     form[0].reset();
+                    //-     Toast.fire({
+                    //-         //- icon: data.message.type,
+                    //-         icon: 'success',
+                    //-         title:'Enter your mpesa password...',
+                    //-         timer:false
+                    //-     });
+                    //- }else{
+                    //-     Toast.fire({
+                    //-         icon: "error",
+                    //-         title: "Oops! an error occured try again"
+                    //-     });
+                    //- }
+                },
+                timeout: 10000,
+                error: function (request, status, error) {
+                    //- alert(request,status);
+                    Toast.fire({
+                        icon: "error",
+                        title: "Request time out try again!"
+                    });
+                }
+
+            });
+        }
+    });

@@ -111,6 +111,8 @@ module.exports = {
         const { teamId } = req.params; // teamId received from request parameters
         const { title, description, userIds } = req.body;
         console.log(`#### ############ UserIds ${userIds}`)
+        const newMembers = [...new Set(userIds)];
+        console.log(`New Ids are as follows ${newMembers}`);
         try {
             const team = await Team.findByPk(teamId);
             if (!team) {
@@ -123,10 +125,10 @@ module.exports = {
                     id: teamId
                 }
             })
-            const existingUsers = await team.getUsers();
-            const newUsers = userIds
-            console.log(existingUsers.id);
-            await team.setUsers(userIds);
+            // const existingUsers = await team.getUsers();
+            // const newUsers = userIds
+            // console.log(existingUsers.id);
+            await team.setUsers(newMembers);
             // res.json({status: 'success', data: `Team '${team.name}' has been updated successfully.`})
             res.redirect('/dashboard/teams?info=success');
         } catch (error) {
@@ -244,10 +246,10 @@ module.exports = {
                         // const updatedWebsite = website.setSiteStatus(2);
 
                         // Check the website status
-                        const isUp = await checkWebsiteStatus(websiteUrl);
+                        const siteResult = await checkWebsiteStatus(websiteUrl);
 
-                        if (isUp) {
-                            console.log(`Hurray!! ${websiteUrl} is up and operational.`);
+                        if (siteResult.status === true) {
+                            console.log(`Hurray!! ${websiteUrl} is up and operational took ${siteResult.responseTime}.`);
                             // Create a success outcome to the result table
                             // res.json({ status: 'success', data: `${websiteUrl} is up and operational.` });
                         } else {

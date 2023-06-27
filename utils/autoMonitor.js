@@ -17,11 +17,8 @@ async function initializeMonitoring() {
         // Start monitoring for each active monitor
         activeMonitors.forEach((monitor) => {
             console.log(monitor)
-            const { siteId, teamId, interval } = monitor;
-            // Start monitoring logic for the monitor
-            // startMonitoringLogic(siteId, teamId, interval, 1)
-            //     .then(data => console.log(data))
-            //     .catch(err => console.log(err));
+            const { siteId } = monitor;
+
             startIntervalCheck(siteId)
                 .then(data => console.log(data))
                 .catch(err => console.log(err));

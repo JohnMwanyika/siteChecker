@@ -33,7 +33,7 @@ const checkInterval = 5 * 60 * 1000; // Check every 5 minutes
 //     };
 // };
 
-async function checkWebsiteStatus(url, timeout = 5000) {
+async function checkWebsiteStatus(url, timeout = 10000) {
     try {
       const startTime = new Date().getTime(); // Track start time
       const response = await axios.get(url, { timeout });
@@ -48,7 +48,7 @@ async function checkWebsiteStatus(url, timeout = 5000) {
       }
     } catch (error) {
       if (error.code === 'ECONNABORTED') {
-        return { status: true, responseTime: timeout }; // Website is up (timed out)
+        return { status: 'timeout', responseTime: timeout }; // Website is up (timed out)
       } else {
         return { status: false, responseTime: null }; // Website is down (request error)
       }
