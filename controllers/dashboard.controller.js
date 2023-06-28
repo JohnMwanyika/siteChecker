@@ -28,8 +28,8 @@ module.exports = {
     getSites: async (req, res) => {
         console.log(Website)
         const allSites = await Website.findAll({
-            order:[
-                ['name','ASC']
+            order: [
+                ['name', 'ASC']
             ],
             include: [
                 { model: SiteStatus, required: true },
@@ -176,7 +176,8 @@ module.exports = {
     startMonitoring: async (req, res) => {
         console.log('################### REQUEST HAS BEEN RECEIVED ######################');
         // const { siteId } = req.params; // websiteId for monitoring
-        const { siteId, teamId, interval } = req.body; // Monitor data from client REQUEST BODY
+        const { siteId, interval } = req.body; // Monitor data from client REQUEST BODY
+        let { teamId } = req.body;
         const userId = req.session.user.id; // Currently logged-in user
 
         try {
@@ -188,29 +189,34 @@ module.exports = {
                     data: 'Website not found',
                 });
             }
-            // find tema details
+            // find team details
             const selectedTeam = await Team.findOne({ include: [{ model: User }], where: { id: teamId } });
             console.log('selected team and users #########', selectedTeam)
+            if (selectedTeam.Users.length < 1) { //if the selected team does not contain users throw an equivalent error
+                return res.json({ status: 'error', data: `Add members to '${selectedTeam.name}' team before assigning it!` })
+            }
+            // #################################################################################3
+            // if there is no team selectedm the default team is set automatically
+            if (!teamId) {
+                const defaultTeam = await Team.findOne({ include: [{ model: User }], where: { name: 'Default' } });
+                console.log('Default team and users #########', defaultTeam)
+                // if for some resons there is no default team, reject the request by throwing an error notification
+                if (!defaultTeam) {
+                    return res.json({ status: 'error', data: 'Default team is not set or Invalid team selected' })
+                }
+                // if the default team has no users reject by throwing an equevalent notification
+                if (defaultTeam.Users.length < 1) {
+                    return res.json({ status: 'error', data: 'Add members to the default team before assigning it!' })
+                }
+                teamId = defaultTeam.id;
+                // else { //throw the error team not found
+                //     return res.json({ status: 'error', data: 'Team selected does not exist' })
+                // }
+            }
 
-            // if (selectedTeam) {
-            //     // return res.json({ status: 'error', data: 'Team does not exist' })
-            //     if (selectedTeam.Users.length < 1) {
-            //         return res.json({ status: 'error', data: 'Add members to the selected team before starting a monitor!' })
-            //     }
-            // }
-            // find default team
-            const defaultTeam = await Team.findOne({ include: [{ model: User }], where: { name: 'Default' } });
-            console.log('Default team and users #########', defaultTeam)
-            if (!defaultTeam || !teamId) {
-                return res.json({ status: 'error', data: 'Default team is not set or Invalid team selected' })
-            }
-            // check if team has members to notify before monitoring
-            if (defaultTeam.Users.length < 1) {
-                return res.json({ status: 'error', data: 'Add members to the selected team before starting a monitor!' })
-            }
 
             // Check if there is an ongoing monitor for this website
-            const monitor = await Monitor.findOne({ where: { siteId } });
+            const monitor = await Monitor.findOne({ where: { siteId: siteId } });
             if (monitor) {
                 return res.json({
                     status: 'warning',
@@ -221,13 +227,13 @@ module.exports = {
             // Create a new monitor for the website
             const createdMonitor = await Monitor.create({
                 siteId,
-                teamId: teamId || defaultTeam.id,
+                teamId, //selectedTeam.id || defaultTeam.id,
                 interval,
                 statusId: 2,
                 createdBy: userId,
             });
 
-            const updatedWebsite = website.setSiteStatus(2)
+            const updatedWebsite = website.setSiteStatus(2) //change site status to Monitoring
             // Start monitoring logic
             const monitoringInterval = setInterval(async () => {
 
@@ -261,10 +267,10 @@ module.exports = {
                         }
                     } else {
                         clearInterval(monitoringInterval);
-                        console.log(`##Site has stoped monitoring`)
+                        console.log(`######## Site has stoped monitoring #######`)
                         return res.json({
                             status: 'warning',
-                            data: `${monitoringSite.Website.url} has stopped monitoring`
+                            data: `Site has stopped monitoring`
                         })
                     }
 
@@ -286,7 +292,7 @@ module.exports = {
             console.log(error);
             res.json({
                 status: 'error',
-                data: error.message, // Return default error
+                data: `${error.message} ${error.stack}`, // Return default error
             });
         }
     },

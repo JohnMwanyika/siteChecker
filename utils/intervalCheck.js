@@ -35,25 +35,25 @@ const checkInterval = 5 * 60 * 1000; // Check every 5 minutes
 
 async function checkWebsiteStatus(url, timeout = 10000) {
     try {
-      const startTime = new Date().getTime(); // Track start time
-      const response = await axios.get(url, { timeout });
-      const endTime = new Date().getTime(); // Track end time
-  
-      const responseTime = (endTime - startTime)/1000; // Calculate response time in seconds
-  
-      if (response.status >= 200 && response.status < 400) {
-        return { status: true, responseTime }; // Website is up
-      } else {
-        return { status: false, responseTime }; // Website is down
-      }
+        const startTime = new Date().getTime(); // Track start time
+        const response = await axios.get(url, { timeout });
+        const endTime = new Date().getTime(); // Track end time
+
+        const responseTime = (endTime - startTime) / 1000; // Calculate response time in seconds
+
+        if (response.status >= 200 && response.status < 400) {
+            return { status: true, responseTime }; // Website is up
+        } else {
+            return { status: false, responseTime }; // Website is down
+        }
     } catch (error) {
-      if (error.code === 'ECONNABORTED') {
-        return { status: 'timeout', responseTime: timeout }; // Website is up (timed out)
-      } else {
-        return { status: false, responseTime: null }; // Website is down (request error)
-      }
+        if (error.code === 'ECONNABORTED') {
+            return { status: 'timeout', responseTime: timeout }; // Website is up (timed out)
+        } else {
+            return { status: false, responseTime: null }; // Website is down (request error)
+        }
     }
-  }
+}
 
 module.exports = {
     checkWebsiteStatus

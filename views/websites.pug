@@ -80,13 +80,13 @@ block content
             if (checkbox.checked) {
                 axios.post(`/dashboard/monitoring/start`, {
                     siteId:siteId,
-                    teamId:teamId,
+                    teamId:null,
                     interval:1,
                     }, )
                     .then((response) => {
                         Toast.fire({icon:response.data.status,title:response.data.data});
                         setTimeout(() => {
-                            location.reload();
+                            //- location.reload();
                         }, 3000);
                         console.log(response);
                     })

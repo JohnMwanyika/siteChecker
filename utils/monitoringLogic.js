@@ -150,7 +150,7 @@ async function startIntervalCheck(siteId, teamId) {
                 const monitorUrl = monitoringSite.Website.url
                 const websiteUrl = `https://${monitorUrl}`;
 
-                // CHECK WEBSITE STATUS FUNCTION#######################################################################
+                // CHECK WEBSITE STATUS FUNCTION #######################################################################
                 const siteResult = await checkWebsiteStatus(websiteUrl, timeout = 10000);
                 console.log(siteResult)
                 if (siteResult.status === true) {
@@ -158,12 +158,12 @@ async function startIntervalCheck(siteId, teamId) {
                     // Create a success outcome to the result table
                     // res.json({ status: 'success', data: `${websiteUrl} is up and operational.` });
                 } else if (siteResult.status === 'timeout') {
-                    console.log(`Mayday! ${websiteUrl} is taking too long to respond try again took over 10 seconds.`);
+                    console.log(`Mayday! ${websiteUrl} is taking too long to respond trying again in ${monitoringSite.interval} minutes.`);
                 } else {
-                    console.log(`Mayday! Mayday! ${websiteUrl} has just collapsed.`);
+                    console.log(`Mayday! Mayday! ${websiteUrl} has just collapsed trying again in ${monitoringSite.interval} minutes.`);
                     // res.json({ status: 'error', data: `${websiteUrl} is down and unreachable.` });
                 }
-                // CHECK WEBSITE STATUS FUNCTION#######################################################################
+                // CHECK WEBSITE STATUS FUNCTION #######################################################################
 
             } else {
                 // const stoppedMonitor = website.url
@@ -195,31 +195,7 @@ async function startIntervalCheck(siteId, teamId) {
 var interval;
 async function scheduleSiteCheck(siteIdw, teamId) {
     try {
-        // const activeMonitors = await Monitor.findAll();
-        // if (activeMonitors.length < 1) {
-        //     console.log('There are no services being monitored at the moment')
-        //     return {
-        //         status: 'warning',
-        //         data: 'There are no services being monitored at the moment'
-        //     }
-        // }
-        // console.log(activeMonitors)
-        // // Start monitoring for each active monitor
-        // activeMonitors.forEach(async (monitor) => {
-        //     console.log(monitor)
-        //     const { siteId } = monitor;
 
-        //     const monitoringSite = await Monitor.findOne({
-        //         include: [
-        //             { model: Website }
-        //         ],
-        //         where: {
-        //             siteId: siteId
-        //         }
-        //     })
-        // })
-        // Start monitoring logic
-        
         const monitoringInterval = setInterval(async () => {
 
             const activeMonitors = await Monitor.findAll();
@@ -251,12 +227,12 @@ async function scheduleSiteCheck(siteIdw, teamId) {
                     if (monitoringSite) {
                         const monitorUrl = monitoringSite.Website.url
                         const websiteUrl = `https://${monitorUrl}`;
-                        
+
                         console.log('Current monitoring site interval is ', interval)
 
                         // CHECK WEBSITE STATUS FUNCTION#######################################################################
                         const siteResult = await checkWebsiteStatus(websiteUrl, timeout = 10000);
-                        
+
                         // console.log(siteResult)
                         if (siteResult.status === true) {
                             console.log(`Hurray!! ${websiteUrl} is up and operational took ${siteResult.responseTime} seconds.`);
@@ -290,7 +266,6 @@ async function scheduleSiteCheck(siteIdw, teamId) {
                 }
 
             })
-            console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',interval)
 
         }, interval * 60 * 1000); //multiply the seconds passed by seconds and again by miliseconds
         console.log(`############## Monitoring has been started for ${monitoringSite.Website.url} ##############`);

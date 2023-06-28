@@ -9,12 +9,22 @@
                         p.mb-0 #{team.name}
                     .card-body
                         form(role="form text-left" method='post' action=`/dashboard/teams/${team.id}`)
+
                             .input-group.input-group-dynamic.my-3
-                                label.form-label Title
-                                input.form-control(type="text" name='title' value=`${team.name}` onfocus="focused(this)" onfocusout="defocused(this)")
+                                if (team.name == 'Default')
+                                    label.form-label Title (Locked)
+                                    input.form-control(disabled type="text" name='title' value=`${team.name}` onfocus="focused(this)" onfocusout="defocused(this)")
+                                else
+                                    label.form-label Title
+                                    input.form-control(type="text" name='title' value=`${team.name}` onfocus="focused(this)" onfocusout="defocused(this)")
+                        
                             .input-group.input-group-static.my-3
-                                textarea.form-control#description(name="description" onfocus="focused(this)" onfocusout="def" placeholder="A short description about the group")
-                                    | #{team.description}
+                                if (team.name == 'Default')
+                                    textarea.form-control#description(disabled name="description" onfocus="focused(this)" onfocusout="def" placeholder="A short description about the group")
+                                        | #{team.description}
+                                else
+                                    textarea.form-control#description(name="description" onfocus="focused(this)" onfocusout="def" placeholder="A short description about the group")
+                                        | #{team.description}
                                 //- input.form-control(type="text" name='url' onfocus="focused(this)" onfocusout="defocused(this)")
                             .input-group.input-group-outline.my-3
                                 label.form-label Select Team Members
