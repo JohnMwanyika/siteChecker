@@ -1,6 +1,6 @@
 const { checkWebsiteStatus } = require('../utils/intervalCheck');
 const { Website, SiteStatus, User, Team, Monitor, Monitor_Status } = require('../models/index.js');
-
+const { sendMail } = require('../utils/send_mail.js');
 module.exports = {
     getDashboard: async (req, res) => {
         try {
@@ -191,10 +191,13 @@ module.exports = {
             }
             // find team details
             const selectedTeam = await Team.findOne({ include: [{ model: User }], where: { id: teamId } });
-            console.log('selected team and users #########', selectedTeam)
-            if (selectedTeam.Users.length < 1) { //if the selected team does not contain users throw an equivalent error
-                return res.json({ status: 'error', data: `Add members to '${selectedTeam.name}' team before assigning it!` })
+            if (selectedTeam) {
+                console.log('selected team and users #########', selectedTeam)
+                if (selectedTeam.Users.length < 1) { //if the selected team does not contain users throw an equivalent error
+                    return res.json({ status: 'error', data: `Add members to '${selectedTeam.name}' team before assigning it!` })
+                }
             }
+
             // #################################################################################3
             // if there is no team selectedm the default team is set automatically
             if (!teamId) {
@@ -242,7 +245,8 @@ module.exports = {
                     // getting the site details from the Monitoring lists
                     const monitoringSite = await Monitor.findOne({
                         include: [
-                            { model: Website }
+                            { model: Website },
+                            { model: Team, include: [{ model: User, attributes: ['email'] }] }
                         ],
                         where: {
                             siteId: createdMonitor.siteId
@@ -251,7 +255,7 @@ module.exports = {
                     // check if this site is still being monitored
                     if (monitoringSite) {
                         const monitorUrl = monitoringSite.Website.url
-                        const websiteUrl = `https://${monitorUrl}`;
+                        const websiteUrl = `${monitorUrl}`;
                         // const updatedWebsite = website.setSiteStatus(2);
 
                         // Check the website status

@@ -32,12 +32,12 @@ block content
                                         td
                                             .d-flex.px-2.py-1
                                                 div
-                                                    img.avatar.avatar-sm.me-3.border-radius-lg(src=`https://${site.url}/favicon.ico` alt="logo")
+                                                    img.avatar.avatar-sm.me-3.border-radius-lg(src=`${site.url}/favicon.ico` alt="logo")
                                                 .d-flex.flex-column.justify-content-center
                                                     h6.mb-0.text-sm #{site.name}
                                                     p.text-xs.text-secondary.mb-0 #{site.url}
                                         td
-                                            p.text-xs.font-weight-bold.mb-0 https://#{site.url}
+                                            p.text-xs.font-weight-bold.mb-0 #{site.url}
                                             p.text-xs.text-secondary.mb-0 #{site.organization}
                                         td.align-middle.text-center.text-sm
                                             if (site.statusId == 1)

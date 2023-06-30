@@ -148,7 +148,8 @@ async function startIntervalCheck(siteId, teamId) {
             // check if this site is still being monitored
             if (monitoringSite) {
                 const monitorUrl = monitoringSite.Website.url
-                const websiteUrl = `https://${monitorUrl}`;
+                // const websiteUrl = `https://${monitorUrl}`;
+                const websiteUrl = `${monitorUrl}`;
 
                 // CHECK WEBSITE STATUS FUNCTION #######################################################################
                 const siteResult = await checkWebsiteStatus(websiteUrl, timeout = 10000);

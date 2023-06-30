@@ -27,8 +27,11 @@ async function sendMail(subject, text, ...to) {
         console.log(`Confirmed email sent to: ${to} from ${mailOptions.from}` + info.response);
         return info.response;
     } catch (error) {
-        console.log('Error sending email: ' + error.message);
-        throw error;
+        // if(error.code == 'ESOCKET'){
+        //     console.log(`Error sending email to ${to} because of network failure`);
+        // }
+        console.log(`Unable to send your email to ${to} because ` + error.message);
+        // throw error;
     }
 }
 
