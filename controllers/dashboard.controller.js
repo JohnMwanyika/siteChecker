@@ -19,7 +19,7 @@ module.exports = {
             });
 
             // console.log(allSites)
-            res.render('dashboard', { title: "Dashboard", allSites, websites, teams });
+            res.render('dashboard', { title: "Dashboard", allSites, websites, teams, user: req.session.user });
         } catch (error) {
             console.log(error)
         }
@@ -39,7 +39,7 @@ module.exports = {
         const siteData = allSites.map(site => site.toJSON());
         const notify = req.query.notify == 'update_true' ? { info: 'Website updated successfully', type: 'success' } : ''
         // console.log(siteData)
-        res.render('websites', { title: "My Sites", sites: allSites, notify })
+        res.render('websites', { title: "My Sites", sites: allSites, notify,user: req.session.user })
     },
     newSite: async (req, res) => {
         console.log(req.body)
@@ -104,7 +104,7 @@ module.exports = {
             });
             // console.log(Object.getOwnPropertyNames(Team.prototype))
             // console.log(allTeams[0].Users);
-            res.render('teams', { title: 'All Teams', users, allTeams });
+            res.render('teams', { title: 'All Teams', users, allTeams,user: req.session.user });
         } catch (error) {
             console.error(error)
         }

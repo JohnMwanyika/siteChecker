@@ -7,8 +7,10 @@ block content
                     .icon.icon-lg.icon-shape.bg-gradient-dark.shadow-dark.text-center.border-radius-xl.mt-n4.position-absolute
                         i.material-icons.opacity-10 weekend
                     .text-end.pt-1
-                        p.text-sm.mb-0.text-capitalize Today's Money
-                        h4.mb-0 $53k
+                        p.text-sm.mb-0.text-capitalize Monitoring
+                        - let totalMonitors = allSites.length
+                        - let totalWebsites = websites.length
+                        h4.mb-0 #{totalMonitors}
                 hr.dark.horizontal.my-0
                 .card-footer.p-3
                     p.mb-0
@@ -20,8 +22,8 @@ block content
                     .icon.icon-lg.icon-shape.bg-gradient-primary.shadow-primary.text-center.border-radius-xl.mt-n4.position-absolute
                         i.material-icons.opacity-10 person
                     .text-end.pt-1
-                        p.text-sm.mb-0.text-capitalize Today's Users
-                        h4.mb-0 2,300
+                        p.text-sm.mb-0.text-capitalize Offline
+                        h4.mb-0 0
                 hr.dark.horizontal.my-0
                 .card-footer.p-3
                     p.mb-0
@@ -33,8 +35,8 @@ block content
                     .icon.icon-lg.icon-shape.bg-gradient-success.shadow-success.text-center.border-radius-xl.mt-n4.position-absolute
                         i.material-icons.opacity-10 person
                     .text-end.pt-1
-                        p.text-sm.mb-0.text-capitalize New Clients
-                        h4.mb-0 3,462
+                        p.text-sm.mb-0.text-capitalize Online
+                        h4.mb-0 0
                 hr.dark.horizontal.my-0
                 .card-footer.p-3
                     p.mb-0
@@ -46,8 +48,8 @@ block content
                     .icon.icon-lg.icon-shape.bg-gradient-info.shadow-info.text-center.border-radius-xl.mt-n4.position-absolute
                         i.material-icons.opacity-10 weekend
                     .text-end.pt-1
-                        p.text-sm.mb-0.text-capitalize Sales
-                        h4.mb-0 $103,430
+                        p.text-sm.mb-0.text-capitalize All Services
+                        h4.mb-0 #{totalWebsites}
                 hr.dark.horizontal.my-0
                 .card-footer.p-3
                     p.mb-0

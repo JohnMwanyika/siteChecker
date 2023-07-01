@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
-let host = process.env.MAIL_HOST //|| 'mail.govmail.ke';
+let host = process.env.MAIL_HOST || 'taitataveta.go.ke';
 let port = process.env.MAIL_PORT || 465;
 
 async function sendMail(subject, text, ...to) {
@@ -25,7 +25,7 @@ async function sendMail(subject, text, ...to) {
     try {
         const info = await transporter.sendMail(mailOptions);
         console.log(`Confirmed email sent to: ${to} from ${mailOptions.from}` + info.response);
-        return info.response;
+        // return info.response;
     } catch (error) {
         // if(error.code == 'ESOCKET'){
         //     console.log(`Error sending email to ${to} because of network failure`);
@@ -36,8 +36,9 @@ async function sendMail(subject, text, ...to) {
 }
 
 // sendMail('ict test mail', 'testing mail functionality', 'mwanyikajohn@outlook.com', '5476benja@gmail.com')
-//     .then(response => {
-//         console.log('Email sent successfully:', response);
+//     .then(delivery => {
+//         const sendStatus = !delivery ? 'Email not sent' : 'Email sent successfully';
+//         console.log(sendStatus);
 //     })
 //     .catch(error => {
 //         console.error('Error sending email:', error);

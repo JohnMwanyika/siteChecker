@@ -41,9 +41,9 @@ module.exports = {
     logout: async (req, res) => {
         req.session.destroy((err) => {
             if (err) {
-                console.error('Error destroying session:', err);
+                console.error('Error clearing current user session:', err);
             } else {
-                console.log('Session data deleted');
+                console.log('Session cleared successfully');
                 res.redirect('/signin'); // Redirect to login page or any other appropriate route
             }
         });

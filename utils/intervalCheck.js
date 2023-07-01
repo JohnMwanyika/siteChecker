@@ -87,6 +87,14 @@ async function checkWebsiteStatus(url, timeout = 10000) {
             return { status: true, responseTime }; // Website is up
         } else {
             membersEmails(url)
+                .then((emails) => {
+                    if (emails.length < 1) {
+                        return { status: 'warning', data: 'No team members to notify' }
+                    }
+                    sendMail(`${url} is down`, 'The above mentioned service is down', emails)
+                        .then(data => console.log(data))
+                        .catch(err => console.log(err))
+                })
                 .then(data => console.log(data))
                 .catch(err => console.log(err))
             return { status: false, responseTime }; // Website is down
@@ -101,8 +109,13 @@ async function checkWebsiteStatus(url, timeout = 10000) {
                         return { status: 'warning', data: 'No team members to notify' }
                     }
                     sendMail(`${url} is down`, 'The above mentioned service is down', emails)
-                        .then(data => console.log(data))
-                        .catch(err => console.log(err))
+                        .then(delivery => {
+                            const sendStatus = !delivery ? 'Email not sent' : 'Email sent successfully';
+                            console.log(sendStatus);
+                        })
+                        .catch(error => {
+                            console.error('Error sending email:', error);
+                        });
                 })
                 .then(data => console.log(data))
                 .catch(err => console.log(err))

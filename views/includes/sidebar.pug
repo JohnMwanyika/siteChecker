@@ -1,9 +1,9 @@
 aside.sidenav.navbar.navbar-vertical.navbar-expand-xs.border-0.border-radius-xl.my-3.fixed-start.ms-3.bg-gradient-dark#sidenav-main
     .sidenav-header
         i.fas.fa-times.p-3.cursor-pointer.text-white.opacity-5.position-absolute.end-0.top-0.d-none.d-xl-none#iconSidenav(aria-hidden="true")
-        a.navbar-brand.m-0(href="https://demos.creative-tim.com/material-dashboard/pages/dashboard" target="_blank")
+        a.navbar-brand.m-0(href="/dashboard")
             img.navbar-brand-img.h-100(src="../assets/img/logo-ct.png" alt="main_logo")
-            span.ms-1.font-weight-bold.text-white Material Dashboard 2
+            span.ms-1.font-weight-bold.text-white Site Monitor
     hr.horizontal.light.mt-0.mb-2
     .collapse.navbar-collapse.w-auto#sidenav-collapse-main
         ul.navbar-nav
@@ -40,7 +40,7 @@ aside.sidenav.navbar.navbar-vertical.navbar-expand-xs.border-0.border-radius-xl.
             li.nav-item.mt-3
                 h6.ps-4.ms-2.text-uppercase.text-xs.text-white.font-weight-bolder.opacity-8 Account pages
             li.nav-item
-                a.nav-link.text-white(href="../pages/profile.html")
+                a.nav-link.text-white(href="/dashboard/profile")
                     .text-white.text-center.me-2.d-flex.align-items-center.justify-content-center
                         i.material-icons.opacity-10 person
                     span.nav-link-text.ms-1 Profile
@@ -55,6 +55,6 @@ aside.sidenav.navbar.navbar-vertical.navbar-expand-xs.border-0.border-radius-xl.
                         i.material-icons.opacity-10 assignment
                     span.nav-link-text.ms-1 Sign Up
     .sidenav-footer.position-absolute.w-100.bottom-0
-        .mx-3
+        //- .mx-3
             a.btn.btn-outline-primary.mt-4.w-100(href="https://www.creative-tim.com/learning-lab/bootstrap/overview/material-dashboard?ref=sidebarfree" type="button") Documentation
             a.btn.bg-gradient-primary.w-100(href="https://www.creative-tim.com/product/material-dashboard-pro?ref=sidebarfree" type="button") Upgrade to pro

@@ -4,7 +4,7 @@ const { getProfile, updateProfile, uploadAvatar } = require('../controllers/prof
 const router = express.Router();
 
 router.get('/', getProfile);
-router.post('/update/:id', updateProfile);
+router.post('/update', updateProfile);
 router.post('/update/avatar', upload.single('file'), uploadAvatar);
 
 module.exports = router;

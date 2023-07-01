@@ -2,15 +2,32 @@ const { Website, SiteStatus, User, Team } = require('../models/index.js');
 
 module.exports = {
     getProfile: async (req, res) => {
-        res.render('profile', { title: 'My Profile' })
+        try {
+            const user = await User.findByPk(req.session.user.id);
+            res.render('profile', { title: 'My Profile', user })
+        } catch (error) {
+            console.log(error);
+            res.redirect('/error');
+        }
+
     },
     updateProfile: async (req, res) => {
-        const { firstName, lastName, email, phone, } = req.body;
-        res.redirect('/dasboard/profile');
+        const { firstName, lastName, email, phone } = req.body;
+        try {
+            const updatedProfile = await User.update({ firstName, lastName, email, phone }, {
+                where: {
+                    id: req.session.user.id
+                }
+            })
+            res.redirect('/dashboard/profile');
+        } catch (error) {
+            console.log(error);
+            res.redirect('/error');
+        }
     },
     uploadAvatar: async (req, res) => {
         try {
-            const { userId } = req.params;
+            const { userId } = req.body;
             const avatarPath = req.file.path // path where multer stored the file
 
             // Update the user's avatarPath field in the database

@@ -82,6 +82,11 @@ nav.navbar.navbar-main.navbar-expand-lg.px-0.mx-4.shadow-none.border-radius-xl#n
                                             |  2 days
 
                 li.nav-item.d-flex.align-items-center
-                    a.nav-link.text-body.font-weight-bold.px-0(href="/signin")
-                        i.fa.fa-user.me-sm-1
-                        span.d-sm-inline.d-none Sign In
+                    if (!user)
+                        a.nav-link.text-body.font-weight-bold.px-0(href="/signin")
+                            i.fa.fa-user.me-sm-1
+                            span.d-sm-inline.d-none Sign In
+                    else
+                        a.nav-link.text-body.font-weight-bold.px-0(href="/signout")
+                            i.fa.fa-user.me-sm-1
+                            span.d-sm-inline.d-none Sign Out

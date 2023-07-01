@@ -1,0 +1,292 @@
+extends dashLayout
+block content
+
+    .container-fluid.px-2.px-md-4
+        .page-header.min-height-300.border-radius-xl.mt-4(style="background-image: url(\'https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80\');")
+            span.mask.bg-gradient-primary.opacity-6
+        .card.card-body.mx-3.mx-md-4.mt-n6
+            .row.gx-4.mb-2
+                .col-auto
+                    .avatar.avatar-xl.position-relative
+                        img.w-100.border-radius-lg.shadow-sm(src="../assets/img/bruce-mars.jpg" alt="profile_image")
+                .col-auto.my-auto
+                    .h-100
+                        h5.mb-1.
+
+                            #{user.firstName} #{user.lastName}
+
+                        p.mb-0.font-weight-normal.text-sm.
+
+                            CEO / Co-Founder
+
+                .col-lg-4.col-md-6.my-sm-auto.ms-sm-auto.me-sm-0.mx-auto.mt-3
+                    .nav-wrapper.position-relative.end-0
+                        ul.nav.nav-pills.nav-fill.p-1(role="tablist")
+                            li.nav-item
+                                a.nav-link.mb-0.px-0.py-1.active(data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="true")
+                                    i.material-icons.text-lg.position-relative home
+                                    span.ms-1 App
+                            li.nav-item
+                                a.nav-link.mb-0.px-0.py-1(data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="false")
+                                    i.material-icons.text-lg.position-relative email
+                                    span.ms-1 Messages
+                            li.nav-item
+                                a.nav-link.mb-0.px-0.py-1(data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="false")
+                                    i.material-icons.text-lg.position-relative settings
+                                    span.ms-1 Settings
+            .row
+                .row
+                    .col-12.col-xl-4
+                        .card.card-plain.h-100
+                            .card-header.pb-0.p-3
+                                h6.mb-0 Platform Settings
+                            .card-body.p-3
+                                h6.text-uppercase.text-body.text-xs.font-weight-bolder Account
+                                ul.list-group
+                                    li.list-group-item.border-0.px-0
+                                        .form-check.form-switch.ps-0
+                                            input.form-check-input.ms-auto#flexSwitchCheckDefault(type="checkbox", checked)
+                                            label.form-check-label.text-body.ms-3.text-truncate.w-80.mb-0(for="flexSwitchCheckDefault") Email me when someone follows me
+                                    li.list-group-item.border-0.px-0
+                                        .form-check.form-switch.ps-0
+                                            input.form-check-input.ms-auto#flexSwitchCheckDefault1(type="checkbox")
+                                            label.form-check-label.text-body.ms-3.text-truncate.w-80.mb-0(for="flexSwitchCheckDefault1") Email me when someone answers on my post
+                                    li.list-group-item.border-0.px-0
+                                        .form-check.form-switch.ps-0
+                                            input.form-check-input.ms-auto#flexSwitchCheckDefault2(type="checkbox", checked)
+                                            label.form-check-label.text-body.ms-3.text-truncate.w-80.mb-0(for="flexSwitchCheckDefault2") Email me when someone mentions me
+                                h6.text-uppercase.text-body.text-xs.font-weight-bolder.mt-4 Application
+                                ul.list-group
+                                    li.list-group-item.border-0.px-0
+                                        .form-check.form-switch.ps-0
+                                            input.form-check-input.ms-auto#flexSwitchCheckDefault3(type="checkbox")
+                                            label.form-check-label.text-body.ms-3.text-truncate.w-80.mb-0(for="flexSwitchCheckDefault3") New launches and projects
+                                    li.list-group-item.border-0.px-0
+                                        .form-check.form-switch.ps-0
+                                            input.form-check-input.ms-auto#flexSwitchCheckDefault4(type="checkbox", checked)
+                                            label.form-check-label.text-body.ms-3.text-truncate.w-80.mb-0(for="flexSwitchCheckDefault4") Monthly product updates
+                                    li.list-group-item.border-0.px-0.pb-0
+                                        .form-check.form-switch.ps-0
+                                            input.form-check-input.ms-auto#flexSwitchCheckDefault5(type="checkbox")
+                                            label.form-check-label.text-body.ms-3.text-truncate.w-80.mb-0(for="flexSwitchCheckDefault5") Subscribe to newsletter
+                    .col-12.col-xl-4
+                        .card.card-plain.h-100
+                            .card-header.pb-0.p-3
+                                .row
+                                    .col-md-8.d-flex.align-items-center
+                                        h6.mb-0 Profile Information
+                                    .col-md-4.text-end
+                                        a(href="javascript:;")
+                                            i.fas.fa-user-edit.text-secondary.text-sm(data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile")
+                            .card-body.p-3
+                                p.text-sm.
+
+                                    Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality).
+
+                                hr.horizontal.gray-light.my-4
+                                ul.list-group
+                                    li.list-group-item.border-0.ps-0.pt-0.text-sm
+                                        strong.text-dark Full Name: 
+                                        |  #{user.firstName} #{user.lastName}
+                                    li.list-group-item.border-0.ps-0.text-sm
+                                        strong.text-dark Mobile: 
+                                        |  +254 #{user.phone}
+                                    li.list-group-item.border-0.ps-0.text-sm
+                                        strong.text-dark Email: 
+                                        |  #{user.email}
+                                        //- a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="c1a0ada4a2b5a9aeacb1b2aeaf81aca0a8adefa2aeac") [email protected]
+                                    li.list-group-item.border-0.ps-0.text-sm
+                                        strong.text-dark Location:
+                                        |  Kenya
+                                    li.list-group-item.border-0.ps-0.pb-0
+                                        strong.text-dark.text-sm Social:
+                                        | 
+
+                                        a.btn.btn-facebook.btn-simple.mb-0.ps-1.pe-2.py-0(href="javascript:;")
+                                            i.fab.fa-facebook.fa-lg
+                                        a.btn.btn-twitter.btn-simple.mb-0.ps-1.pe-2.py-0(href="javascript:;")
+                                            i.fab.fa-twitter.fa-lg
+                                        a.btn.btn-instagram.btn-simple.mb-0.ps-1.pe-2.py-0(href="javascript:;")
+                                            i.fab.fa-instagram.fa-lg
+                    .col-12.col-xl-4
+                        .card.card-plain.h-100
+                            .card-header.pb-0.p-3
+                                h6.mb-0 User Information
+                            .card-body.p-3
+                                form(role="form text-left" method='post' action=`/dashboard/profile/update`)
+                                    .input-group.input-group-outline.my-3
+                                        label.form-label First Name
+                                        input.form-control(type="text" name='firstName' value=`${user.firstName}` onfocus="focused(this)" onfocusout="defocused(this)")
+                                    .input-group.input-group-outline.my-3
+                                        label.form-label Last Name
+                                        input.form-control(type="text" name='lastName' value=`${user.lastName}` onfocus="focused(this)" onfocusout="defocused(this)")
+                                    .input-group.input-group-outline.my-3
+                                        label.form-label Email
+                                        input.form-control(type="email" name='email' value=`${user.email}` onfocus="focused(this)" onfocusout="defocused(this)")
+                                    .input-group.input-group-outline.my-3
+                                        label.form-label Phone
+                                        input.form-control(type="tel" name='phone' value=`${user.phone}` onfocus="focused(this)" onfocusout="defocused(this)")
+                                    //- .input-group.input-group-outline.my-3
+                                    //-     label.form-label Role
+                                    //-     input.form-control(type="text" name='roleId' value=`${user.roleId}` onfocus="focused(this)" onfocusout="defocused(this)")
+                                    //- .input-group.input-group-outline.my-3
+                                    //-     label.form-label Avatar
+                                    //-     input.form-control(type="file" name='avatarPath' value=`` onfocus="focused(this)" onfocusout="defocused(this)")
+                                    .text-center
+                                        button.btn.btn-round.bg-gradient-info.btn-lg.w-100.mt-4.mb-0(type="submit") Submit
+                            .card-footer.text-center.pt-0.px-lg-2.px-1
+                        
+                    //- .col-12.col-xl-4
+                        .card.card-plain.h-100
+                            .card-header.pb-0.p-3
+                                h6.mb-0 Conversations
+                            .card-body.p-3
+                                ul.list-group
+                                    li.list-group-item.border-0.d-flex.align-items-center.px-0.mb-2.pt-0
+                                        .avatar.me-3
+                                            img.border-radius-lg.shadow(src="../assets/img/kal-visuals-square.jpg" alt="kal")
+                                        .d-flex.align-items-start.flex-column.justify-content-center
+                                            h6.mb-0.text-sm Sophie B.
+                                            p.mb-0.text-xs Hi! I need more information..
+                                        a.btn.btn-link.pe-3.ps-0.mb-0.ms-auto.w-25.w-md-auto(href="javascript:;") Reply
+                                    li.list-group-item.border-0.d-flex.align-items-center.px-0.mb-2
+                                        .avatar.me-3
+                                            img.border-radius-lg.shadow(src="../assets/img/marie.jpg" alt="kal")
+                                        .d-flex.align-items-start.flex-column.justify-content-center
+                                            h6.mb-0.text-sm Anne Marie
+                                            p.mb-0.text-xs Awesome work, can you..
+                                        a.btn.btn-link.pe-3.ps-0.mb-0.ms-auto.w-25.w-md-auto(href="javascript:;") Reply
+                                    li.list-group-item.border-0.d-flex.align-items-center.px-0.mb-2
+                                        .avatar.me-3
+                                            img.border-radius-lg.shadow(src="../assets/img/ivana-square.jpg" alt="kal")
+                                        .d-flex.align-items-start.flex-column.justify-content-center
+                                            h6.mb-0.text-sm Ivanna
+                                            p.mb-0.text-xs About files I can..
+                                        a.btn.btn-link.pe-3.ps-0.mb-0.ms-auto.w-25.w-md-auto(href="javascript:;") Reply
+                                    li.list-group-item.border-0.d-flex.align-items-center.px-0.mb-2
+                                        .avatar.me-3
+                                            img.border-radius-lg.shadow(src="../assets/img/team-4.jpg" alt="kal")
+                                        .d-flex.align-items-start.flex-column.justify-content-center
+                                            h6.mb-0.text-sm Peterson
+                                            p.mb-0.text-xs Have a great afternoon..
+                                        a.btn.btn-link.pe-3.ps-0.mb-0.ms-auto.w-25.w-md-auto(href="javascript:;") Reply
+                                    li.list-group-item.border-0.d-flex.align-items-center.px-0
+                                        .avatar.me-3
+                                            img.border-radius-lg.shadow(src="../assets/img/team-3.jpg" alt="kal")
+                                        .d-flex.align-items-start.flex-column.justify-content-center
+                                            h6.mb-0.text-sm Nick Daniel
+                                            p.mb-0.text-xs Hi! I need more information..
+                                        a.btn.btn-link.pe-3.ps-0.mb-0.ms-auto.w-25.w-md-auto(href="javascript:;") Reply
+                    //- .col-12.mt-4
+                        .mb-5.ps-3
+                            h6.mb-1 Projects
+                            p.text-sm Architects design houses
+                        .row
+                            .col-xl-3.col-md-6.mb-xl-0.mb-4
+                                .card.card-blog.card-plain
+                                    .card-header.p-0.mt-n4.mx-3
+                                        a.d-block.shadow-xl.border-radius-xl
+                                            img.img-fluid.shadow.border-radius-xl(src="../assets/img/home-decor-1.jpg" alt="img-blur-shadow")
+                                    .card-body.p-3
+                                        p.mb-0.text-sm Project #2
+                                        a(href="javascript:;")
+                                            h5.
+
+                                                Modern
+
+                                        p.mb-4.text-sm.
+
+                                            As Uber works through a huge amount of internal management turmoil.
+
+                                        .d-flex.align-items-center.justify-content-between
+                                            button.btn.btn-outline-primary.btn-sm.mb-0(type="button") View Project
+                                            .avatar-group.mt-2
+                                                a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison")
+                                                    img(alt="Image placeholder" src="../assets/img/team-1.jpg")
+                                                a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Milly")
+                                                    img(alt="Image placeholder" src="../assets/img/team-2.jpg")
+                                                a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nick Daniel")
+                                                    img(alt="Image placeholder" src="../assets/img/team-3.jpg")
+                                                a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Peterson")
+                                                    img(alt="Image placeholder" src="../assets/img/team-4.jpg")
+                            .col-xl-3.col-md-6.mb-xl-0.mb-4
+                                .card.card-blog.card-plain
+                                    .card-header.p-0.mt-n4.mx-3
+                                        a.d-block.shadow-xl.border-radius-xl
+                                            img.img-fluid.shadow.border-radius-lg(src="../assets/img/home-decor-2.jpg" alt="img-blur-shadow")
+                                    .card-body.p-3
+                                        p.mb-0.text-sm Project #1
+                                        a(href="javascript:;")
+                                            h5.
+
+                                                Scandinavian
+
+                                        p.mb-4.text-sm.
+
+                                            Music is something that every person has his or her own specific opinion about.
+
+                                        .d-flex.align-items-center.justify-content-between
+                                            button.btn.btn-outline-primary.btn-sm.mb-0(type="button") View Project
+                                            .avatar-group.mt-2
+                                                a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nick Daniel")
+                                                    img(alt="Image placeholder" src="../assets/img/team-3.jpg")
+                                                a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Peterson")
+                                                    img(alt="Image placeholder" src="../assets/img/team-4.jpg")
+                                                a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison")
+                                                    img(alt="Image placeholder" src="../assets/img/team-1.jpg")
+                                                a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Milly")
+                                                    img(alt="Image placeholder" src="../assets/img/team-2.jpg")
+                            .col-xl-3.col-md-6.mb-xl-0.mb-4
+                                .card.card-blog.card-plain
+                                    .card-header.p-0.mt-n4.mx-3
+                                        a.d-block.shadow-xl.border-radius-xl
+                                            img.img-fluid.shadow.border-radius-xl(src="../assets/img/home-decor-3.jpg" alt="img-blur-shadow")
+                                    .card-body.p-3
+                                        p.mb-0.text-sm Project #3
+                                        a(href="javascript:;")
+                                            h5.
+
+                                                Minimalist
+
+                                        p.mb-4.text-sm.
+
+                                            Different people have different taste, and various types of music.
+
+                                        .d-flex.align-items-center.justify-content-between
+                                            button.btn.btn-outline-primary.btn-sm.mb-0(type="button") View Project
+                                            .avatar-group.mt-2
+                                                a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Peterson")
+                                                    img(alt="Image placeholder" src="../assets/img/team-4.jpg")
+                                                a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nick Daniel")
+                                                    img(alt="Image placeholder" src="../assets/img/team-3.jpg")
+                                                a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Milly")
+                                                    img(alt="Image placeholder" src="../assets/img/team-2.jpg")
+                                                a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison")
+                                                    img(alt="Image placeholder" src="../assets/img/team-1.jpg")
+                            .col-xl-3.col-md-6.mb-xl-0.mb-4
+                                .card.card-blog.card-plain
+                                    .card-header.p-0.mt-n4.mx-3
+                                        a.d-block.shadow-xl.border-radius-xl
+                                            img.img-fluid.shadow.border-radius-xl(src="https://images.unsplash.com/photo-1606744824163-985d376605aa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="img-blur-shadow")
+                                    .card-body.p-3
+                                        p.mb-0.text-sm Project #4
+                                        a(href="javascript:;")
+                                            h5.
+
+                                                Gothic
+
+                                        p.mb-4.text-sm.
+
+                                            Why would anyone pick blue over pink? Pink is obviously a better color.
+
+                                        .d-flex.align-items-center.justify-content-between
+                                            button.btn.btn-outline-primary.btn-sm.mb-0(type="button") View Project
+                                            .avatar-group.mt-2
+                                                a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Peterson")
+                                                    img(alt="Image placeholder" src="../assets/img/team-4.jpg")
+                                                a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nick Daniel")
+                                                    img(alt="Image placeholder" src="../assets/img/team-3.jpg")
+                                                a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Milly")
+                                                    img(alt="Image placeholder" src="../assets/img/team-2.jpg")
+                                                a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison")
+                                                    img(alt="Image placeholder" src="../assets/img/team-1.jpg")
