@@ -27,14 +27,20 @@ module.exports = {
     },
     uploadAvatar: async (req, res) => {
         try {
-            const { userId } = req.body;
+            const userId = req.session.user.id;
             const avatarPath = req.file.path // path where multer stored the file
-
+            console.log(avatarPath)
             // Update the user's avatarPath field in the database
-            await User.update({ avatarPath }, { where: { id: userId } });
-            res.redirect('/dasboard/profile?info=success');
+            await User.update({ avatarPath:`/${avatarPath}` }, { where: { id: userId } });
+
+            console.log({status:'success',data:'Uploaded file successful'})
+            res.json({status:'success',data:'Uploaded file successful'})
+            // res.redirect('/dasboard/profile?info=success');
         } catch (error) {
-            res.redirect('/dasboard/profile?info=error');
+            console.log({status:'error',data:'Failed uploading avatar'})
+            res.json({status:'error',data:'Failed uploading avatar'})
+            // res.redirect('/dasboard/profile?info=error');
+            throw error
         }
     },
 }

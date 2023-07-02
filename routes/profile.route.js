@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.get('/', getProfile);
 router.post('/update', updateProfile);
-router.post('/update/avatar', upload.single('file'), uploadAvatar);
+router.post('/upload/avatar', upload.single('file'), uploadAvatar);
 
 module.exports = router;

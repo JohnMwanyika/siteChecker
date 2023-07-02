@@ -8,7 +8,8 @@ block content
             .row.gx-4.mb-2
                 .col-auto
                     .avatar.avatar-xl.position-relative
-                        img.w-100.border-radius-lg.shadow-sm(src="../assets/img/bruce-mars.jpg" alt="profile_image")
+                        //- img.w-100.border-radius-lg.shadow-sm(src="../assets/img/bruce-mars.jpg" alt="profile_image")
+                        img.w-100.border-radius-lg.shadow-sm(src=`${user.avatarPath}` alt="profile_image")
                 .col-auto.my-auto
                     .h-100
                         h5.mb-1.
@@ -113,6 +114,30 @@ block content
                             .card-header.pb-0.p-3
                                 h6.mb-0 User Information
                             .card-body.p-3
+                                //- <form action="/target" class="dropzone" id="avatar_upload"></form>
+                                #avatarUpload Upload photo
+                                script.
+                                    //- let dropzone = new Dropzone();
+                                    //- $("#avatarUpload").dropzone({ url: "/file/post" });
+                                    let myDropzone = new Dropzone("#avatarUpload", { 
+                                        url: "/dashboard/profile/upload/avatar",
+                                        maxFiles:1,
+                                        dictMaxFilesExceeded: "You can only upload one file.",
+                                        autoProcessQue:false
+                                    });
+                                    myDropzone.on('addedfile',function(file){
+                                        console.log(file.type,file.name,file.size)
+                                    });
+                                    myDropzone.on('sending',function(file,xhr,formData){
+                                        //- xhr.responseType = 'json';
+                                        //- console.log(xhr.responseType)
+                                    })
+                                    myDropzone.on('complete',function(file){
+                                        let response = file.xhr.response;
+                                        console.log(response)
+                                    })
+
+
                                 form(role="form text-left" method='post' action=`/dashboard/profile/update`)
                                     .input-group.input-group-outline.my-3
                                         label.form-label First Name
@@ -135,7 +160,8 @@ block content
                                     .text-center
                                         button.btn.btn-round.bg-gradient-info.btn-lg.w-100.mt-4.mb-0(type="submit") Submit
                             .card-footer.text-center.pt-0.px-lg-2.px-1
-                        
+
+
                     //- .col-12.col-xl-4
                         .card.card-plain.h-100
                             .card-header.pb-0.p-3
@@ -290,3 +316,8 @@ block content
                                                     img(alt="Image placeholder" src="../assets/img/team-2.jpg")
                                                 a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison")
                                                     img(alt="Image placeholder" src="../assets/img/team-1.jpg")
+
+        //- script.
+            Dropzone.options.avatarUpload ={
+
+            }
