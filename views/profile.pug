@@ -116,27 +116,37 @@ block content
                             .card-body.p-3
                                 //- <form action="/target" class="dropzone" id="avatar_upload"></form>
                                 #avatarUpload Upload photo
+                                    .progress 
+                                        .progress-bar(progress-bar-striped role='progressbar', aria-valuemin='0', aria-valuemax='100')
                                 script.
-                                    //- let dropzone = new Dropzone();
-                                    //- $("#avatarUpload").dropzone({ url: "/file/post" });
-                                    let myDropzone = new Dropzone("#avatarUpload", { 
-                                        url: "/dashboard/profile/upload/avatar",
-                                        maxFiles:1,
-                                        dictMaxFilesExceeded: "You can only upload one file.",
-                                        autoProcessQue:false
-                                    });
-                                    myDropzone.on('addedfile',function(file){
-                                        console.log(file.type,file.name,file.size)
-                                    });
-                                    myDropzone.on('sending',function(file,xhr,formData){
-                                        //- xhr.responseType = 'json';
-                                        //- console.log(xhr.responseType)
+                                    document.addEventListener('DOMContentLoaded', function(){
+                                        let myDropzone = new Dropzone("#avatarUpload", { 
+                                            url: "/dashboard/profile/upload/avatar",
+                                            maxFiles:1,
+                                            dictMaxFilesExceeded: "You can only upload one file.",
+                                            autoProcessQue:false,
+                                            uploadprogress: function(file, progress) {
+                                                let progressBar = document.querySelector('.progress-bar');
+                                                progressBar.style.width = progress + "%";
+                                            }
+                                        });
+                                        myDropzone.on('addedfile',function(file){
+                                            console.log(file.type,file.name,file.size)
+                                        });
+                                        myDropzone.on('uploadProgress',function(){
+                                            let progressBar = document.createElement('div');
+                                            progressBar.className = 'progress-bar';
+                                            file.previewElement.appendChild(progressBar);
+                                        })
+                                        myDropzone.on('sending',function(file,xhr,formData){
+                                            //- xhr.responseType = 'json';
+                                            //- console.log(xhr.responseType)
+                                        })
+                                        myDropzone.on('complete',function(file){
+                                            let response = file.xhr.response;
+                                            console.log(response)
+                                        })
                                     })
-                                    myDropzone.on('complete',function(file){
-                                        let response = file.xhr.response;
-                                        console.log(response)
-                                    })
-
 
                                 form(role="form text-left" method='post' action=`/dashboard/profile/update`)
                                     .input-group.input-group-outline.my-3

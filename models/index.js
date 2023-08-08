@@ -24,6 +24,7 @@ Website.belongsTo(SiteStatus, { foreignKey: 'statusId' });
 
 // Team.hasMany(User);
 Team.belongsToMany(User, { through: 'user_team' });
+User.belongsToMany(Team,{through:'user_team'});
 // Monitor to status
 Monitor_Status.hasMany(Monitor,{foreignKey: 'statusId'});
 Monitor.belongsTo(Monitor_Status,{foreignKey: 'statusId'});
@@ -38,7 +39,7 @@ Monitor.belongsTo(User,{foreignKey: 'createdBy'});
 Team.hasMany(Monitor,{foreignKey: 'teamId'});
 Monitor.belongsTo(Team,{foreignKey: 'teamId'});
 
-// console.log(Object.getOwnPropertyNames(Team.prototype))
+console.log(Object.getOwnPropertyNames(Team.prototype))
 async function syncDb() {
   await sequelize.sync({ alter: true });
   return 'Database synced successfully';
