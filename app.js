@@ -65,7 +65,7 @@ const port = process.env.PORT
 // Start the server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
-  // Call the initialization logic for monitoring
+  // This function Calls the initialization logic for monitoring which restarts all the monitors
   initializeMonitoring();
 });
 // module.exports = app;

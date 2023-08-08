@@ -5,7 +5,7 @@ const { Website, SiteStatus, User, Team, Monitor, Monitor_Status } = require('..
 async function initializeMonitoring() {
     try {
         // Retrieve active monitors from the database
-        const activeMonitors = await Monitor.findAll();
+        const activeMonitors = await Monitor.findAll({ include: { model: Website } });
         if (activeMonitors.length < 1) {
             console.log('There are no services being monitored at the moment')
             return {
@@ -13,12 +13,12 @@ async function initializeMonitoring() {
                 data: 'There are no services being monitored at the moment'
             }
         }
-        console.log(activeMonitors)
+        // console.log(activeMonitors)
         // Start monitoring for each active monitor
         activeMonitors.forEach((monitor) => {
-            console.log(monitor)
+            console.log(`-----------------------Start monitoring ${monitor.Website.url}-------------------------------`);
             const { siteId } = monitor;
-
+            // passing all sites to the interval check function which starts the monitor again after server restarts
             startIntervalCheck(siteId)
                 .then(data => console.log(data))
                 .catch(err => console.log(err));
@@ -30,8 +30,8 @@ async function initializeMonitoring() {
     }
 }
 // Call the initialization logic during server startup
-initializeMonitoring()
-    .then(data => console.log(data))
-    .catch(err => console.log(err));
+// initializeMonitoring()
+//     .then(data => console.log(data))
+//     .catch(err => console.log(err));
 
 module.exports = { initializeMonitoring }
