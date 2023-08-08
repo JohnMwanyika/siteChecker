@@ -135,7 +135,15 @@ async function startIntervalCheck(siteId, teamId) {
     const monitoringInterval = setInterval(async () => {
 
         try {
-
+            // fetch again to check if there are new sites being monitored
+            const monitoringSite = await Monitor.findOne({
+                include: [
+                    { model: Website }
+                ],
+                where: {
+                    siteId: siteId
+                }
+            })
             // check if this site is still being monitored
             if (monitoringSite) {
                 const websiteUrl = monitoringSite.Website.url;
@@ -144,19 +152,30 @@ async function startIntervalCheck(siteId, teamId) {
                 console.log(siteResult);
                 if (siteResult.status === true) {
                     console.log(`Hurray!! ${websiteUrl} is up and operational took ${siteResult.responseTime} seconds.`);
+                    return {
+                        status: 'success',
+                        data: `${websiteUrl} is up and operational took ${siteResult.responseTime} seconds.`
+                    }
                     // Create a success outcome to the result table
                     // res.json({ status: 'success', data: `${websiteUrl} is up and operational.` });
                 } else if (siteResult.status === 'timeout') {
                     console.log(`Mayday! ${websiteUrl} is taking too long to respond trying again in ${monitoringSite.interval} minutes.`);
+                    return {
+                        status: 'warning',
+                        data: `${websiteUrl} is taking too long to respond trying again in ${monitoringSite.interval} minutes.`
+                    }
                 } else {
                     console.log(`Mayday! Mayday! ${websiteUrl} has just collapsed trying again in ${monitoringSite.interval} minutes.`);
-                    // res.json({ status: 'error', data: `${websiteUrl} is down and unreachable.` });
+                    return {
+                        status: 'error',
+                        data: `${websiteUrl} has just collapsed trying again in ${monitoringSite.interval} minutes.`
+                    }
                 }
                 // CHECK WEBSITE STATUS FUNCTION #######################################################################
 
             } else {
-                // const stoppedMonitor = website.url
-                console.log(`******** Site has stoped monitoring`)
+                // if the site is removed from mnitoring state clear its interval
+                console.log(`******** Site has stoped monitoring`);
                 clearInterval(monitoringInterval);
                 // console.log(`********${createdMonitor.Website.url}****** has stoped monitoring`)
                 return {
