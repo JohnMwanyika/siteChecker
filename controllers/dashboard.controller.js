@@ -240,6 +240,7 @@ module.exports = {
 
             const updatedWebsite = website.setSiteStatus(2) //change site status to Monitoring
 
+            // re-Initialize the monitoring logic to append the newly created above
             initializeMonitoring()
                 .then(data => console.log(data))
                 .catch(error => console.log(error));

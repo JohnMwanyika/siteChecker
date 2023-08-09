@@ -1,5 +1,8 @@
 var createError = require('http-errors');
 var express = require('express');
+// include socketio
+const http = require('http');
+const socketIO = require('socket.io');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -24,7 +27,7 @@ app.use(session({
   store: new SequelizeStore({
     db: sequelize,
   }),
-}))
+}));
 
 // sequelize.sync().then(data=>console.log(data)).catch(err=>console.log(err));
 // view engine setup
@@ -62,12 +65,39 @@ app.use(function (err, req, res, next) {
 });
 
 const port = process.env.PORT
-// Start the server
-app.listen(port, () => {
+
+// // Start the server
+// app.listen(port, () => {
+//   console.log(`Server running on port ${port}`);
+//   // This function Calls the initialization logic for monitoring which restarts all the monitors
+//   initializeMonitoring()
+//     .then(data => console.log(data))
+//     .catch(error => console.log(error))
+// });
+
+// server
+const server = http.createServer(app);
+// initialize websocket server
+const io = socketIO(server);
+
+server.listen(port, () => {
   console.log(`Server running on port ${port}`);
   // This function Calls the initialization logic for monitoring which restarts all the monitors
   initializeMonitoring()
     .then(data => console.log(data))
     .catch(error => console.log(error))
 });
-// module.exports = app;
+
+// Check client connection activity
+io.on('connection', (socket) => {
+  console.log('Someone is connected?');
+  socket.on('newLogin', (data) => { console.log(data) })
+
+  socket.on('disconnect', () => {
+    console.log('Some user disconnected');
+    socket.disconnect();
+  });
+});
+
+const socketIoObject = io;
+module.exports.ioObject = socketIoObject;
