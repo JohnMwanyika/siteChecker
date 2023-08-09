@@ -122,7 +122,7 @@ async function startMonitoringLogic(siteId, teamId, interval, userId) {
 }
 
 // This function is responsible for starting monitoring based on the interval specified
-async function startIntervalCheck(siteId, teamId) {
+async function startIntervalCheck(siteId) {
     const monitoringSite = await Monitor.findOne({
         include: [
             { model: Website }

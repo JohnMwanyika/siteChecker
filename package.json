@@ -23,6 +23,8 @@
     "nodemailer": "^6.9.3",
     "pug": "^3.0.2",
     "sequelize": "^6.31.1",
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2",
     "spin.js": "^4.1.1"
   }
 }

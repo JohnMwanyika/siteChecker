@@ -1,6 +1,8 @@
 const { checkWebsiteStatus } = require('../utils/intervalCheck');
 const { Website, SiteStatus, User, Team, Monitor, Monitor_Status } = require('../models/index.js');
 const { sendMail } = require('../utils/send_mail.js');
+const { startIntervalCheck } = require('../utils/monitoringLogic');
+const { initializeMonitoring } = require('../utils/autoMonitor');
 module.exports = {
     getDashboard: async (req, res) => {
         try {
@@ -39,7 +41,7 @@ module.exports = {
         const siteData = allSites.map(site => site.toJSON());
         const notify = req.query.notify == 'update_true' ? { info: 'Website updated successfully', type: 'success' } : ''
         // console.log(siteData)
-        res.render('websites', { title: "My Sites", sites: allSites, notify,user: req.session.user })
+        res.render('websites', { title: "My Sites", sites: allSites, notify, user: req.session.user })
     },
     newSite: async (req, res) => {
         console.log(req.body)
@@ -87,7 +89,7 @@ module.exports = {
             res.redirect('/dashboard/teams');
         } catch (error) {
             console.log(error)
-            res.redirect('/dashboard/teams?info=error')
+            res.redirect('/dashboard/teams?info=error');
         }
 
     },
@@ -104,7 +106,7 @@ module.exports = {
             });
             // console.log(Object.getOwnPropertyNames(Team.prototype))
             // console.log(allTeams[0].Users);
-            res.render('teams', { title: 'All Teams', users, allTeams,user: req.session.user });
+            res.render('teams', { title: 'All Teams', users, allTeams, user: req.session.user });
         } catch (error) {
             console.error(error)
         }
@@ -205,11 +207,11 @@ module.exports = {
                 console.log('Default team and users #########', defaultTeam)
                 // if for some resons there is no default team, reject the request by throwing an error notification
                 if (!defaultTeam) {
-                    return res.json({ status: 'error', data: 'Default team is not set or Invalid team selected' })
+                    return res.json({ status: 'error', data: 'Default team is not set or Invalid team selected' });
                 }
                 // if the default team has no users reject by throwing an equevalent notification
                 if (defaultTeam.Users.length < 1) {
-                    return res.json({ status: 'error', data: 'Add members to the default team before assigning it!' })
+                    return res.json({ status: 'error', data: 'Add members to the default team before assigning it!' });
                 }
                 teamId = defaultTeam.id;
                 // else { //throw the error team not found
@@ -237,55 +239,10 @@ module.exports = {
             });
 
             const updatedWebsite = website.setSiteStatus(2) //change site status to Monitoring
-            // Start monitoring logic
-            const monitoringInterval = setInterval(async () => {
 
-
-                try {
-                    // getting the site details from the Monitoring lists
-                    const monitoringSite = await Monitor.findOne({
-                        include: [
-                            { model: Website },
-                            { model: Team, include: [{ model: User, attributes: ['email'] }] }
-                        ],
-                        where: {
-                            siteId: createdMonitor.siteId
-                        }
-                    })
-                    // check if this site is still being monitored
-                    if (monitoringSite) {
-                        const monitorUrl = monitoringSite.Website.url
-                        const websiteUrl = `${monitorUrl}`;
-                        // const updatedWebsite = website.setSiteStatus(2);
-
-                        // Check the website status
-                        const siteResult = await checkWebsiteStatus(websiteUrl);
-
-                        if (siteResult.status === true) {
-                            console.log(`Hurray!! ${websiteUrl} is up and operational took ${siteResult.responseTime}.`);
-                            // Create a success outcome to the result table
-                            // res.json({ status: 'success', data: `${websiteUrl} is up and operational.` });
-                        } else {
-                            console.log(`Mayday! Mayday! ${websiteUrl} has just collapsed.`);
-                            // res.json({ status: 'error', data: `${websiteUrl} is down and unreachable.` });
-                        }
-                    } else {
-                        clearInterval(monitoringInterval);
-                        console.log(`######## Site has stoped monitoring #######`)
-                        return res.json({
-                            status: 'warning',
-                            data: `Site has stopped monitoring`
-                        })
-                    }
-
-                } catch (error) {
-                    console.log(error);
-                    // return res.json({
-                    //     status: 'error',
-                    //     data: error.message, // Return default error
-                    // });
-                }
-            }, createdMonitor.interval * 10 * 1000); //multiply the seconds passed by seconds and again by miliseconds
+            initializeMonitoring()
+                .then(data => console.log(data))
+                .catch(error => console.log(error));
 
             console.log(`############## Monitoring has been started for ${website.url} ##############`);
             res.json({
