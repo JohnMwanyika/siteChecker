@@ -87,19 +87,7 @@ async function checkWebsiteStatus(url, timeout = 15000) { //TImeout has been set
             const emails = await membersEmails(url);
             const mailResponse = await sendMail(`${url} is down`, 'The above mentioned service is down', emails);
             console.log(mailResponse);
-            // membersEmails(url)
-            //     .then((emails) => {
-            //         if (emails.length < 1) {
-            //             return { status: 'warning', data: 'No team members available to notify' }
-            //         }
-            //         console.log('members notified include',emails);
-            //         sendMail(`${url} is down`, 'The above mentioned service is down', emails)
-            //             .then(data => console.log(data))
-            //             .catch(err => console.log(err))
-            //     })
-            //     .then(data => console.log(data))
-            //     .catch(err => console.log(err))
-            return { status: false, responseTime }; // Website is down
+            return { status: false, responseTime, mailResponse }; // Website is down
         }
     } catch (error) {
         if (error.code === 'ECONNABORTED') {
@@ -108,23 +96,7 @@ async function checkWebsiteStatus(url, timeout = 15000) { //TImeout has been set
             const emails = await membersEmails(url);
             const mailResponse = await sendMail(`${url} is down`, 'The above mentioned service is down', emails);
             console.log(mailResponse);
-            // membersEmails(url)
-            //     .then((emails) => {
-            //         if (emails.length < 1) {
-            //             return { status: 'warning', data: 'No team members to notify' }
-            //         }
-            //         sendMail(`${url} is down`, 'The above mentioned service is down', emails)
-            //             .then(delivery => {
-            //                 const sendStatus = !delivery ? 'Email not sent' : 'Email sent successfully';
-            //                 console.log(sendStatus);
-            //             })
-            //             .catch(error => {
-            //                 console.error('Error sending email:', error);
-            //             });
-            //     })
-            //     .then(data => console.log(data))
-            //     .catch(err => console.log(err))
-            return { status: false, responseTime: 'An error occured while checking site status please trying again...' }; // Website is down (request error)
+            return { status: false, responseTime: 'An error occured while checking site status please trying again...', mailResponse }; // Website is down (request error)
         }
     }
 }
