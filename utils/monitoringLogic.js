@@ -1,5 +1,6 @@
 const { checkWebsiteStatus } = require('../utils/intervalCheck');
 const { Website, SiteStatus, User, Team, Monitor, Monitor_Status } = require('../models/index.js');
+const socket = require("../app");
 
 async function startMonitoringLogic(siteId, teamId, interval, userId) {
     try {
@@ -152,6 +153,8 @@ async function startIntervalCheck(siteId) {
                 console.log(siteResult);
                 if (siteResult.status === true) {
                     console.log(`Hurray!! ${websiteUrl} is up and operational took ${siteResult.responseTime} seconds.`);
+
+                    socket.ioObject.emit('siteStatus',`${monitoringSite.Website.name} is up`);
                     return {
                         status: 'success',
                         data: `${websiteUrl} is up and operational took ${siteResult.responseTime} seconds.`
@@ -166,6 +169,7 @@ async function startIntervalCheck(siteId) {
                     }
                 } else {
                     console.log(`Mayday! Mayday! ${websiteUrl} has just collapsed trying again in ${monitoringSite.interval} minutes.`);
+                    socket.ioObject.emit('siteStatus',`${monitoringSite.Website.name} is down`);
                     return {
                         status: 'error',
                         data: `${websiteUrl} has just collapsed trying again in ${monitoringSite.interval} minutes.`

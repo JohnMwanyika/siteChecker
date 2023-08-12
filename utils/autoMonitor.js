@@ -20,8 +20,12 @@ async function initializeMonitoring() {
             const { siteId } = monitor;
             // passing all sites to the interval check function which starts the monitor again after server restarts
             startIntervalCheck(siteId)
-                .then(data => console.log(data))
-                .catch(err => console.log(err));
+                .then(data => {
+                    console.log('monitoring status', data)
+                })
+                .catch(error => {
+                    console.log('monitoring error', error)
+                });
         });
 
         console.log('Monitoring resumed after server restart.');

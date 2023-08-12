@@ -1,14 +1,14 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
-let host = process.env.MAIL_HOST || 'taitataveta.go.ke';
-let port = process.env.MAIL_PORT || 465;
+let host = process.env.MAIL_HOST || 'smtp-mail.outlook.com';
+let port = process.env.MAIL_PORT || 587; //465
 
 async function sendMail(subject, text, ...to) {
     let transporter = nodemailer.createTransport({
         host,
         port,
-        secure: true,
+        secure: false,
         auth: {
             user: process.env.MAIL_USER,
             pass: process.env.MAIL_PASS

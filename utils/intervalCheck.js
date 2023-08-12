@@ -39,7 +39,7 @@ async function membersEmails(url) {
     try {
         // get the site iD of the website being monitored
         const website = await Website.findOne({ where: { url: url } });
-        if (!website) { //if not found
+        if (!website) {
             return { status: 'warning', data: `${url} is not not found` }
         }
         // get the ongoing monitor for the site
@@ -53,13 +53,11 @@ async function membersEmails(url) {
             ],
             where: { siteId: website.id }
         });
-        // console.log(monitor)
-        if (!monitor) { //if no return the following message
+        if (!monitor) {
             return { status: 'warning', data: `${url} is not being monitored` }
         }
 
         const users = monitor.Team.Users;
-        // console.log(users)
         const emails = [];
         for (let user of users) {
             emails.push(user.email);
@@ -70,12 +68,12 @@ async function membersEmails(url) {
 
     } catch (error) {
         console.log(error);
-        return { status: 'error', data: 'Oops!! Unkown error occured try again' }
+        return { status: 'error', data: 'Oops! Unkown error occured while fetching member mails try again' }
     }
 
 }
 
-async function checkWebsiteStatus(url, timeout = 10000) {
+async function checkWebsiteStatus(url, timeout = 15000) { //TImeout has been set to 15 seconds
     try {
         const startTime = new Date().getTime(); // Track start time
         const response = await axios.get(url, { timeout });
@@ -86,40 +84,47 @@ async function checkWebsiteStatus(url, timeout = 10000) {
         if (response.status >= 200 && response.status < 400) {
             return { status: true, responseTime }; // Website is up
         } else {
-            membersEmails(url)
-                .then((emails) => {
-                    if (emails.length < 1) {
-                        return { status: 'warning', data: 'No team members to notify' }
-                    }
-                    sendMail(`${url} is down`, 'The above mentioned service is down', emails)
-                        .then(data => console.log(data))
-                        .catch(err => console.log(err))
-                })
-                .then(data => console.log(data))
-                .catch(err => console.log(err))
+            const emails = await membersEmails(url);
+            const mailResponse = await sendMail(`${url} is down`, 'The above mentioned service is down', emails);
+            console.log(mailResponse);
+            // membersEmails(url)
+            //     .then((emails) => {
+            //         if (emails.length < 1) {
+            //             return { status: 'warning', data: 'No team members available to notify' }
+            //         }
+            //         console.log('members notified include',emails);
+            //         sendMail(`${url} is down`, 'The above mentioned service is down', emails)
+            //             .then(data => console.log(data))
+            //             .catch(err => console.log(err))
+            //     })
+            //     .then(data => console.log(data))
+            //     .catch(err => console.log(err))
             return { status: false, responseTime }; // Website is down
         }
     } catch (error) {
         if (error.code === 'ECONNABORTED') {
-            return { status: 'timeout', responseTime: timeout }; // Website is up (timed out)
+            return { status: 'timeout', responseTime: timeout }; // Website is up but took longer to respond
         } else {
-            membersEmails(url)
-                .then((emails) => {
-                    if (emails.length < 1) {
-                        return { status: 'warning', data: 'No team members to notify' }
-                    }
-                    sendMail(`${url} is down`, 'The above mentioned service is down', emails)
-                        .then(delivery => {
-                            const sendStatus = !delivery ? 'Email not sent' : 'Email sent successfully';
-                            console.log(sendStatus);
-                        })
-                        .catch(error => {
-                            console.error('Error sending email:', error);
-                        });
-                })
-                .then(data => console.log(data))
-                .catch(err => console.log(err))
-            return { status: false, responseTime: 'An error occured trying again...' }; // Website is down (request error)
+            const emails = await membersEmails(url);
+            const mailResponse = await sendMail(`${url} is down`, 'The above mentioned service is down', emails);
+            console.log(mailResponse);
+            // membersEmails(url)
+            //     .then((emails) => {
+            //         if (emails.length < 1) {
+            //             return { status: 'warning', data: 'No team members to notify' }
+            //         }
+            //         sendMail(`${url} is down`, 'The above mentioned service is down', emails)
+            //             .then(delivery => {
+            //                 const sendStatus = !delivery ? 'Email not sent' : 'Email sent successfully';
+            //                 console.log(sendStatus);
+            //             })
+            //             .catch(error => {
+            //                 console.error('Error sending email:', error);
+            //             });
+            //     })
+            //     .then(data => console.log(data))
+            //     .catch(err => console.log(err))
+            return { status: false, responseTime: 'An error occured while checking site status please trying again...' }; // Website is down (request error)
         }
     }
 }
