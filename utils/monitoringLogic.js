@@ -1,7 +1,7 @@
 const { checkWebsiteStatus } = require('../utils/intervalCheck');
 const { Website, SiteStatus, User, Team, Monitor, Monitor_Status, Results } = require('../models/index.js');
 const socket = require("../app");
-
+const { Op } = require('sequelize');
 async function startMonitoringLogic(siteId, teamId, interval, userId) {
     try {
         // getting website details
@@ -136,6 +136,8 @@ async function startIntervalCheck(siteId) {
     const monitoringInterval = setInterval(async () => {
 
         try {
+            const clearedResults = await autoCleanUpResults(Results);
+            console.log(clearedResults)
             // fetch again to check if there are new sites being monitored
             const monitoringSite = await Monitor.findOne({
                 include: [
@@ -235,7 +237,34 @@ async function createResult(siteId, type) {
     }
 }
 
+// function to auto delete  up results 
+async function autoCleanUpResults(model) {
+    // Schedule the task
+    // setInterval(async () => {
+    const currentTime = new Date();
+    const thirtyMinutesAgo = new Date(currentTime - 30 * 60 * 1000); // 30 minutes in milliseconds
 
+    try {
+        await model.destroy({
+            where: {
+                createdAt: {
+                    [Op.lt]: thirtyMinutesAgo,
+                },
+            },
+        });
+        return {
+            status: 'success',
+            data: 'Destroyed old records successfully.',
+        }
+    } catch (error) {
+        console.error('Error destroying old records:', error);
+        return {
+            status: 'error',
+            data: `An error occured while destroying old records. ${error.message}`,
+        }
+    }
+    // }, 60 * 60 * 1000); // Run every hour
+}
 // const createdResult = createResult(monitoringSite.siteId,'Up');
 // scheduleSiteCheck()
 //     .then(data => console.log(data))
