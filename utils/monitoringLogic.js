@@ -1,5 +1,5 @@
 const { checkWebsiteStatus } = require('../utils/intervalCheck');
-const { Website, SiteStatus, User, Team, Monitor, Monitor_Status } = require('../models/index.js');
+const { Website, SiteStatus, User, Team, Monitor, Monitor_Status, Results } = require('../models/index.js');
 const socket = require("../app");
 
 async function startMonitoringLogic(siteId, teamId, interval, userId) {
@@ -154,7 +154,10 @@ async function startIntervalCheck(siteId) {
                 if (siteResult.status === true) {
                     console.log(`Hurray!! ${websiteUrl} is up and operational took ${siteResult.responseTime} seconds.`);
 
-                    socket.ioObject.emit('siteStatus',`${monitoringSite.Website.name} is up`);
+                    socket.ioObject.emit('siteStatus', `${monitoringSite.Website.name} is up took ${siteResult.responseTime} seconds.`);
+                    // set results to UP
+                    const createdResult = createResult(monitoringSite.siteId, 'Up');
+
                     return {
                         status: 'success',
                         data: `${websiteUrl} is up and operational took ${siteResult.responseTime} seconds.`
@@ -162,14 +165,22 @@ async function startIntervalCheck(siteId) {
                     // Create a success outcome to the result table
                     // res.json({ status: 'success', data: `${websiteUrl} is up and operational.` });
                 } else if (siteResult.status === 'timeout') {
+                    socket.ioObject.emit('siteStatus', `${monitoringSite.Website.name} is taking longer than expected, request took more than ${siteResult.responseTime} seconds. Trying again in ${monitoringSite.interval} minutes.`);
+
                     console.log(`Mayday! ${websiteUrl} is taking too long to respond trying again in ${monitoringSite.interval} minutes.`);
+                    // set results to timeout
+                    const createdResult = createResult(monitoringSite.siteId, 'Timeout');
                     return {
                         status: 'warning',
                         data: `${websiteUrl} is taking too long to respond trying again in ${monitoringSite.interval} minutes.`
                     }
                 } else {
                     console.log(`Mayday! Mayday! ${websiteUrl} has just collapsed trying again in ${monitoringSite.interval} minutes.`);
-                    socket.ioObject.emit('siteStatus',`${monitoringSite.Website.name} is down`);
+                    socket.ioObject.emit('siteStatus', `${monitoringSite.Website.name} is down`);
+
+                    // set results to Down
+                    const createdResult = createResult(monitoringSite.siteId, 'Down');
+
                     return {
                         status: 'error',
                         data: `${websiteUrl} has just collapsed trying again in ${monitoringSite.interval} minutes.`
@@ -204,6 +215,28 @@ async function startIntervalCheck(siteId) {
     }
 }
 
+// Function to create Website status Results
+async function createResult(siteId, type) {
+    try {
+        const newResult = await Results.create({
+            siteId,
+            type: type
+        });
+        console.log('Result created is ', newResult.type)
+        return {
+            status: 'success',
+            data: `New result has been recorded as - ${newResult.type}`
+        }
+    } catch (error) {
+        return {
+            status: 'error',
+            data: `An error occured while creating new result - ${error.message}`
+        }
+    }
+}
+
+
+// const createdResult = createResult(monitoringSite.siteId,'Up');
 // scheduleSiteCheck()
 //     .then(data => console.log(data))
 //     .catch(err => console.log(err));

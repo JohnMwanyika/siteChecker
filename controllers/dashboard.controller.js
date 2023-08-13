@@ -280,7 +280,7 @@ module.exports = {
             console.log(error);
             res.json({
                 status: 'error',
-                data: 'Couldn\'t stop monitoring for this site.',
+                data: 'Couldn\'t stop monitoring for this site please try again.',
             })
         }
     }

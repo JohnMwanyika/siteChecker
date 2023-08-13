@@ -43,7 +43,7 @@ Monitor.belongsTo(Team, { foreignKey: 'teamId' });
 Website.hasMany(Results, { foreignKey: 'siteId' });
 Results.belongsTo(Website, { foreignKey: 'siteId' });
 
-console.log(Object.getOwnPropertyNames(Team.prototype))
+console.log(Object.getOwnPropertyNames(Website.prototype));
 async function syncDb() {
   await sequelize.sync({ alter: true });
   return 'Database synced successfully';
