@@ -242,14 +242,15 @@ async function autoCleanUpResults(model) {
     // Schedule the task
     // setInterval(async () => {
     const currentTime = new Date();
-    const thirtyMinutesAgo = new Date(currentTime - 30 * 60 * 1000); // 30 minutes in milliseconds
+    const fiveMinutesAgo = new Date(currentTime - 5 * 60 * 1000); // 5 minutes in milliseconds
 
     try {
         await model.destroy({
             where: {
                 createdAt: {
-                    [Op.lt]: thirtyMinutesAgo,
+                    [Op.lt]: fiveMinutesAgo,
                 },
+                type:'Up'
             },
         });
         return {
