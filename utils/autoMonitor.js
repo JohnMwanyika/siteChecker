@@ -13,24 +13,24 @@ async function initializeMonitoring() {
                 data: 'There are no services being monitored at the moment'
             }
         }
-        // console.log(activeMonitors)
         // Start monitoring for each active monitor
-        activeMonitors.forEach((monitor) => {
+        activeMonitors.forEach(async (monitor) => {
             console.log(`-----------------------Start monitoring ${monitor.Website.url}-------------------------------`);
             const { siteId } = monitor;
             // passing all sites to the interval check function which starts the monitor again after server restarts
-            startIntervalCheck(siteId)
-                .then(data => {
-                    console.log('monitoring status', data)
-                })
-                .catch(error => {
-                    console.log('monitoring error', error)
-                });
+            const monitorStatus = await startIntervalCheck(siteId);
+            console.log(`Interval check results`, monitorStatus);
         });
-
-        console.log('Monitoring resumed after server restart.');
+        return {
+            status: 'sucess',
+            data: 'Monitoring in progress'
+        }
     } catch (error) {
         console.error('Error initializing monitoring:', error);
+        return {
+            status: 'error',
+            data: `An error occured while initializing monitors - ${error.message}`
+        }
     }
 }
 // Call the initialization logic during server startup

@@ -75,7 +75,7 @@ server.listen(port, () => {
   console.log(`Server running on port ${port}`);
   // This function Calls the initialization logic for monitoring which restarts all the monitors
   initializeMonitoring()
-    .then(data => console.log(data))
+    .then(data => console.log('Monitoring resumed after server restart.'))
     .catch(error => console.log(error))
 });
 
