@@ -53,4 +53,96 @@ async function syncDb() {
 //   .then(data => console.log(data))
 //   .catch(err => console.error(err));
 
-module.exports = { User, UserStatus, Website, SiteStatus, Team, Monitor, Monitor_Status, Results };
+module.exports = { User, UserStatus, Website, SiteStatus, Team, Monitor, Monitor_Status, Results, Role };
+
+
+
+
+
+
+
+
+//-----------------------------SEEDERS----------------------------------------------- 
+async function populateNewDb() {
+
+  try {
+    // CREATE DEFAULT ROLES ######################################
+    const existingRoles = await Role.findAll({
+      where: {
+        name: 'Super Admin',
+        name: 'Admin'
+      }
+    })
+    if (existingRoles < 1) {
+      const newRoles = await Role.bulkCreate([
+        { name: 'Super Admin', description: 'Overal system administrator' },
+        { name: 'Admin', description: 'Normal system admin' }
+      ]);
+      if (newRoles) {
+        console.log('Roles created successfully')
+      }
+    }
+    console.log('Roles exists')
+
+    // CREATE DEFAULT USER STATUSES ############################
+    const existingStatus = await UserStatus.findAll({
+      where: {
+        status: 'Active',
+        status: 'Inactive'
+      }
+    })
+    if (existingStatus < 1) {
+      const newStatuses = await UserStatus.bulkCreate([
+        { status: 'Active', description: 'This user is active and can log in to the system', color: 'success' },
+        { status: 'Inactive', description: 'This user has been deactivated and cannot login to the system', color: 'danger' }
+      ]);
+      if (newStatuses) {
+        console.log('User statuses created successfully')
+      }
+    }
+    console.log('Statuses exists')
+
+    // CREATE SITE STATUSES
+    const existingSiteStatuses = await SiteStatus.findAll({
+      where: {
+        status: 'Not Monitoring',
+        status: 'Monitoring'
+      }
+    })
+    if (existingSiteStatuses < 1) {
+      const newSiteStatuses = await SiteStatus.bulkCreate([
+        { status: 'Not Monitoring', description: 'This site is not being monitored', color: 'secondary' },
+        { status: 'Monitoring', description: 'This site is currently being monitored', color: 'info' },
+      ])
+      if (newSiteStatuses) {
+        console.log('SiteStatuses have been created successfully');
+      }
+    }
+    console.log('All site statuses exist');
+
+    // CREATE MONITOR STATUS
+    const monitorStatuses = await Monitor_Status.findAll({
+      where: {
+        name: 'Live',
+        name: 'Offline',
+      }
+    });
+    if (monitorStatuses < 1) {
+      const newMonStatus = await Monitor_Status.bulkCreate([
+        { name: 'Live', description: 'This website/API is active and operational', color: 'success' },
+        { name: 'Offline', description: 'This website/API is inactive the respective team has been notified.', color: 'danger' },
+      ])
+
+      if (newMonStatus) {
+        console.log('Monitoring statuses created succesffuly')
+      }
+      console.log('Monitoring statuses already exists')
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// populateNewDb()
+//   .then(data => console.log(data))
+//   .catch(err => console.error(err));

@@ -20,7 +20,7 @@
                         
                             .input-group.input-group-static.my-3
                                 if (team.name == 'Default')
-                                    textarea.form-control#description(disabled name="description" onfocus="focused(this)" onfocusout="def" placeholder="A short description about the group")
+                                    textarea.form-control#description(disabled name="description" onfocus="focused(this)" onfocusout="def" placeholder="A short description about the team and its members")
                                         | #{team.description}
                                 else
                                     textarea.form-control#description(name="description" onfocus="focused(this)" onfocusout="def" placeholder="A short description about the group")
