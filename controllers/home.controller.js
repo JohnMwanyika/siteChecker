@@ -5,9 +5,10 @@ const {
 
 module.exports = {
     home: async (req, res) => {
-        res.render('home', {
-            title: 'Site Monitor'
-        })
+        res.redirect('/signin');
+        // res.render('home', {
+        //     title: 'Site Monitor'
+        // })
     },
     search: (req, res) => {
         const {
