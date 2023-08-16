@@ -6,7 +6,10 @@
                 if (team.Users.length > 0)
                     each user in team.Users
                         a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title=`${user.firstName} ${user.lastName}`)
-                            img(alt="Image placeholder" src="../../assets/img/team-1.jpg")
+                            if (user.avatarPath)
+                                img(alt="user's avatar" src=`${user.avatarPath}`)
+                            else
+                                img(alt="Image placeholder" src="../../assets/img/team-1.jpg")
                 else 
                     .bg-light.py-1.px-1
                         small No users found.

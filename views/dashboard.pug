@@ -138,7 +138,7 @@ block content
                                         td
                                             .d-flex.px-2.py-1
                                                 div
-                                                    img.avatar.avatar-sm.me-3(src=`${site.Website.url}/favicon.ico` alt="xd")
+                                                    img.avatar.avatar-sm.me-3(src=`${site.Website.url}/favicon.ico` alt="favicon")
                                                 //- site Name
                                                 .d-flex.flex-column.justify-content-center
                                                     h6.mb-0.text-sm #{site.Website.name} 
@@ -148,7 +148,11 @@ block content
                                                 br
                                                 each user in site.Team.Users
                                                     a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title=`${user.firstName} ${user.lastName}`)
-                                                        img(src="../assets/img/team-1.jpg" alt="team1")
+                                                        //- img(src="../assets/img/team-1.jpg" alt="team1")
+                                                        if (user.avatarPath)
+                                                            img(alt="user's avatar" src=`${user.avatarPath}`)
+                                                        else
+                                                            img(alt="Image placeholder" src="../../assets/img/team-1.jpg")
                                         td.align-middle.text-center.text-sm
                                             span.text-xs.font-weight-bold #{site.interval} Minutes
                                         td.align-middle.text-center.text-sm
