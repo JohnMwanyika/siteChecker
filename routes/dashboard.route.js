@@ -1,5 +1,6 @@
 const express = require('express');
 const profileRouter = require('../routes/profile.route');
+const usersRouter = require('../routes/users');
 const { getDashboard, getSites, newSite, updateSite, createTeam, allTeams, updateTeam, removeTeam, startMonitoring, stopMonitoring } = require('../controllers/dashboard.controller');
 
 const router = express.Router();
@@ -19,7 +20,10 @@ router.delete('/teams/remove/:teamId', removeTeam);
 router.post('/monitoring/start', startMonitoring);
 router.get('/monitoring/stop/:siteId', stopMonitoring);
 
-// Profile
+// Profile route handler
 router.use('/profile', profileRouter);
+
+// Users route handler
+router.use('/users', usersRouter);
 
 module.exports = router;

@@ -16,7 +16,7 @@ const { sequelize } = require('./config/config');
 // getting routers from reouter folder
 const indexRouter = require('./routes/index.route');
 // const dashboardRouter = require('./routes/dashboard.route');
-const usersRouter = require('./routes/users');
+// const usersRouter = require('./routes/users');
 
 const app = express();
 // configure session middleware
@@ -46,7 +46,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/', indexRouter);
 // app.use('/dashboard', checkSession, dashboardRouter);
-app.use('/users', usersRouter);
+// app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
