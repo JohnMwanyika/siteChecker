@@ -7,11 +7,18 @@ module.exports = {
     getDashboard: async (req, res) => {
         try {
             // get allwebstires
-            const websites = await Website.findAll();
+            const websites = await Website.findAll({
+                where: {
+                    createdBy: req.user.id
+                }
+            });
             // get all monitoring team
             const teams = await Team.findAll();
             // get all sites being monitored
             const allSites = await Monitor.findAll({
+                where: {
+                    createdBy: req.user.id
+                },
                 include: [
                     { model: Team, include: [{ model: User }] }, //include: { model: User, required: true } },
                     { model: User },
@@ -30,6 +37,9 @@ module.exports = {
     getSites: async (req, res) => {
         console.log(Website)
         const allSites = await Website.findAll({
+            where: {
+                createdBy: req.user.id
+            },
             order: [
                 ['name', 'ASC']
             ],
@@ -72,14 +82,21 @@ module.exports = {
     createTeam: async (req, res) => {
         const { title, description, userIds } = req.body;
         // Trim leading and trailing spaces from the inputs
+        // try {
         const trimmedTitle = title.trim();
-        const trimmedUserIds = userIds.map((id) => id.trim());
+        let trimmedUserIds;
+        if (Array.isArray(userIds)) {
+            console.log('Adding multiple memnerIds')
+            trimmedUserIds = userIds.map((id) => id.trim());
+        }
+        trimmedUserIds = userIds.trim();
 
         // Check if the trimmed inputs are empty
-        if (!trimmedTitle || !trimmedUserIds.length) {
+        if (!trimmedTitle || !trimmedUserIds) {
             return res.status(400).json({ status: 'error', info: 'Invalid request' });
         }
         try {
+
             const newTeam = await Team.create({
                 name: trimmedTitle,
                 description
@@ -113,33 +130,71 @@ module.exports = {
 
     },
     updateTeam: async (req, res) => {
-        const { teamId } = req.params; // teamId received from request parameters
+        const { teamId } = req.params;
         const { title, description, userIds } = req.body;
-        console.log(`#### ############ UserIds ${userIds}`)
+        console.log(`#### ############ UserIds ${userIds}`);
         const newMembers = [...new Set(userIds)];
         console.log(`New Ids are as follows ${newMembers}`);
         try {
             const team = await Team.findByPk(teamId);
             if (!team) {
-                // return res.json({ status: 'error', data: 'Team does not exist' })
-                return res.redirect('/dashboard/teams?info=not-found')
+                return res.redirect('/dashboard/teams?info=not-found');
             }
-            const updatedTeam = await Team.update({ name: title, description }, {
-                // include:[{model:User}],
-                where: {
-                    id: teamId
-                }
-            })
-            // const existingUsers = await team.getUsers();
-            // const newUsers = userIds
-            // console.log(existingUsers.id);
-            await team.setUsers(newMembers);
-            // res.json({status: 'success', data: `Team '${team.name}' has been updated successfully.`})
+
+            const allMembers = await User.findAll({ where: { id: newMembers } });
+            console.log("All members include -", allMembers)
+            if (allMembers.length === 0) {
+                return res.redirect('/dashboard/teams?info=not-found');
+            }
+
+            if (team.name === 'Default') {
+                await team.setUsers(allMembers);
+                return res.redirect('/dashboard/teams?info=success');
+            }
+
+            team.name = title.trim();
+            team.description = description.trim();
+            await team.save();
+
+            await team.setUsers(allMembers);
             res.redirect('/dashboard/teams?info=success');
         } catch (error) {
             console.log(error);
             res.redirect('/dashboard/teams?info=error');
         }
+
+        // const { teamId } = req.params; // teamId received from request parameters
+        // const { title, description, userIds } = req.body;
+        // console.log(`#### ############ UserIds ${userIds}`)
+        // const newMembers = [...new Set(userIds)];
+        // console.log(`New Ids are as follows ${newMembers}`);
+        // try {
+        //     const team = await Team.findByPk(teamId);
+        //     if (!team) {
+        //         // return res.json({ status: 'error', data: 'Team does not exist' })
+        //         return res.redirect('/dashboard/teams?info=not-found')
+        //     }
+        //     const allMembers = await User.findAll({ where: { id: newMembers } });
+        //     if (allMembers.length === 0) {
+        //         return res.redirect('/dashboard/teams?info=not-found')
+        //     }
+
+        //     if (team.name == 'Default') {
+        //         await team.setUsers(allMembers);
+        //         // res.json({status: 'success', data: `Team '${team.name}' has been updated successfully.`})
+        //         return res.redirect('/dashboard/teams?info=success');
+        //     }
+        //     team.name = title.trim();
+        //     team.description = description.trim();
+        //     await team.save();
+
+        //     await team.setUsers(allMembers);
+        //     // res.json({status: 'success', data: `Team '${team.name}' has been updated successfully.`})
+        //     res.redirect('/dashboard/teams?info=success');
+        // } catch (error) {
+        //     console.log(error);
+        //     res.redirect('/dashboard/teams?info=error');
+        // }
     },
     removeTeam: async (req, res) => {
         console.log('############ DELETION REQUEST RECEIVED ############')
