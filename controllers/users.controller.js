@@ -1,5 +1,6 @@
 // const { Person } = require('../models');
 const { Website, SiteStatus, User: Person, Team } = require('../models/index.js');
+const { createDefaultTeam } = require('../models/team.model.js');
 
 
 module.exports = {
@@ -19,8 +20,13 @@ module.exports = {
     },
     createOne: async (req, res) => {
         const { firstName, lastName, email, phone } = req.body;
-        const data = { firstName, age, gender, address }
+        const data = { firstName, lastName, email, phone }
         const newUser = await Person.create(data)
+            .then(async (newUser) => {
+                const results = await createDefaultTeam(newUser.id);
+                console.log('created default team',results);
+                return newUser;
+            })
             .then((newUser) => {
                 res.json({ status: 'success', data: newUser });
                 // res.send(`User ${newUser.name} created successfully id is ${newUser.id}`)

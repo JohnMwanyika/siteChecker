@@ -12,8 +12,8 @@ module.exports = {
                     createdBy: req.user.id
                 }
             });
-            // get all monitoring team
-            const teams = await Team.findAll();
+            // get all monitoring teams for the current 
+            const teams = await Team.findAll({ where: { createdBy: req.user.id } });
             // get all sites being monitored
             const allSites = await Monitor.findAll({
                 where: {
@@ -99,7 +99,8 @@ module.exports = {
 
             const newTeam = await Team.create({
                 name: trimmedTitle,
-                description
+                description,
+                createdBy: req.user.id
             })
             await newTeam.addUsers(trimmedUserIds)
             console.log(req.body)
@@ -114,6 +115,7 @@ module.exports = {
         try {
             const users = await User.findAll();
             const allTeams = await Team.findAll({
+                where: { createdBy: req.user.id },
                 order: [
                     ['createdAt', 'DESC']
                 ],

@@ -12,8 +12,12 @@ mixin alert(object)
                     warning 
 
         span.alert-text
-            strong  #{object.type.toUpperCase()}
-            |  #{object.info}!
+            if (object.type==="danger")
+                strong  #{'error'.toUpperCase()}
+                |  #{object.info}!
+            else
+                strong  #{object.type.toUpperCase()}
+                |  #{object.info}!
 
         //- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
         //-     <span aria-hidden="true"></span>

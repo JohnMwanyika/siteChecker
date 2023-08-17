@@ -8,6 +8,7 @@ const { Role } = require('./role.model');
 const { Team } = require('./team.model');
 const { Monitor, Monitor_Status } = require('./monitor.model');
 const { Results } = require('./results.model');
+const { Member } = require('./member.model');
 
 // define all the associations
 UserStatus.hasMany(User, { foreignKey: 'statusId' });
@@ -23,9 +24,12 @@ Website.belongsTo(User, { foreignKey: 'createdBy' });
 SiteStatus.hasMany(Website, { foreignKey: 'statusId' });
 Website.belongsTo(SiteStatus, { foreignKey: 'statusId' });
 
-// Team.hasMany(User);
+// Team to members
 User.belongsToMany(Team, { through: 'user_team' });
 Team.belongsToMany(User, { through: 'user_team' });
+// Team to owner
+User.hasMany(Team, { foreignKey: 'createdBy' });
+Team.belongsTo(User, { foreignKey: 'createdBy' });
 // Monitor to status
 Monitor_Status.hasMany(Monitor, { foreignKey: 'statusId' });
 Monitor.belongsTo(Monitor_Status, { foreignKey: 'statusId' });
@@ -42,6 +46,13 @@ Monitor.belongsTo(Team, { foreignKey: 'teamId' });
 // Website to Results
 Website.hasMany(Results, { foreignKey: 'siteId' });
 Results.belongsTo(Website, { foreignKey: 'siteId' });
+// User to members
+User.hasMany(Member, { foreignKey: 'createdBy' });
+Member.belongsTo(User, { foreignKey: 'createdBy' });
+// Team to members
+Team.belongsToMany(Member, { through: 'member_teams' });
+Member.belongsToMany(Team, { through: 'member_teams' });
+
 
 console.log(Object.getOwnPropertyNames(Team.prototype));
 async function syncDb() {

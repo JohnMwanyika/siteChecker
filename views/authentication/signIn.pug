@@ -20,9 +20,9 @@ block content
                                         a.btn.btn-link.px-3(href="javascript:;")
                                             i.fa.fa-google.text-white.text-lg
                         .card-body
-                            if (error)
+                            if (error || success)
                                 include mixins/alert
-                                + alert(error)
+                                + alert(error||success)
                             form.text-start(role="form" method="post" action="/signin")
                                 .input-group.input-group-outline.my-3
                                     label.form-label Email
