@@ -1,7 +1,8 @@
-const { checkWebsiteStatus } = require('../utils/intervalCheck');
+const { checkWebsiteStatus, membersEmails } = require('../utils/intervalCheck');
 const { Website, SiteStatus, User, Team, Monitor, Monitor_Status, Results } = require('../models/index.js');
 const socket = require("../app");
 const { Op } = require('sequelize');
+const { sendMail } = require('./send_mail');
 async function startMonitoringLogic(siteId, teamId, interval, userId) {
     try {
         // getting website details
@@ -124,6 +125,7 @@ async function startMonitoringLogic(siteId, teamId, interval, userId) {
 
 // This function is responsible for starting monitoring based on the interval specified
 async function startIntervalCheck(siteId) {
+    let previousStatus = null; // Track the previous status of the site
     const monitoringSite = await Monitor.findOne({
         include: [
             { model: Website }
@@ -147,16 +149,31 @@ async function startIntervalCheck(siteId) {
                     siteId: siteId
                 }
             })
+
             // check if this site is still being monitored
             if (monitoringSite) {
                 const websiteUrl = monitoringSite.Website.url;
+
                 // CHECK WEBSITE STATUS FUNCTION #######################################################################
                 const siteResult = await checkWebsiteStatus(websiteUrl, timeout = 10000);
                 console.log(siteResult);
                 if (siteResult.status === true) {
-                    console.log(`Hurray!! ${websiteUrl} is up and operational took ${siteResult.responseTime} seconds.`);
 
+                    console.log(`Hurray!! ${websiteUrl} is up and operational took ${siteResult.responseTime} seconds.`);
                     socket.ioObject.emit('siteStatus', `${monitoringSite.Website.name} is up took ${siteResult.responseTime} seconds.`);
+
+                    // if the site was down initially it should notify members that it is now back online
+                    if (previousStatus == "Down" || previousStatus == "Timeout") {
+                        console.log(`Hurray!! ${websiteUrl} is back online and operational.`);
+                        // send emails
+                        const recipients = await membersEmails(websiteUrl);
+                        const mailResponse = await sendMail(`Hurray!! ${websiteUrl} is back online and operational.`, recipients);
+                        console.log('This is the email response', mailResponse)
+                        // send notification to connected clients
+                        socket.ioObject.emit('siteStatus', `${monitoringSite.Website.name} is back online.`);
+                    }
+                    // update preveous status with current status
+                    previousStatus = "Up"
                     // set results to UP
                     const createdResult = createResult(monitoringSite.siteId, 'Up');
 
@@ -172,11 +189,16 @@ async function startIntervalCheck(siteId) {
                     console.log(`Mayday! ${websiteUrl} is taking too long to respond trying again in ${monitoringSite.interval} minutes.`);
                     // set results to timeout
                     const createdResult = createResult(monitoringSite.siteId, 'Timeout');
+                    // update previos status
+                    previousStatus = "Timeout";
+
                     return {
                         status: 'warning',
                         data: `${websiteUrl} is taking too long to respond trying again in ${monitoringSite.interval} minutes.`
                     }
                 } else {
+                    previousStatus = 'Down'; // set 
+
                     console.log(`Mayday! Mayday! ${websiteUrl} has just collapsed trying again in ${monitoringSite.interval} minutes.`);
                     socket.ioObject.emit('siteStatus', `${monitoringSite.Website.name} is down`);
 
@@ -194,7 +216,9 @@ async function startIntervalCheck(siteId) {
                 // if the site is removed from mnitoring state clear its interval
                 console.log(`******** Site has stoped monitoring`);
                 clearInterval(monitoringInterval);
-                // console.log(`********${createdMonitor.Website.url}****** has stoped monitoring`)
+                // clear previos status
+                previousStatus = null;
+
                 return {
                     status: 'warning',
                     data: `Site has stopped monitoring`
@@ -250,7 +274,7 @@ async function autoCleanUpResults(model) {
                 createdAt: {
                     [Op.lt]: fiveMinutesAgo,
                 },
-                type:'Up'
+                type: 'Up'
             },
         });
         return {
@@ -272,4 +296,4 @@ async function autoCleanUpResults(model) {
 //     .catch(err => console.log(err));
 
 
-module.exports = { startMonitoringLogic, startIntervalCheck };
+module.exports = { startIntervalCheck };

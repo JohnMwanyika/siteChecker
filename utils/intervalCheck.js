@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { Website, SiteStatus, User, Team, Monitor, Monitor_Status } = require('../models/index.js');
+const { Website, SiteStatus, User, Team, Monitor, Monitor_Status, Member } = require('../models/index.js');
 const { sendMail } = require('./send_mail.js');
 // const {
 //     sendMail
@@ -37,17 +37,18 @@ const checkInterval = 5 * 60 * 1000; // Check every 5 minutes
 
 async function membersEmails(url) {
     try {
-        // get the site iD of the website being monitored
+        // obtain the site iD of the website being monitored by passing the url as a parameter
         const website = await Website.findOne({ where: { url: url } });
         if (!website) {
             return { status: 'warning', data: `${url} is not not found` }
         }
-        // get the ongoing monitor for the site
+        // get the ongoing monitor for the site by the id obtained above
         const monitor = await Monitor.findOne({
             include: [
                 {
                     model: Team, include: [
-                        { model: User, attributes: ['email', 'firstName'] }
+                        { model: Member, attributes: ['email', 'firstName'] },
+                        // { model: User, attributes: ['email', 'firstName'] },
                     ]
                 }
             ],
@@ -56,19 +57,18 @@ async function membersEmails(url) {
         if (!monitor) {
             return { status: 'warning', data: `${url} is not being monitored` }
         }
-
-        const users = monitor.Team.Users;
+        // Collect all the member's mails
+        const members = monitor.Team.Members;
         const emails = [];
-        for (let user of users) {
-            emails.push(user.email);
+        for (let member of members) {
+            emails.push(member.email);
         }
-        // console.log('Team notified from function', emails)
-        // return `Team notified from function ${emails}`
+        // Return the list of all emails to receive notifications
         return emails;
 
     } catch (error) {
         console.log(error);
-        return { status: 'error', data: 'Oops! Unkown error occured while fetching member mails try again' }
+        return { status: 'error', data: 'Oops! Unkown error occured while fetching recipients please try again' }
     }
 
 }
@@ -102,8 +102,9 @@ async function checkWebsiteStatus(url, timeout = 15000) { //TImeout has been set
 }
 
 module.exports = {
-    checkWebsiteStatus
-}
+    checkWebsiteStatus,
+    membersEmails
+};
 
 
 // Start periodic website status checks

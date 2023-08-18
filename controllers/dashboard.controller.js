@@ -20,7 +20,7 @@ module.exports = {
                     createdBy: req.user.id
                 },
                 include: [
-                    { model: Team, include: [{ model: User }] }, //include: { model: User, required: true } },
+                    { model: Team, include: [{ model: User }, { model: Member }] }, //include: { model: User, required: true } },
                     { model: User },
                     { model: Website, include: [{ model: SiteStatus }] },
                     { model: Monitor_Status },
