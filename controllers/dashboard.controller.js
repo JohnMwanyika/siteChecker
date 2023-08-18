@@ -1,5 +1,5 @@
 const { checkWebsiteStatus } = require('../utils/intervalCheck');
-const { Website, SiteStatus, User, Team, Monitor, Monitor_Status } = require('../models/index.js');
+const { Website, SiteStatus, User, Team, Monitor, Monitor_Status, Member } = require('../models/index.js');
 const { sendMail } = require('../utils/send_mail.js');
 const { startIntervalCheck } = require('../utils/monitoringLogic');
 const { initializeMonitoring } = require('../utils/autoMonitor');
@@ -12,8 +12,8 @@ module.exports = {
                     createdBy: req.user.id
                 }
             });
-            // get all monitoring teams for the current 
-            const teams = await Team.findAll({ where: { createdBy: req.user.id } });
+            // get all monitoring teams for the current user
+            const teams = await Team.findAll({ where: { createdBy: req.user.id }, });
             // get all sites being monitored
             const allSites = await Monitor.findAll({
                 where: {
@@ -23,7 +23,7 @@ module.exports = {
                     { model: Team, include: [{ model: User }] }, //include: { model: User, required: true } },
                     { model: User },
                     { model: Website, include: [{ model: SiteStatus }] },
-                    { model: Monitor_Status }
+                    { model: Monitor_Status },
                 ]
             });
 
@@ -36,22 +36,27 @@ module.exports = {
     },
     getSites: async (req, res) => {
         console.log(Website)
-        const allSites = await Website.findAll({
-            where: {
-                createdBy: req.user.id
-            },
-            order: [
-                ['name', 'ASC']
-            ],
-            include: [
-                { model: SiteStatus, required: true },
-                { model: User, required: false }
-            ]
-        })
-        const siteData = allSites.map(site => site.toJSON());
-        const notify = req.query.notify == 'update_true' ? { info: 'Website updated successfully', type: 'success' } : ''
-        // console.log(siteData)
-        res.render('websites', { title: "My Sites", sites: allSites, notify, user: req.session.user })
+        try {
+            const allSites = await Website.findAll({
+                where: {
+                    createdBy: req.user.id
+                },
+                order: [
+                    ['name', 'ASC']
+                ],
+                include: [
+                    { model: SiteStatus, required: true },
+                    { model: User, required: false }
+                ]
+            })
+            const siteData = allSites.map(site => site.toJSON());
+            const notify = req.query.notify == 'update_true' ? { info: 'Website updated successfully', type: 'success' } : ''
+            // console.log(siteData)
+            res.render('websites', { title: "My Sites", sites: allSites, notify, user: req.session.user })
+        } catch (error) {
+            res.json({ status: 'error', data: `An error occured while fetching sites ${error.message}` })
+        }
+
     },
     newSite: async (req, res) => {
         console.log(req.body)
@@ -81,29 +86,31 @@ module.exports = {
     },
     createTeam: async (req, res) => {
         const { title, description, userIds } = req.body;
+        console.log(userIds)
         // Trim leading and trailing spaces from the inputs
-        // try {
-        const trimmedTitle = title.trim();
-        let trimmedUserIds;
-        if (Array.isArray(userIds)) {
-            console.log('Adding multiple memnerIds')
-            trimmedUserIds = userIds.map((id) => id.trim());
-        }
-        trimmedUserIds = userIds.trim();
-
-        // Check if the trimmed inputs are empty
-        if (!trimmedTitle || !trimmedUserIds) {
-            return res.status(400).json({ status: 'error', info: 'Invalid request' });
-        }
         try {
+            const trimmedTitle = title.trim();
+            let trimmedUserIds;
+            if (Array.isArray(userIds)) {
+                console.log('Adding multiple memberIds')
+                trimmedUserIds = userIds.map((id) => id.trim());
+            }
+            trimmedUserIds = userIds;
+
+            // Check if the trimmed inputs are empty
+            if (!trimmedTitle || !trimmedUserIds) {
+                return res.status(400).json({ status: 'error', info: 'Invalid request' });
+            }
+            // try {
 
             const newTeam = await Team.create({
                 name: trimmedTitle,
                 description,
                 createdBy: req.user.id
             })
-            await newTeam.addUsers(trimmedUserIds)
-            console.log(req.body)
+            // await newTeam.addUsers(trimmedUserIds)
+            await newTeam.addMembers(trimmedUserIds);
+            console.log(req.body);
             res.redirect('/dashboard/teams');
         } catch (error) {
             console.log(error)
@@ -113,19 +120,21 @@ module.exports = {
     },
     allTeams: async (req, res) => {
         try {
-            const users = await User.findAll();
+            // const users = await User.findAll();
+            const members = await Member.findAll({ where: { createdBy: req.user.id } })
             const allTeams = await Team.findAll({
                 where: { createdBy: req.user.id },
                 order: [
                     ['createdAt', 'DESC']
                 ],
-                include: {
-                    model: User,
-                }
+                include: [
+                    { model: User },
+                    { model: Member },
+                ]
             });
             // console.log(Object.getOwnPropertyNames(Team.prototype))
             // console.log(allTeams[0].Users);
-            res.render('teams', { title: 'All Teams', users, allTeams, user: req.session.user });
+            res.render('teams', { title: 'All Teams', members, allTeams, user: req.session.user });
         } catch (error) {
             console.error(error)
         }
@@ -140,63 +149,32 @@ module.exports = {
         try {
             const team = await Team.findByPk(teamId);
             if (!team) {
-                return res.redirect('/dashboard/teams?info=not-found');
+                return res.redirect('/dashboard/teams?info=not-found'); //team not found
             }
 
-            const allMembers = await User.findAll({ where: { id: newMembers } });
-            console.log("All members include -", allMembers)
+            const allMembers = await Member.findAll({ where: { id: newMembers } });
+            console.log("All members include -", allMembers);
+            // check if the members exists
             if (allMembers.length === 0) {
                 return res.redirect('/dashboard/teams?info=not-found');
             }
-
+            // directly update selected members of the Default team
             if (team.name === 'Default') {
-                await team.setUsers(allMembers);
+                await team.setMembers(allMembers);
                 return res.redirect('/dashboard/teams?info=success');
             }
-
+            // Update title and description of user defined teams if neccessary
             team.name = title.trim();
             team.description = description.trim();
             await team.save();
-
-            await team.setUsers(allMembers);
+            // update team members of user defined teams
+            await team.setMembers(allMembers);
             res.redirect('/dashboard/teams?info=success');
         } catch (error) {
             console.log(error);
             res.redirect('/dashboard/teams?info=error');
         }
 
-        // const { teamId } = req.params; // teamId received from request parameters
-        // const { title, description, userIds } = req.body;
-        // console.log(`#### ############ UserIds ${userIds}`)
-        // const newMembers = [...new Set(userIds)];
-        // console.log(`New Ids are as follows ${newMembers}`);
-        // try {
-        //     const team = await Team.findByPk(teamId);
-        //     if (!team) {
-        //         // return res.json({ status: 'error', data: 'Team does not exist' })
-        //         return res.redirect('/dashboard/teams?info=not-found')
-        //     }
-        //     const allMembers = await User.findAll({ where: { id: newMembers } });
-        //     if (allMembers.length === 0) {
-        //         return res.redirect('/dashboard/teams?info=not-found')
-        //     }
-
-        //     if (team.name == 'Default') {
-        //         await team.setUsers(allMembers);
-        //         // res.json({status: 'success', data: `Team '${team.name}' has been updated successfully.`})
-        //         return res.redirect('/dashboard/teams?info=success');
-        //     }
-        //     team.name = title.trim();
-        //     team.description = description.trim();
-        //     await team.save();
-
-        //     await team.setUsers(allMembers);
-        //     // res.json({status: 'success', data: `Team '${team.name}' has been updated successfully.`})
-        //     res.redirect('/dashboard/teams?info=success');
-        // } catch (error) {
-        //     console.log(error);
-        //     res.redirect('/dashboard/teams?info=error');
-        // }
     },
     removeTeam: async (req, res) => {
         console.log('############ DELETION REQUEST RECEIVED ############')

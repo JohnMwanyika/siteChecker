@@ -29,9 +29,9 @@
                             .input-group.input-group-outline.my-3
                                 label.form-label Select Team Members
                                 select.form-control(id=`users${team.id}` name="userIds", multiple)
-                                    each user in team.Users
+                                    each user in team.Members
                                         option( selected value=`${user.id}`) #{user.firstName} #{user.lastName}
-                                    each newuser in users
+                                    each newuser in members
                                         option(value=`${newuser.id}`) #{newuser.firstName} #{newuser.lastName}
 
 

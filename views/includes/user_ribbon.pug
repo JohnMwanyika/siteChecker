@@ -3,16 +3,26 @@
         p.text-secondary.text-xs.font-weight-bold.mb-2 Team members:
         .d-flex.align-items-start.justify-content-start
             .avatar-group
-                if (team.Users.length > 0)
-                    each user in team.Users
-                        a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title=`${user.firstName} ${user.lastName}`)
-                            if (user.avatarPath)
-                                img(alt="user's avatar" src=`${user.avatarPath}`)
+                //- if (team.Users.length > 0)
+                //-     each user in team.Users
+                //-         a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title=`${user.firstName} ${user.lastName}`)
+                //-             if (user.avatarPath)
+                //-                 img(alt="user's avatar" src=`${user.avatarPath}`)
+                //-             else
+                //-                 img(alt="Image placeholder" src="../../assets/img/team-1.jpg")
+                //- else 
+                //-     .bg-light.py-1.px-1
+                //-         small No users found.
+                if (team.Members.length > 0)
+                    each member in team.Members
+                        a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title=`${member.firstName} ${member.lastName || ''}`)
+                            if (member.avatarPath)
+                                img(alt="user's avatar" src=`${member.avatarPath}`)
                             else
                                 img(alt="Image placeholder" src="../../assets/img/team-1.jpg")
                 else 
                     .bg-light.py-1.px-1
-                        small No users found.
+                        small No members.
         hr.vertical.dark.mt-0
     .ps-4.me-4
         if (team.name == 'Default')

@@ -14,12 +14,14 @@
                                 input.form-control(type="text" name='title' onfocus="focused(this)" onfocusout="defocused(this)")
                             .input-group.input-group-dynamic.my-3
                                 textarea.form-control(name="description" onfocus="focused(this)" onfocusout="defocused(this)" placeholder="A short description about the team and its members")
-    
+
                             label.form-label(for="users")  Select Team Members
                             select.form-control(id=`users` name="userIds" multiple onfocus="focused(this)" onfocusout="defocused(this)")
                                 <span class="material-symbols-outlined">arrow_drop_down</span>
-                                each user in users
+                                //- each user in users
                                     option(value=`${user.id}`) #{user.firstName} #{user.lastName}
+                                each member in members
+                                    option(value=`${member.id}`) #{member.firstName} #{member.lastName}
                             .text-center
                                 button.btn.btn-round.bg-gradient-info.btn-lg.w-100.mt-4.mb-0(type="submit") Submit
                     .card-footer.text-center.pt-0.px-lg-2.px-1
