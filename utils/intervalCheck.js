@@ -35,10 +35,10 @@ const checkInterval = 5 * 60 * 1000; // Check every 5 minutes
 //     };
 // };
 
-async function membersEmails(url) {
+async function membersEmails(url, userId) {
     try {
         // obtain the site iD of the website being monitored by passing the url as a parameter
-        const website = await Website.findOne({ where: { url: url } });
+        const website = await Website.findOne({ where: { url: url, createdBy: userId } }); //fetch only the site for the  current user
         if (!website) {
             return { status: 'warning', data: `${url} is not not found` }
         }
@@ -73,7 +73,7 @@ async function membersEmails(url) {
 
 }
 
-async function checkWebsiteStatus(url, timeout = 15000) { //TImeout has been set to 15 seconds
+async function checkWebsiteStatus(url, timeout = 15000, userId) { //TImeout has been set to 15 seconds
     try {
         const startTime = new Date().getTime(); // Track start time
         const response = await axios.get(url, { timeout });
@@ -84,7 +84,7 @@ async function checkWebsiteStatus(url, timeout = 15000) { //TImeout has been set
         if (response.status >= 200 && response.status < 400) {
             return { status: true, responseTime }; // Website is up
         } else {
-            const emails = await membersEmails(url);
+            const emails = await membersEmails(url, userId);
             const mailResponse = await sendMail(`${url} is down`, 'The above mentioned service is down', emails);
             console.log(mailResponse);
             return { status: false, responseTime, mailResponse }; // Website is down
@@ -93,7 +93,7 @@ async function checkWebsiteStatus(url, timeout = 15000) { //TImeout has been set
         if (error.code === 'ECONNABORTED') {
             return { status: 'timeout', responseTime: timeout }; // Website is up but took longer to respond
         } else {
-            const emails = await membersEmails(url);
+            const emails = await membersEmails(url, userId);
             const mailResponse = await sendMail(`${url} is down`, 'The above mentioned service is down', emails);
             console.log(mailResponse);
             return { status: false, responseTime: 'An error occured while checking site status please trying again...', mailResponse }; // Website is down (request error)

@@ -124,9 +124,9 @@ async function startMonitoringLogic(siteId, teamId, interval, userId) {
 }
 
 // This function is responsible for starting monitoring based on the interval specified
-async function startIntervalCheck(siteId) {
+async function startIntervalCheck(siteId, userId) {
     let previousStatus = null; // Track the previous status of the site
-    const monitoringSite = await Monitor.findOne({
+    const monitoredSite = await Monitor.findOne({
         include: [
             { model: Website }
         ],
@@ -155,7 +155,7 @@ async function startIntervalCheck(siteId) {
                 const websiteUrl = monitoringSite.Website.url;
 
                 // CHECK WEBSITE STATUS FUNCTION #######################################################################
-                const siteResult = await checkWebsiteStatus(websiteUrl, timeout = 10000);
+                const siteResult = await checkWebsiteStatus(websiteUrl, timeout = 10000, userId); //userId is used by the memberEmails function only
                 console.log(siteResult);
                 if (siteResult.status === true) {
 
@@ -166,7 +166,7 @@ async function startIntervalCheck(siteId) {
                     if (previousStatus == "Down" || previousStatus == "Timeout") {
                         console.log(`Hurray!! ${websiteUrl} is back online and operational.`);
                         // send emails
-                        const recipients = await membersEmails(websiteUrl);
+                        const recipients = await membersEmails(websiteUrl, userId);
                         const mailResponse = await sendMail(`Hurray!! ${websiteUrl} is back online and operational.`, recipients);
                         console.log('This is the email response', mailResponse)
                         // send notification to connected clients
@@ -232,12 +232,12 @@ async function startIntervalCheck(siteId) {
                 data: error.message, // Return default error
             };
         }
-    }, monitoringSite.interval * 10 * 1000); //multiply the seconds passed by seconds and again by miliseconds
+    }, monitoredSite.interval * 10 * 1000); //multiply the seconds passed by seconds and again by miliseconds
 
-    console.log(`############## Monitoring has been started for ${monitoringSite.Website.url} ##############`);
+    console.log(`############## Monitoring has been started for ${monitoredSite.Website.url} ##############`);
     return {
         status: 'success',
-        data: `Monitoring started for ${monitoringSite.Website.url} cheking after every ${monitoringSite.interval} minute(s)`,
+        data: `Monitoring started for ${monitoredSite.Website.url} cheking after every ${monitoredSite.interval} minute(s)`,
     }
 }
 

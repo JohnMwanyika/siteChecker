@@ -1,11 +1,11 @@
 const { startMonitoringLogic, startIntervalCheck } = require('../utils/monitoringLogic');
 // const { checkWebsiteStatus } = require('../utils/intervalCheck');
-const { Website, SiteStatus, User, Team, Monitor, Monitor_Status } = require('../models/index.js');
+const { Website, SiteStatus, User, Team, Monitor, Monitor_Status, Member } = require('../models/index.js');
 // Server startup initialization logic
 async function initializeMonitoring() {
     try {
         // Retrieve active monitors from the database
-        const activeMonitors = await Monitor.findAll({ include: { model: Website } });
+        const activeMonitors = await Monitor.findAll({ include: [{ model: Website }] });
         if (activeMonitors.length < 1) {
             console.log('There are no services being monitored at the moment')
             return {
@@ -16,9 +16,10 @@ async function initializeMonitoring() {
         // Start monitoring for each active monitor
         activeMonitors.forEach(async (monitor) => {
             console.log(`-----------------------Start monitoring ${monitor.Website.url}-------------------------------`);
-            const { siteId } = monitor;
+            // obtaining siteId and userId from the current monitoring site
+            const { siteId, createdBy } = monitor;
             // passing all sites to the interval check function which starts the monitor again after server restarts
-            const monitorStatus = await startIntervalCheck(siteId);
+            const monitorStatus = await startIntervalCheck(siteId, createdBy);
             console.log(`Interval check results`, monitorStatus);
         });
         return {
