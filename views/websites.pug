@@ -57,7 +57,8 @@ block content
                                                 Edit
                                             include includes/modals/editSite
 
-    //- script(src="/assets/js/core/jquery.min.js")                                     
+    <script src="/assets/js/plugins/datatables.js"></script>
+                             
     script.
 
         const Toast = Swal.mixin({
@@ -70,7 +71,12 @@ block content
                 toast.addEventListener('mouseenter', Swal.stopTimer)
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
-        })
+        });
+        //- websites datatable
+        const dataTableBasic = new simpleDatatables.DataTable("#datatable-search", {
+            searchable: true,
+            fixedHeight: false
+        });
 
         // this function toggles between activating monitoring for a particular site
         function handleCheckboxChange(siteId,teamId,checkbox) {

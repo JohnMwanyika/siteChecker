@@ -28,7 +28,7 @@ module.exports = {
             });
 
             // console.log(allSites)
-            res.render('dashboard', { title: "Dashboard", allSites, websites, teams, user: req.session.user });
+            res.render('dashboard', { title: "Dashboard", allSites, websites, teams, });
         } catch (error) {
             console.log(error)
         }
@@ -317,6 +317,23 @@ module.exports = {
                 status: 'error',
                 data: 'Couldn\'t stop monitoring for this site please try again.',
             })
+        }
+    },
+    allMembers: (req, res) => {
+        try {
+            res.render('members', {});
+        } catch (error) {
+            res.redirect('/dashboard/error');
+        }
+    },
+    getMembers: async (req, res) => {
+        // const { userId } = req.params;
+        try {
+            const members = await Member.findAll({ where: { createdBy: req.user.id } });
+            // res.render('members', { members })
+            res.json({ status: 'success', data: members });
+        } catch (error) {
+            res.json({ status: 'error', data: `An error occured while fetching members -${error.message}` });
         }
     }
 }

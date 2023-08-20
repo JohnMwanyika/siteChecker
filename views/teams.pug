@@ -32,7 +32,9 @@ block content
                                 .card-header.p-0.position-relative.mt-n4.mx-3.z-index-2
                                     .bg-gradient-success.shadow-success.border-radius-lg.py-2.pe-1.d-flex.align-items-center.text-center
                                         a.mx-auto.my-3(href="javascript:;" data-bs-toggle="modal" data-bs-target=`#modal-form${team.id}`)
-                                            h6.text-white.font-weight-normal #{team.name}
+                                            h6.text-white.font-weight-normal #{team.name} 
+                                                span
+                                                    i.material-icons.text-white.text-sm.mb-1(aria-hidden="true") edit-file
                                 .card-body.py-3
                                     p.text-sm.mb-0 #{team.description}
                                     include includes/user_ribbon

@@ -63,7 +63,7 @@
     <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
     <script src="/assets/js/plugins/chartjs.min.js"></script>
     //- <script src="/assets/js/chartData.js"></script>
-    <script src="/assets/js/plugins/datatables.js"></script>
+
     <script src="/assets/js/plugins/choices.min.js"></script>
     //- Setting up choice js for multiple selection of choices
     script(type="text/javascript").
@@ -79,16 +79,17 @@
             var NewUsers = document.getElementById(`users`);
             const Users = new Choices(NewUsers, {});
         }
+    //- <script src="/assets/js/plugins/datatables.js"></script>
+    //- script.
+    //-     const dataTableBasic = new simpleDatatables.DataTable("#datatable-search", {
+    //-         searchable: true,
+    //-         fixedHeight: false
+    //-     });
+    //-     const dataTableone = new simpleDatatables.DataTable("#datatable-one", {
+    //-         searchable: true,
+    //-         fixedHeight: false
+    //-     });
 
-    script.
-        const dataTableBasic = new simpleDatatables.DataTable("#datatable-search", {
-            searchable: true,
-            fixedHeight: false
-        });
-        const dataTableone = new simpleDatatables.DataTable("#datatable-one", {
-            searchable: true,
-            fixedHeight: false
-        });
 
     script.
         var win = navigator.platform.indexOf('Win') > -1;

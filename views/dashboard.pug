@@ -124,7 +124,7 @@ block content
                                 include includes/modals/createMonitor
                 .card-body.px-0.pb-2
                     .table-responsive
-                        table.table.align-items-center.mb-0
+                        table.table.align-items-center.mb-0(id="datatable-monitor")
                             thead
                                 tr
                                     th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Websites/APIs
@@ -221,3 +221,10 @@ block content
                             .timeline-content
                                 h6.text-dark.text-sm.font-weight-bold.mb-0 New order #9583120
                                 p.text-secondary.font-weight-bold.text-xs.mt-1.mb-0 17 DEC
+
+    <script src="/assets/js/plugins/datatables.js"></script>
+    script.
+        const dataTableMonitor = new simpleDatatables.DataTable("#datatable-monitor", {
+            searchable: true,
+            fixedHeight: false
+        });
