@@ -5,67 +5,46 @@ block content
             .card.h-100
                 .card-header.pb-0.p-3
                     .d-flex.align-items-center
-                        h6.mb-0 Social
-                        button.btn.btn-icon-only.btn-rounded.btn-outline-secondary.mb-0.ms-2.btn-sm.d-flex.align-items-center.justify-content-center.ms-auto(type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="See how much traffic do you get from social media")
+                        h6.mb-0 New Member
+                        button.btn.btn-icon-only.btn-rounded.btn-outline-secondary.mb-0.ms-2.btn-sm.d-flex.align-items-center.justify-content-center.ms-auto(type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Create new member")
                             i.material-icons.text-sm priority_high
                 .card-body.p-3
-                    ul.list-group
-                        li.list-group-item.border-0.d-flex.align-items-center.px-0.mb-2
-                            .w-100
-                                .d-flex.align-items-center.mb-2
-                                    a.btn.btn-facebook.btn-simple.mb-0.p-0(href="javascript:;")
-                                        i.fab.fa-facebook.fa-lg
-                                    span.me-2.text-sm.font-weight-normal.text-capitalize.ms-2 Facebook
-                                    span.ms-auto.text-sm.font-weight-normal 80%
-                                div
-                                    .progress.progress-md
-                                        .progress-bar.bg-gradient-dark.w-80(role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100")
-                        li.list-group-item.border-0.d-flex.align-items-center.px-0.mb-2
-                            .w-100
-                                .d-flex.align-items-center.mb-2
-                                    a.btn.btn-twitter.btn-simple.mb-0.p-0(href="javascript:;")
-                                        i.fab.fa-twitter.fa-lg
-                                    span.me-2.text-sm.font-weight-normal.text-capitalize.ms-2 Twitter
-                                    span.ms-auto.text-sm.font-weight-normal 40%
-                                div
-                                    .progress.progress-md
-                                        .progress-bar.bg-gradient-dark.w-40(role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100")
-                        li.list-group-item.border-0.d-flex.align-items-center.px-0.mb-2
-                            .w-100
-                                .d-flex.align-items-center.mb-2
-                                    a.btn.btn-reddit.btn-simple.mb-0.p-0(href="javascript:;")
-                                        i.fab.fa-reddit.fa-lg
-                                    span.me-2.text-sm.font-weight-normal.text-capitalize.ms-2 Reddit
-                                    span.ms-auto.text-sm.font-weight-normal 30%
-                                div
-                                    .progress.progress-md
-                                        .progress-bar.bg-gradient-dark.w-30(role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100")
-                        li.list-group-item.border-0.d-flex.align-items-center.px-0.mb-2
-                            .w-100
-                                .d-flex.align-items-center.mb-2
-                                    a.btn.btn-youtube.btn-simple.mb-0.p-0(href="javascript:;")
-                                        i.fab.fa-youtube.fa-lg
-                                    span.me-2.text-sm.font-weight-normal.text-capitalize.ms-2 Youtube
-                                    span.ms-auto.text-sm.font-weight-normal 25%
-                                div
-                                    .progress.progress-md
-                                        .progress-bar.bg-gradient-dark.w-25(role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100")
-                        li.list-group-item.border-0.d-flex.align-items-center.px-0.mb-2
-                            .w-100
-                                .d-flex.align-items-center.mb-2
-                                    a.btn.btn-slack.btn-simple.mb-0.p-0(href="javascript:;")
-                                        i.fab.fa-slack.fa-lg
-                                    span.me-2.text-sm.font-weight-normal.text-capitalize.ms-2 Slack
-                                    span.ms-auto.text-sm.font-weight-normal 15%
-                                div
-                                    .progress.progress-md
-                                        .progress-bar.bg-gradient-dark.w-15(role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100")
+                    .multisteps(data-animation="FadeIn").p-5.py-4
+                        .row.text-center.mt-4
+                            .col-10.mx-auto
+                                h5.font-weight-normal Let's create a new member.
+                                p Use an address that will receive website status.
+                        .form__content
+                            form(method='post' action='#' id="memberForm")
+                                .row.mt-3
+                                    .col-12.col-sm-4
+                                        .avatar.avatar-xxl.position-relative
+                                            img.border-radius-md(src="../../assets/img/team-2.jpg" alt="team-2")
+                                            a.btn.btn-sm.btn-icon-only.bg-gradient-primary.position-absolute.bottom-0.end-0.mb-n2.me-n2(href="javascript:;")
+                                                span.material-icons.text-xs.top-0.mt-n2(data-bs-toggle="tooltip" data-bs-placement="top" aria-hidden="true" data-bs-original-title="Edit Image" aria-label="Edit Image") edit 
+                                    .col-12.col-sm-8.mt-4.mt-sm-0.text-start
+                                        .input-group.input-group-dynamic.mb-4
+                                            label.form-label First Name
+                                            input.form-control.multisteps-form__input(type="text" required name="firstName")
+                                        .input-group.input-group-dynamic.mb-4
+                                            label.form-label Last Name
+                                            input.form-control.multisteps-form__input(type="text" required name="lastName")
+                                        .input-group.input-group-dynamic.mb-4
+                                            label.form-label Email Address
+                                            input.form-control.multisteps-form__input(type="email" name="email")
+                                        .input-group.input-group-dynamic
+                                            label.form-label Phone
+                                            input.form-control.multisteps-form__input(type="tel" required name="phone")
+
+                                .button-row.d-flex.mt-4
+                                    button.btn.bg-gradient-dark.ms-auto.mb-0.js-btn-next(type="submit" id="newMember" title="Next") Create 
+                                        span.spinner-border.spinner-border-sm(id=`Loader` role="status" aria-hidden="true")
         .col-sm-6
             .card.h-100.mt-4.mt-md-0
                 .card-header.pb-0.p-3
                     .d-flex.align-items-center
-                        h6 Pages
-                        button.btn.btn-icon-only.btn-rounded.btn-outline-success.mb-0.ms-2.btn-sm.d-flex.align-items-center.justify-content-center.ms-auto(type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Data is based from sessions and is 100% accurate")
+                        h6 All Members
+                        button.btn.btn-icon-only.btn-rounded.btn-outline-success.mb-0.ms-2.btn-sm.d-flex.align-items-center.justify-content-center.ms-auto(type="button" id="refreshBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Members available")
                             i.material-icons.text-sm done
                 .card-body.px-3.pt-0.pb-2
                     .table-responsive.p-0
@@ -75,114 +54,147 @@ block content
                             thead
                                 tr
                                     th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 First Name
-                                    th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2.
-                                        Last Name
-
-                                    th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2.
-                                        Email
-
-                                    th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2.
-                                        Phone
+                                    th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 Last Name
+                                    th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 Email
+                                    th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 Phone
                             tbody
 
 
-    <script src="/assets/js/plugins/datatables.js"></script>
-    script(type="text/javascript").
-        document.addEventListener('DOMContentLoaded',function(){
-            var dataTable = new simpleDatatables.DataTable("#datatable-members", {
-                searchable: true,
-                fixedHeight: false,
-                data:'',
-                //- order:[[0,'asc']]
-            });
-
-            let load = $('#membersLoader').hide();
-
-            //- ######################## FUNCTION TO LOAD TABLE ######################################
-            function loadTable(response) {
-                try{
-                    //- destroy existing table
-                    if(dataTable){
-                        dataTable.destroy();
-                    }
-                    console.log(response.data)
-                    //- initialize new table
-                    dataTable = new simpleDatatables.DataTable("#datatable-members", {
-                        searchable:true,
-                        fixedHeight:false,
-                        data:response.data,
-                        columns:[
-                            { data:'firstName'},
-                            { data:'lastName'},
-                            { data:'email'},
-                            { data:'phone'},
-                        ],
-                        language:{
-                            emptyTable:'You have not created any members yet'
-                        }
-                    });
-                    // Log the column headers to the console
-                    console.log("columns:", dataTable.columns().header().to$().map(function () {
-                        return $(this).text();
-                    }).get());
-
-                }catch(error){
-                    console.log('An error occured',error)
-                }
-            };
-
-            function updateTableData(table, newData) {
-                // Clear the existing table body
-                table.clear();
-                // Add new rows to the table body
-                newData.forEach(function(data) {
-                    //- console.log('single data',data)
-                    table.insert({
-                        headings:["FirstName","LastName","Email","Phone"],
-                        data:[
-                            [data.firstName,data.lastName,data.email,data.phone]
-                        ]
-                    }
-                    );
+        <script src="/assets/js/plugins/datatables.js"></script>
+        script(type="text/javascript").
+            document.addEventListener('DOMContentLoaded',function(){
+                var dataTable = new simpleDatatables.DataTable("#datatable-members", {
+                    searchable: true,
+                    fixedHeight: true,
+                    data:'',
+                    order:[[0,'asc']]
                 });
 
-                // Redraw the table to reflect the changes
-                //- table.draw();
-            }
-            //- ######################## FUNCTION TO LOAD TABLE ######################################
-            function makeAjaxCall(){
-                $.ajax(
-                    {
-                        url:`/dashboard/members/api`,
-                        type:'get',
+                let load = $('#membersLoader').hide();
 
-                        beforeSend: function () {
-                            load.show(function () {
-                                //- $(this).prop("disabled", true);
-                            });
-                        },
+                function updateTableData(table, newData) {
+                    try{
+                        // Clear the existing table body
+                        table.destroy();
+                        table.init()
+                        // Add new rows to the table body
+                        newData.forEach(function(data) {
+                            phone = `0${data.phone.toString()}`
+                            table.insert(
+                                {
+                                    headings:["First Name","Last Name","Email","Phone"],
+                                    data:[
+                                        [
+                                            `${data.firstName}`,
+                                            data.lastName,
+                                            data.email,
+                                            phone]
+                                    ]
+                                }
+                            );
+                        });
 
-                        complete: function () {
-                            load.hide(function () {
-                                //- $(this).removeAttr('disabled');
-                            });
-                        },
-
-                        success:function(result){
-                            console.log('All members include',result);
-                            if(result.status == 'success'){
-                                //- call function to load data
-                                //- loadTable(result);
-                                updateTableData(dataTable,result.data);
-                            }
-                        },
-
-                        error: function (xhr, status, error) {
-                            console.error('AJAX Error:', error);
-                        }
+                        table.update(measureWidths=false);
+                    }catch(error){
+                        console.log(error);
                     }
-                )
-            };
-            //- ######################## FUNCTION TO FETCH GROUPS ######################################
-            makeAjaxCall();
-        })
+                }
+
+                $('#refreshBtn').on('click',function(){
+                    makeAjaxCall();
+                })
+                //- ######################## FUNCTION TO LOAD TABLE ######################################
+                function makeAjaxCall(){
+                    $.ajax(
+                        {
+                            url:`/dashboard/members/api`,
+                            type:'get',
+
+                            beforeSend: function () {
+                                load.show(function () {
+                                    //- $(this).prop("disabled", true);
+                                });
+                            },
+
+                            complete: function () {
+                                load.hide(function () {
+                                    //- $(this).removeAttr('disabled');
+                                });
+                            },
+
+                            success:function(result){
+                                //- console.log('All members include',result);
+                                if(result.status == 'success'){
+                                    //- call function to update data
+                                    updateTableData(dataTable,result.data);
+                                }
+                            },
+
+                            error: function (xhr, status, error) {
+                                console.error('AJAX Error:', error);
+                            }
+                        }
+                    )
+                };
+                //- ######################## FUNCTION TO FETCH GROUPS ######################################
+                //- this function fetches latest members
+                makeAjaxCall();
+
+                    //- function to submit new member
+                var Loader = $('#Loader').hide();
+                var memberForm = $('#memberForm');
+                //- Ajax Submit Stk push
+                $('#newMember').on('click',function(event){
+                    event.preventDefault();
+                    if(!$("input[name='email']").val()){
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Invalid email'
+                        })
+                    }else{
+                        $.ajax({
+                            url:'/dashboard/members/api',
+                            type:'post',
+                            data:memberForm.serialize(),
+
+                            beforeSend:function(){
+                                Loader.show(function(){
+                                    $(this).prop("disabled", true);
+                                })
+                            },
+
+                            complete: function () {
+                                Loader.hide(function () {
+                                    $(this).removeAttr('disabled');
+                                });
+                            },
+
+                            success: function (result) {
+                                console.log(result);
+                                if (result.status == 'success') {
+                                    //- clear form
+                                    memberForm[0].reset();
+                                    Toast.fire({
+                                        icon: result.status,
+                                        title: result.data
+                                    });
+                                    makeAjaxCall();
+                                } else {
+                                    Toast.fire({
+                                        icon: `${result.status}`,
+                                        title: `${result.data}!`,
+                                    });
+                                }
+                            },
+                            timeout:30000,
+                            error: function (request, status, error) {
+                                console.log(error);
+                                Toast.fire({
+                                    icon: "error",
+                                    title: "Request time out please try again!"
+                                });
+                            }
+                        })
+                    }
+                });
+            });

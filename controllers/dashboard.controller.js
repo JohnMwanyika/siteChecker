@@ -326,14 +326,58 @@ module.exports = {
             res.redirect('/dashboard/error');
         }
     },
-    getMembers: async (req, res) => {
+    getMembersApi: async (req, res) => {
         // const { userId } = req.params;
         try {
-            const members = await Member.findAll({ where: { createdBy: req.user.id } });
+            const members = await Member.findAll({ where: { createdBy: req.user.id },order:[['updatedAt','DESC']] });
             // res.render('members', { members })
             res.json({ status: 'success', data: members });
         } catch (error) {
             res.json({ status: 'error', data: `An error occured while fetching members -${error.message}` });
+        }
+    },
+    createMemberApi: async (req, res) => {
+        const { firstName, lastName, email, phone, avatarPath } = req.body;
+        console.log(req.body)
+        try {
+            // check existing
+            const existingMember = await Member.findOne({ where: { email } });
+            if (existingMember) {
+                return res.json({ status: 'warning', data: 'Member with similar email exists please try another' });
+            }
+
+            const newMember = await Member.create({ firstName, lastName, email, phone, createdBy: req.user.id });
+            if (newMember) {
+                return res.json({ status: 'success', data: `${firstName} has been added successfully` });
+            }
+
+        } catch (error) {
+            console.log(error)
+            return res.json({ status: 'error', data: `An error has occured while creating user -${error.message}` });
+        }
+    },
+    updateMemberApi: async (req, res) => {
+        const { memberId } = req.params;
+        const { firstName, lastName, email, phone, avatarPath } = req.body;
+        try {
+            await Member.update({ firstName, lastName, email, phone }, {
+                where: { id: memberId }
+            })
+            return res.json({ status: 'success', data: `${firstName} has been updated successfully` });
+
+        } catch (error) {
+            return res.json({ status: 'error', data: `An error has occured while updating user -${error.message}` });
+        }
+    },
+    deleteMemberApi: async (req, res) => {
+        const { memberId } = req.params;
+        try {
+            await Member.destroy({ where: { id: memberId } });
+
+            return res.json({ status: 'success', data: `Member has been deleted successfully` });
+
+        } catch (error) {
+            return res.json({ status: 'error', data: `An error has occured while updating user -${error.message}` });
         }
     }
 }

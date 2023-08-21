@@ -34,6 +34,19 @@
     //- sweet alert
     script(src="/assets/sweetAlert/sweetalert2.all.min.js")
     link(rel="stylesheet" href="/assets/sweetAlert/sweetalert2.min.css")
+    script.
+        // sweet alert defaults
+        let Toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
     //- dropzoneJs
     script(src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js")
     link(rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css")
