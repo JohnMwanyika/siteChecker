@@ -47,7 +47,7 @@ block content
                         button.btn.btn-icon-only.btn-rounded.btn-outline-success.mb-0.ms-2.btn-sm.d-flex.align-items-center.justify-content-center.ms-auto(type="button" id="refreshBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Members available")
                             i.material-icons.text-sm done
                 .card-body.px-3.pt-0.pb-2
-                    .table-responsive.p-0
+                    .table-responsive.p-0(id="allMembers")
                         table.table.align-items-center.justify-content-center.mb-0(id=`datatable-members`)
                             span.spinner-border.spinner-border-sm(id=`membersLoader` role="status" aria-hidden="true")
 
@@ -58,7 +58,7 @@ block content
                                     th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 Email
                                     th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 Phone
                             tbody
-
+                    include includes/modals/memberModal.pug
 
         <script src="/assets/js/plugins/datatables.js"></script>
         script(type="text/javascript").
@@ -197,4 +197,21 @@ block content
                         })
                     }
                 });
+
+                //- function to display modals for each member
+                createModal();
+                function createModal(){
+                    $('#allMembers tbody').on('click', 'tr', function() {
+                        const data = dataTable.row(this).data();
+                        // Show the modal with the group details
+                        $('#memberModalLabel').text(data.firstName);
+                        $('#memberForm').attr('action',`/dashboard/Update-group/${data.id}`);
+                        $('#firstName').val(data.firstName);
+                        $('#lastName').val(data.lastName);
+                        $('#emal').val(data.emal);
+                        //- $('#groupIntro')[0].value ='data.intro';
+                        $('#memberModal').modal('show');
+
+                    })
+                }
             });

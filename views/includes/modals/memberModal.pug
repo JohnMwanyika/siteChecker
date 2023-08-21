@@ -1,0 +1,80 @@
+.modal.fade(id=`memberModal` tabindex="-1" role="dialog" aria-hidden="true")
+    .modal-dialog.modal-md(role="document")
+        .modal-content
+            .modal-header
+                h5.modal-title.h4(id='memberModalLabel')
+                button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
+            .modal-body.m-3
+                form(method="post", action=`/dashboard/Update-group` id=`memberForm`)
+                    .mb-3
+                        label.form-label First Name
+                        input.form-control(type="text" value=`` name="firstName" placeholder="")#firstName
+                    .mb-3
+                        label.form-label Last Name
+                        input.form-control(type="text" value=`` name="lastName" placeholder="")#lastName
+                    .mb-3
+                        label.form-label Email
+                        input.form-control(type="email" value=`` name="email" placeholder="")#email
+                    .mb-3
+                        label.form-label Phone
+                        input.form-control(type="tel" value=`` name="phone" placeholder="")#phone
+                    .mb-3
+                        button.btn.btn-secondary.px-5(type="submit" id=`saveChanges`) save changes 
+                            span.spinner-border.spinner-border-sm(id=`loader` role="status" aria-hidden="true")
+
+script.
+    document.addEventListener("DOMContentLoaded", function () {
+
+        // *****************************************AJAX SUBMIT GROUP MODAL***********************************************
+
+        let loader = $(`#loader`).hide();
+        let form = $(`#memberForm`);
+        let submitButton = $(`#saveChanges`);
+
+        submitButton.on('click', function (event) {
+            event.preventDefault();
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: form.serialize(),
+
+                beforeSend: function () {
+                    loader.show(function () {
+                        $(this).prop("disabled", true);
+                    });
+                },
+
+                complete: function () {
+                    loader.hide(function () {
+                        $(this).removeAttr('disabled');
+                    });
+                },
+
+                success: function (result) {
+                    console.log(result);
+                    if (result.status == 'success') {
+                        //- Clears The form fields
+                        //- form[0].reset();
+                        Toast.fire({
+                            icon: result.status,
+                            title: result.data
+                        })
+                    } else {
+                        Toast.fire({
+                            icon: `${result.status}`,
+                            title: `${result.data}!`,
+                        });
+                    }
+                },
+                timeout: 30000,
+                error: function (request, status, error) {
+                    console.log(error);
+                    Toast.fire({
+                        icon: "error",
+                        title: "Request time out please try again!"
+                    });
+                }
+
+            });
+        })
+    });

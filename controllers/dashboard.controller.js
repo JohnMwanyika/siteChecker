@@ -227,10 +227,10 @@ module.exports = {
                 });
             }
             // find team details
-            const selectedTeam = await Team.findOne({ include: [{ model: User }], where: { id: teamId } });
+            const selectedTeam = await Team.findOne({ include: [{ model: User }, { model: Member }], where: { id: teamId } });
             if (selectedTeam) {
                 console.log('selected team and users #########', selectedTeam)
-                if (selectedTeam.Users.length < 1) { //if the selected team does not contain users throw an equivalent error
+                if (selectedTeam.Members.length < 1) { //if the selected team does not contain users throw an equivalent error
                     return res.json({ status: 'error', data: `Add members to '${selectedTeam.name}' team before assigning it!` })
                 }
             }
@@ -238,29 +238,26 @@ module.exports = {
             // #################################################################################3
             // if there is no team selectedm the default team is set automatically
             if (!teamId) {
-                const defaultTeam = await Team.findOne({ include: [{ model: User }], where: { name: 'Default' } });
+                const defaultTeam = await Team.findOne({ include: [{ model: User }, { model: Member }], where: { name: 'Default', createdBy: userId } });
                 console.log('Default team and users #########', defaultTeam)
                 // if for some resons there is no default team, reject the request by throwing an error notification
                 if (!defaultTeam) {
                     return res.json({ status: 'error', data: 'Default team is not set or Invalid team selected' });
                 }
                 // if the default team has no users reject by throwing an equevalent notification
-                if (defaultTeam.Users.length < 1) {
+                if (defaultTeam.Members.length < 1) {
                     return res.json({ status: 'error', data: 'Add members to the default team before assigning it!' });
                 }
+                // set the default team as the one selected since there is none selected
                 teamId = defaultTeam.id;
-                // else { //throw the error team not found
-                //     return res.json({ status: 'error', data: 'Team selected does not exist' })
-                // }
             }
-
 
             // Check if there is an ongoing monitor for this website
             const monitor = await Monitor.findOne({ where: { siteId: siteId } });
             if (monitor) {
                 return res.json({
                     status: 'warning',
-                    data: 'Monitoring for this website is already in progress.',
+                    data: 'Monitoring for this website is in progress.',
                 });
             }
 
@@ -276,9 +273,8 @@ module.exports = {
             const updatedWebsite = website.setSiteStatus(2) //change site status to Monitoring
 
             // re-Initialize the monitoring logic to append the newly created above
-            initializeMonitoring()
-                .then(data => console.log(data))
-                .catch(error => console.log(error));
+            const monitorResults = await initializeMonitoring();
+            console.log('Initialize monitoring results', monitorResults)
 
             console.log(`############## Monitoring has been started for ${website.url} ##############`);
             res.json({
@@ -329,7 +325,7 @@ module.exports = {
     getMembersApi: async (req, res) => {
         // const { userId } = req.params;
         try {
-            const members = await Member.findAll({ where: { createdBy: req.user.id },order:[['updatedAt','DESC']] });
+            const members = await Member.findAll({ where: { createdBy: req.user.id }, order: [['updatedAt', 'DESC']] });
             // res.render('members', { members })
             res.json({ status: 'success', data: members });
         } catch (error) {
