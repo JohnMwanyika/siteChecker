@@ -64,6 +64,7 @@ async function membersEmails(url, userId) {
             emails.push(member.email);
         }
         // Return the list of all emails to receive notifications
+        console.log('##########RECIPIENTS INCLUDE', emails);
         return emails;
 
     } catch (error) {
@@ -84,19 +85,13 @@ async function checkWebsiteStatus(url, timeout = 15000, userId) { //TImeout has 
         if (response.status >= 200 && response.status < 400) {
             return { status: true, responseTime }; // Website is up
         } else {
-            const emails = await membersEmails(url, userId);
-            const mailResponse = await sendMail(`${url} is down`, 'The above mentioned service is down', emails);
-            console.log(mailResponse);
-            return { status: false, responseTime, mailResponse }; // Website is down
+            return { status: false, responseTime, }; // Website is down
         }
     } catch (error) {
         if (error.code === 'ECONNABORTED') {
             return { status: 'timeout', responseTime: timeout }; // Website is up but took longer to respond
         } else {
-            const emails = await membersEmails(url, userId);
-            const mailResponse = await sendMail(`${url} is down`, 'The above mentioned service is down', emails);
-            console.log(mailResponse);
-            return { status: false, responseTime: 'An error occured while checking site status please trying again...', mailResponse }; // Website is down (request error)
+            return { status: false, responseTime: 'An error occured while checking site status please trying again...', }; // Website is down (request error)
         }
     }
 }

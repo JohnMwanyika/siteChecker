@@ -3,6 +3,7 @@ const { Website, SiteStatus, User, Team, Monitor, Monitor_Status, Results } = re
 const socket = require("../app");
 const { Op } = require('sequelize');
 const { sendMail } = require('./send_mail');
+const { emitToUser } = require('./socketFumctions');
 async function startMonitoringLogic(siteId, teamId, interval, userId) {
     try {
         // getting website details
@@ -150,7 +151,7 @@ async function startIntervalCheck(siteId, userId) {
                 }
             })
 
-            // check if this site is still being monitored
+            // check if this site is still being monitored (is in the list of monitors)
             if (monitoringSite) {
                 const websiteUrl = monitoringSite.Website.url;
 
@@ -160,17 +161,17 @@ async function startIntervalCheck(siteId, userId) {
                 if (siteResult.status === true) {
 
                     console.log(`Hurray!! ${websiteUrl} is up and operational took ${siteResult.responseTime} seconds.`);
-                    socket.ioObject.emit('siteStatus', `${monitoringSite.Website.name} is up took ${siteResult.responseTime} seconds.`);
+                    socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is up took ${siteResult.responseTime} seconds.`);
+                    // emitToUser('siteStatus', `${monitoringSite.Website.name} is up took ${siteResult.responseTime} seconds.`, userId);
 
                     // if the site was down initially it should notify members that it is now back online
                     if (previousStatus == "Down" || previousStatus == "Timeout") {
                         console.log(`Hurray!! ${websiteUrl} is back online and operational.`);
+                        // send notification to connected clients
+                        socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is back online.`);
                         // send emails
                         const recipients = await membersEmails(websiteUrl, userId);
-                        const mailResponse = await sendMail(`Hurray!! ${websiteUrl} is back online and operational.`, recipients);
-                        console.log('This is the email response', mailResponse)
-                        // send notification to connected clients
-                        socket.ioObject.emit('siteStatus', `${monitoringSite.Website.name} is back online.`);
+                        const mailResponse = await sendMail(`Site Availability Restored: ${websiteUrl}`, `Dear Team Member,\nWe are pleased to inform you that ${websiteUrl} is back online and fully operational.\nBest regards,\nWebWatch.`, recipients);
                     }
                     // update preveous status with current status
                     previousStatus = "Up"
@@ -181,16 +182,18 @@ async function startIntervalCheck(siteId, userId) {
                         status: 'success',
                         data: `${websiteUrl} is up and operational took ${siteResult.responseTime} seconds.`
                     }
-                    // Create a success outcome to the result table
-                    // res.json({ status: 'success', data: `${websiteUrl} is up and operational.` });
                 } else if (siteResult.status === 'timeout') {
-                    socket.ioObject.emit('siteStatus', `${monitoringSite.Website.name} is taking longer than expected, request took more than ${siteResult.responseTime} seconds. Trying again in ${monitoringSite.interval} minutes.`);
-
-                    console.log(`Mayday! ${websiteUrl} is taking too long to respond trying again in ${monitoringSite.interval} minutes.`);
-                    // set results to timeout
-                    const createdResult = createResult(monitoringSite.siteId, 'Timeout');
                     // update previos status
                     previousStatus = "Timeout";
+
+                    socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is taking longer than expected, request took more than ${siteResult.responseTime} seconds. Trying again in ${monitoringSite.interval} minutes.`);
+
+                    console.log(`Mayday! ${websiteUrl} is taking too long to respond trying again in ${monitoringSite.interval} minutes.`);
+                    // send emails
+                    const recipients = await membersEmails(websiteUrl, userId);
+                    const mailResponse = await sendMail(`Site Response Delay Alert: ${websiteUrl}`, `Dear Team Member,\n\nWe have detected a delay in the response time for ${websiteUrl}. Our monitoring system has detected this issue, and we will recheck the status in ${monitoringSite.interval} minutes.\nRest assured, we are actively monitoring the situation.\n\nBest regards,\nWebWatch.`, recipients);
+                    // set results to timeout
+                    const createdResult = createResult(monitoringSite.siteId, 'Timeout');
 
                     return {
                         status: 'warning',
@@ -200,7 +203,13 @@ async function startIntervalCheck(siteId, userId) {
                     previousStatus = 'Down'; // set 
 
                     console.log(`Mayday! Mayday! ${websiteUrl} has just collapsed trying again in ${monitoringSite.interval} minutes.`);
-                    socket.ioObject.emit('siteStatus', `${monitoringSite.Website.name} is down`);
+
+                    socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is down`);
+
+                    // send emails
+                    const recipients = await membersEmails(websiteUrl, userId);
+                    // const mailResponse = await sendMail(`Alert ${websiteUrl} collapsed`,`Attension please!! ${websiteUrl} is down or cannot be reached. checking again in ${monitoringSite.interval} minutes.`, recipients);
+                    const mailResponse = await sendMail(`Urgent: Downtime Alert for ${websiteUrl}`, `Dear Team Member,\n\nKindly be informed that there is an issue with ${websiteUrl} as it is currently experiencing downtime or is unreachable. We will conduct another assessment in ${monitoringSite.interval} minute.\n\nBest regards,\nWebWatch.`, recipients);
 
                     // set results to Down
                     const createdResult = createResult(monitoringSite.siteId, 'Down');
@@ -294,6 +303,8 @@ async function autoCleanUpResults(model) {
 // scheduleSiteCheck()
 //     .then(data => console.log(data))
 //     .catch(err => console.log(err));
+
+
 
 
 module.exports = { startIntervalCheck };
