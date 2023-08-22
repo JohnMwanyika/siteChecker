@@ -1,7 +1,10 @@
 nav.navbar.navbar-expand-lg.blur.border-radius-lg.top-0.z-index-3.shadow.position-absolute.mt-4.py-2.start-0.end-0.mx-4
     .container-fluid.ps-2.pe-0
-        a.navbar-brand.font-weight-bolder.ms-lg-0.ms-3(href="/").
-            Site Monitor
+        //- a.navbar-brand.font-weight-bolder.ms-lg-0.ms-3(href="/").
+        //-     Site Monitor
+        a.navbar-brand.m-0(href="/dashboard")
+            img.navbar-brand-img(src="../assets/img/favicon.png" width="30px" alt="main_logo")
+            span.ms-1.font-weight-bold WebWatch
 
         button.navbar-toggler.shadow-none.ms-2(type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation")
             span.navbar-toggler-icon.mt-2
@@ -15,11 +18,12 @@ nav.navbar.navbar-expand-lg.blur.border-radius-lg.top-0.z-index-3.shadow.positio
                     a.nav-link.d-flex.align-items-center.me-2.active(aria-current="page" href="/dashboard")
                         i.fa.fa-chart-pie.opacity-6.text-dark.me-1
                         |  Dashboard
-
-                li.nav-item
-                    a.nav-link.me-2(href="/profile")
-                        i.fa.fa-user.opacity-6.text-dark.me-1
-                        |  Profile
+                
+                if (user)
+                    li.nav-item
+                        a.nav-link.me-2(href="/profile")
+                            i.fa.fa-user.opacity-6.text-dark.me-1
+                            |  Profile
 
                 li.nav-item
                     a.nav-link.me-2(href="/signup")

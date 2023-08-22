@@ -25,7 +25,7 @@ block content
                                     th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 URL
                                     th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 Monitor State
                                     th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Status
-                                    th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Created By
+                                    //- th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Created By
                                     th.text-secondary.opacity-7 Action
                             tbody
                                 each site in sites
@@ -49,12 +49,14 @@ block content
                                                     input.form-check-input.mt-1.ms-auto(type="checkbox", onchange=`handleCheckboxChange(${site.id},45,this)` checked)
                                         td.align-middle.text-center.text-sm
                                             span.badge.badge-sm(class=`bg-gradient-${site.SiteStatus.color}`) #{site.SiteStatus.status}
-                                        td.align-middle.text-center
+                                        //- td.align-middle.text-center
                                             span.text-secondary.text-xs.font-weight-bold #{site.User.firstName}
                                         td.align-middle
-                                            a.text-secondary.font-weight-bold.text-xs(href="javascript:;" data-toggle="tooltip" data-bs-toggle="modal" data-bs-target=`#modal-form${site.id}`).
+                                            a.text-secondary.font-weight-bold.text-xs(href="javascript:;" data-toggle="tooltip" data-bs-toggle="modal" data-bs-target=`#modal-form${site.id}`)
+                                                .text-secondary.text-center.me-2.d-flex.align-items-center.justify-content-center
+                                                    i.material-icons.opacity-10 edit
+                                                        //- span.nav-link-text.ms-1 Edit
 
-                                                Edit
                                             include includes/modals/editSite
 
     <script src="/assets/js/plugins/datatables.js"></script>

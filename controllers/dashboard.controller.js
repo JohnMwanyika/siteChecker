@@ -42,19 +42,21 @@ module.exports = {
                     createdBy: req.user.id
                 },
                 order: [
-                    ['name', 'ASC']
+                    ['updatedAt', 'DESC'],
+                    // ['name', 'DESC'],
                 ],
                 include: [
                     { model: SiteStatus, required: true },
-                    { model: User, required: false }
+                    // { model: User, required: false }
                 ]
             })
             const siteData = allSites.map(site => site.toJSON());
             const notify = req.query.notify == 'update_true' ? { info: 'Website updated successfully', type: 'success' } : ''
             // console.log(siteData)
             res.render('websites', { title: "My Sites", sites: allSites, notify, user: req.session.user })
+            // res.json({ data: allSites })
         } catch (error) {
-            res.json({ status: 'error', data: `An error occured while fetching sites ${error.message}` })
+            res.json({ status: 'error', data: `An error occured while fetching sites ${error.message}` });
         }
 
     },
