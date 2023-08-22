@@ -1,5 +1,5 @@
 // const { Person } = require('../models');
-const { Website, SiteStatus, User: Person, Team } = require('../models/index.js');
+const { Website, SiteStatus, User: Person, Team, Member, Monitor } = require('../models/index.js');
 const { createDefaultTeam } = require('../models/team.model.js');
 
 
@@ -7,7 +7,14 @@ module.exports = {
     getAll: async (req, res) => {
         try {
             console.log('Getting all users...')
-            const allUsers = await Person.findAll();
+            const allUsers = await Person.findAll({
+                include: [
+                    { model: Monitor, include: { model: Team, include: { model: Member } } },
+                    { model: Website },
+                    { model: Team },
+                    { model: Member },
+                ]
+            });
             if (allUsers.length == 0) {
                 res.json({ status: "success", data: "No users found" });
                 return;
@@ -24,7 +31,7 @@ module.exports = {
         const newUser = await Person.create(data)
             .then(async (newUser) => {
                 const results = await createDefaultTeam(newUser.id);
-                console.log('created default team',results);
+                console.log('created default team', results);
                 return newUser;
             })
             .then((newUser) => {
