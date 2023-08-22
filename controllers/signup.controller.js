@@ -1,5 +1,5 @@
 const {
-    User
+    User, Member
 } = require('../models/index');
 const bcrypt = require('bcrypt');
 const { createDefaultTeam } = require('../models/team.model');
@@ -37,10 +37,18 @@ module.exports = {
                 roleId: 2,
                 statusId: 1
             });
+
             if (newUser) {
                 const results = await createDefaultTeam(newUser.id);
                 console.log('default team results', results);
-
+                const userAsMember = await Member.create({
+                    firstName: newUser.firstName,
+                    lastName: newUser.lastName,
+                    email: newUser.email,
+                    phone: newUser.phone,
+                    createdBy: newUser.id
+                });
+                
                 return res.redirect('/signin?success=user_created');
             }
         } catch (error) {
