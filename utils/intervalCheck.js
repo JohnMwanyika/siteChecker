@@ -47,7 +47,7 @@ async function membersEmails(url, userId) {
             include: [
                 {
                     model: Team, include: [
-                        { model: Member, attributes: ['email', 'firstName'] },
+                        { model: Member, attributes: ['email', 'firstName', 'phone'] },
                         // { model: User, attributes: ['email', 'firstName'] },
                     ]
                 }
@@ -60,12 +60,14 @@ async function membersEmails(url, userId) {
         // Collect all the member's mails
         const members = monitor.Team.Members;
         const emails = [];
+        const phoneNumbers = [];
         for (let member of members) {
             emails.push(member.email);
+            phoneNumbers.push(member.phone);
         }
         // Return the list of all emails to receive notifications
         console.log('##########RECIPIENTS INCLUDE', emails);
-        return emails;
+        return [emails, phoneNumbers];
 
     } catch (error) {
         console.log(error);

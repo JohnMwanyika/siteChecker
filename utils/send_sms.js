@@ -2,8 +2,8 @@ require('dotenv').config();
 const axios = require("axios");
 
 const recipients = [
-  '+254707438654',
-  '+254773946048'
+  '0707438654',
+  '0773946048'
 ]
 // sending sms to a single user
 // sendSms("Message from API", '+254773946048')
