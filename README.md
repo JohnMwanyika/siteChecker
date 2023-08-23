@@ -8,6 +8,13 @@ WebWatch is a user-friendly website monitoring app that keeps you informed about
 - **Effortless Monitoring:** No manual checks required – our app does the monitoring for you.
 - **Quick Recovery:** Celebrate when your site is back online with instant notifications.
 
+## Tech Stack
+
+- **Frontend:** HTML, CSS, JavaScript,MaterialUI,Bootstrap
+- **Backend:** Node.js, Express.js, Socket.io
+- **Database:** Sequelize > PostgresSQL
+- **Notification:** Email alerts
+
 ## Installation
 
 1. Clone the repository: `git clone https://github.com/yourusername/your-repo.git`
