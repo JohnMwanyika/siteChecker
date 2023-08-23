@@ -268,7 +268,7 @@ module.exports = {
                 siteId,
                 teamId, //selectedTeam.id || defaultTeam.id,
                 interval,
-                statusId: 2,
+                statusId: 2, //online by default, this will be activated once the site has been pinged for the first time
                 createdBy: userId,
             });
 
