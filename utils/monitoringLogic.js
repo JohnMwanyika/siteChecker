@@ -121,7 +121,7 @@ async function startIntervalCheck(siteId, userId) {
                 data: error.message, // Return default error
             };
         }
-    }, monitoredSite.interval * 10 * 1000); //multiply the seconds passed by seconds and again by miliseconds
+    }, monitoredSite.interval * 60 * 1000); //multiply the minutes passed by seconds and again by miliseconds
 
     console.log(`############## Monitoring has been started for ${monitoredSite.Website.url} ##############`);
     return {
