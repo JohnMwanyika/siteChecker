@@ -1,4 +1,4 @@
-# WebWatch
+# Site Checker A.K.A WebWatch
 
 WebWatch is a user-friendly website monitoring app that keeps you informed about the availability of your websites in real-time. Get instant notifications when your site goes down, and celebrate when it's back up.
 
