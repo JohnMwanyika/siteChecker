@@ -63,10 +63,12 @@ async function membersEmails(url, userId) {
         const phoneNumbers = [];
         for (let member of members) {
             emails.push(member.email);
-            phoneNumbers.push(member.phone);
+            phoneNumbers.push(`0${member.phone}`); //add zero to the phone number to make it complete
         }
         // Return the list of all emails to receive notifications
-        console.log('##########RECIPIENTS INCLUDE', emails);
+        console.log('##########RECIPIENTS Emails INCLUDE', emails);
+        console.log('##########RECIPIENTS phone numbers INCLUDE', phoneNumbers);
+
         return [emails, phoneNumbers];
 
     } catch (error) {

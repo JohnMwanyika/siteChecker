@@ -45,7 +45,7 @@ async function sendSms(message, phone) {
       return { status: 'error', data: response.status_desc }
     }
   } catch (error) {
-    console.log(error)
+    // console.log(error)
     return { status: 'error', data: error.message }
   }
 };
@@ -55,14 +55,15 @@ async function sendBulkSms(message, ...recipients) {
     console.log(recipients)
 
     return recipients.forEach(async (number) => {
+      console.log('sending to ',number)
       const response = await sendSms(message, number);
       console.log(response)
     })
 
   } catch (error) {
-    console.log(error)
+    // console.log(error)
     return { status: 'error', data: 'Oops an error occured while sending sms notification to the recipients' + error.message };
   }
 }
 
-module.exports = { sendSms };
+module.exports = { sendSms, sendBulkSms };
