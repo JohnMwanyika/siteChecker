@@ -18,10 +18,25 @@
                             label.form-label(for="users")  Select Team Members
                             select.form-control(id=`users` name="userIds" multiple onfocus="focused(this)" onfocusout="defocused(this)")
                                 <span class="material-symbols-outlined">arrow_drop_down</span>
-                                //- each user in users
-                                    option(value=`${user.id}`) #{user.firstName} #{user.lastName}
                                 each member in members
                                     option(value=`${member.id}`) #{member.firstName} #{member.lastName}
+
+                            .row
+                                p Select preffered notification type
+                                .col-6
+                                    .form-check
+                                        input.form-check-input#emailNotification(type="checkbox" name="email")
+                                        label.custom-control-label(for="emailNotification") Email notification
+                                .col-6
+                                    .form-check
+                                        input.form-check-input#smsNotification(type="checkbox", name="sms")
+                                        label.custom-control-label(for="smsNotification") SMS notification
+
                             .text-center
                                 button.btn.btn-round.bg-gradient-info.btn-lg.w-100.mt-4.mb-0(type="submit") Submit
                     .card-footer.text-center.pt-0.px-lg-2.px-1
+
+//- .form-check
+//-     input.form-check-input#fcustomCheck1(type="checkbox", checked)
+//-     label.custom-control-label(for="customCheck1") Check this custom checkbox
+

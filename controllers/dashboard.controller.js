@@ -88,7 +88,7 @@ module.exports = {
     },
     createTeam: async (req, res) => {
         const { title, description, userIds } = req.body;
-        console.log(userIds)
+        console.log(req.body)
         // Trim leading and trailing spaces from the inputs
         try {
             const trimmedTitle = title.trim();
@@ -105,14 +105,24 @@ module.exports = {
             }
             // try {
 
+            let email = '0';
+            let sms = '0';
+            if (req.body.email == 'on') {
+                email = '1'
+            }
+            if (req.body.sms == 'on') {
+                sms = '1'
+            }
             const newTeam = await Team.create({
                 name: trimmedTitle,
                 description,
-                createdBy: req.user.id
+                createdBy: req.user.id,
+                email,
+                sms
             })
             // await newTeam.addUsers(trimmedUserIds)
             await newTeam.addMembers(trimmedUserIds);
-            console.log(req.body);
+            // console.log(req.body);
             res.redirect('/dashboard/teams');
         } catch (error) {
             console.log(error)
