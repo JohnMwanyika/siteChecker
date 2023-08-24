@@ -7,7 +7,15 @@ const Team = sequelize.define("Team", {
         allowNull: false,
     },
     description: DataTypes.TEXT,
-    createdBy: DataTypes.INTEGER
+    createdBy: DataTypes.INTEGER,
+    email: {
+        type: DataTypes.ENUM('1', '0'),
+        defaultValue: '0'
+    },
+    sms:{
+        type: DataTypes.ENUM('1', '0'),
+        defaultValue: '0'
+    }
 })
 
 async function createDefaultTeam(createdBy) {
