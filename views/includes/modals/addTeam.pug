@@ -11,12 +11,12 @@
                         form(role="form text-left" action='/dashboard/teams' method='post')
                             .input-group.input-group-dynamic.my-3
                                 label.form-label Name
-                                input.form-control(type="text" name='title' onfocus="focused(this)" onfocusout="defocused(this)")
+                                input.form-control(type="text" name='title' onfocus="focused(this)" required onfocusout="defocused(this)")
                             .input-group.input-group-dynamic.my-3
-                                textarea.form-control(name="description" onfocus="focused(this)" onfocusout="defocused(this)" placeholder="A short description about the team and its members")
+                                textarea.form-control(name="description" onfocus="focused(this)" onfocusout="defocused(this)" required placeholder="A short description about the team and its members")
 
                             label.form-label(for="users")  Select Team Members
-                            select.form-control(id=`users` name="userIds" multiple onfocus="focused(this)" onfocusout="defocused(this)")
+                            select.form-control(id=`users` name="userIds" multiple onfocus="focused(this)" required onfocusout="defocused(this)")
                                 <span class="material-symbols-outlined">arrow_drop_down</span>
                                 each member in members
                                     option(value=`${member.id}`) #{member.firstName} #{member.lastName}

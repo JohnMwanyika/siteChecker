@@ -2,7 +2,7 @@ const express = require('express');
 const profileRouter = require('../routes/profile.route');
 const usersRouter = require('../routes/users');
 const membersRouter = require('./members.route');
-const { getDashboard, getSites, newSite, updateSite, createTeam, allTeams, updateTeam, removeTeam, startMonitoring, stopMonitoring } = require('../controllers/dashboard.controller');
+const { getDashboard, getSites, newSite, updateSite, createTeam, allTeams, updateTeam, removeTeam, startMonitoring, stopMonitoring, updateTeamNotification } = require('../controllers/dashboard.controller');
 
 const router = express.Router();
 
@@ -20,6 +20,8 @@ router.delete('/teams/remove/:teamId', removeTeam);
 
 router.post('/monitoring/start', startMonitoring);
 router.get('/monitoring/stop/:siteId', stopMonitoring);
+
+router.post('/teams/notification_update/:teamId', updateTeamNotification);
 
 // Profile route handler
 router.use('/profile', profileRouter);

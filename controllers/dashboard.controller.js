@@ -387,5 +387,21 @@ module.exports = {
         } catch (error) {
             return res.json({ status: 'error', data: `An error has occured while updating user -${error.message}` });
         }
+    },
+    updateTeamNotification: async (req, res) => {
+        const { email, sms } = req.body;
+        const { teamId } = req.params;
+
+        console.log(req.body)
+
+        try {
+            await Team.update({ email, sms }, {
+                where: { id: teamId }
+            })
+            res.json({ status: 'success', data: 'Notification prefference updated successfully' })
+        } catch (error) {
+            res.json({ status: 'error', data: 'An error occured while updating team notification' });
+        }
+
     }
 }
