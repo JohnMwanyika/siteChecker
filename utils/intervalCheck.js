@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { Op } = require('sequelize');
 const { Website, SiteStatus, User, Team, Monitor, Monitor_Status, Member } = require('../models/index.js');
 const { sendMail } = require('./send_mail.js');
 // const {
@@ -16,10 +17,6 @@ const { sendMail } = require('./send_mail.js');
 //         console.log('Error sending Mail');
 //     });
 
-const websiteUrl = 'https://mailrecovery.onrender.com'; // Replace with the website URL you want to monitor
-const checkInterval = 5 * 60 * 1000; // Check every 5 minutes
-
-
 // Function to check the website status
 // async function checkWebsiteStatus(url) {
 //     try {
@@ -34,6 +31,9 @@ const checkInterval = 5 * 60 * 1000; // Check every 5 minutes
 //         return false; // Website is down (request error)
 //     };
 // };
+// membersEmails('http://localhost:3000', 1)
+//     .then(data => console.log(data))
+//     .catch(error => console.log(error))
 
 async function membersEmails(url, userId) {
     try {
@@ -48,8 +48,13 @@ async function membersEmails(url, userId) {
                 {
                     model: Team, include: [
                         { model: Member, attributes: ['email', 'firstName', 'phone'] },
-                        // { model: User, attributes: ['email', 'firstName'] },
-                    ]
+                    ],
+                    // where: {
+                    //     [Op.or]: [
+                    //         { email: '1' },
+                    //         { sms: '1' }
+                    //     ]
+                    // }
                 }
             ],
             where: { siteId: website.id }
@@ -57,23 +62,44 @@ async function membersEmails(url, userId) {
         if (!monitor) {
             return { status: 'warning', data: `${url} is not being monitored` }
         }
-        // Collect all the member's mails
-        const members = monitor.Team.Members;
+
         const emails = [];
         const phoneNumbers = [];
-        for (let member of members) {
-            emails.push(member.email);
-            phoneNumbers.push(`0${member.phone}`); //add zero to the phone number to make it complete
+        // if no notification service selected
+        if (monitor.Team.email == '0' && monitor.Team.sms == '0') {
+            return { status: 'warning', data: [emails, phoneNumbers], msg: `${url} experienced downtime; no action taken due to missing default notification service.` }
         }
-        // Return the list of all emails to receive notifications
-        console.log('##########RECIPIENTS Emails INCLUDE', emails);
-        console.log('##########RECIPIENTS phone numbers INCLUDE', phoneNumbers);
-
-        return [emails, phoneNumbers];
+        // if only email selected
+        if (monitor.Team.email == '1' && monitor.Team.sms == '0') {
+            const members = monitor.Team.Members;
+            for (let member of members) {
+                emails.push(member.email);
+            }
+            return { status: 'success', data: [emails, phoneNumbers], msg: 'Sending emails to all members' }
+        }
+        // if only sms selected
+        if (monitor.Team.email == '0' && monitor.Team.sms == '1') {
+            const members = monitor.Team.Members;
+            for (let member of members) {
+                phoneNumbers.push(`0${member.phone}`);
+            }
+            return { status: 'success', data: [emails, phoneNumbers], msg: 'Sending SMS to all members' }
+        }
+        // if all options are true
+        if (monitor.Team.email == '1' && monitor.Team.sms == '1') {
+            const members = monitor.Team.Members;
+            for (let member of members) {
+                emails.push(member.email);
+                phoneNumbers.push(`0${member.phone}`); //add zero to the phone number to make it complete
+            }
+            console.log('##########RECIPIENTS Emails INCLUDE', emails);
+            console.log('##########RECIPIENTS phone numbers INCLUDE', phoneNumbers);
+            return { status: 'success', data: [emails, phoneNumbers], msg: 'Sending both email and sms to all members in the team' }
+        }
 
     } catch (error) {
         console.log(error);
-        return { status: 'error', data: 'Oops! Unkown error occured while fetching recipients please try again' }
+        return { status: 'error', data: [], msg: `Oops! Unkown error occured while fetching recipients please try again -${error.message}` }
     }
 
 }
@@ -92,10 +118,11 @@ async function checkWebsiteStatus(url, timeout = 15000, userId) { //TImeout has 
             return { status: false, responseTime, }; // Website is down
         }
     } catch (error) {
+        console.log(error)
         if (error.code === 'ECONNABORTED') {
             return { status: 'timeout', responseTime: timeout }; // Website is up but took longer to respond
         } else {
-            return { status: false, responseTime: 'An error occured while checking site status please trying again...', }; // Website is down (request error)
+            return { status: false, responseTime: `An error occured while checking site status please trying again -${error.message}`, }; // Website is down (request error)
         }
     }
 }

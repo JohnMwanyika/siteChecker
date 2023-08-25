@@ -51,7 +51,8 @@ async function startIntervalCheck(siteId, userId) {
                         // send notification to connected clients
                         socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is back online.`);
                         // send emails
-                        const [recipients, phoneNumbers] = await membersEmails(websiteUrl, userId);
+                        const results = await membersEmails(websiteUrl, userId);
+                        const [recipients, phoneNumbers] = results.data;
                         const mailResponse = await sendMail(`Site Availability Restored: ${websiteUrl}`, `Dear Team Member,\nWe are pleased to inform you that ${websiteUrl} is back online and fully operational.\nBest regards,\nWebWatch.`, recipients);
                         const smsResult = await sendBulkSms(`Dear Team Member,\nWe are pleased to inform you that ${websiteUrl} is back online and fully operational.\nBest regards,\nWebWatch.`, ...phoneNumbers);
                         console.log(smsResult);
@@ -73,7 +74,8 @@ async function startIntervalCheck(siteId, userId) {
 
                     console.log(`Mayday! ${websiteUrl} is taking too long to respond trying again in ${monitoringSite.interval} minutes.`);
                     // send emails
-                    const [recipients, phoneNumbers] = await membersEmails(websiteUrl, userId);
+                    const results = await membersEmails(websiteUrl, userId);
+                    const [recipients, phoneNumbers] = results.data;
                     const mailResponse = await sendMail(`Site Response Delay Alert: ${websiteUrl}`, `Dear Team Member,\n\nWe have detected a delay in the response time for ${websiteUrl}. Our monitoring system has detected this issue, and we will recheck the status in ${monitoringSite.interval} minutes.\nRest assured, we are actively monitoring the situation.\n\nBest regards,\nWebWatch.`, recipients);
                     const smsResult = await sendBulkSms(`Dear Team Member,\n\nWe have detected a delay in the response time for ${websiteUrl}. Our monitoring system has detected this issue, and we will recheck the status in ${monitoringSite.interval} minutes.\nRest assured, we are actively monitoring the situation.\n\nBest regards,\nWebWatch.`, ...phoneNumbers);
                     console.log(smsResult);
@@ -92,8 +94,8 @@ async function startIntervalCheck(siteId, userId) {
                     socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is down`);
 
                     // send emails
-                    const [recipients, phoneNumbers] = await membersEmails(websiteUrl, userId);
-                    // const mailResponse = await sendMail(`Alert ${websiteUrl} collapsed`,`Attension please!! ${websiteUrl} is down or cannot be reached. checking again in ${monitoringSite.interval} minutes.`, recipients);
+                    const results = await membersEmails(websiteUrl, userId);
+                    const [recipients, phoneNumbers] = results.data;
                     const mailResponse = await sendMail(`Urgent: Downtime Alert for ${websiteUrl}`, `Dear Team Member,\n\nKindly be informed that there is an issue with ${websiteUrl} as it is currently experiencing downtime or is unreachable. We will conduct another assessment in ${monitoringSite.interval} minute.\n\nBest regards,\nWebWatch.`, recipients);
                     const smsResult = await sendBulkSms(`Dear Team Member,\n\nKindly be informed that there is an issue with ${websiteUrl} as it is currently experiencing downtime or is unreachable. We will conduct another assessment in ${monitoringSite.interval} minute.\n\nBest regards,\nWebWatch.`, ...phoneNumbers);
                     console.log(smsResult);
