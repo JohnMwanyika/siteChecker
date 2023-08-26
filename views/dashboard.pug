@@ -166,9 +166,10 @@ block content
                                             span.text-xs.font-weight-bold #{site.User.firstName} #{site.User.lastName}
                                         td.align-middle.text-center.text-sm
                                             if (site.Monitor_Status.name == 'Live')
-                                                span.text-xs.font-weight-bold.text-success #{site.Monitor_Status.name}
+                                                span.badge.badge-sm.badge-success #{site.Monitor_Status.name}
                                             if (site.Monitor_Status.name == 'Offline')
-                                                span.text-xs.font-weight-bold.text-danger #{site.Monitor_Status.name}
+                                                span.badge.badge-sm.badge-danger #{site.Monitor_Status.name}
+
                                         //- td.align-middle
                                             .progress-wrapper.w-75.mx-auto
                                                 .progress-info
