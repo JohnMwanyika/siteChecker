@@ -43,6 +43,10 @@ async function startIntervalCheck(siteId, userId) {
 
                     console.log(`Hurray!! ${websiteUrl} is up and operational took ${siteResult.responseTime} seconds.`);
                     socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is up took ${siteResult.responseTime} seconds.`);
+
+                    // function to update Monitoring status after requesting
+                    const updateStatus = await updateSiteStatus(monitoredSite.id, 1);
+                    console.log(updateStatus);
                     // emitToUser('siteStatus', `${monitoringSite.Website.name} is up took ${siteResult.responseTime} seconds.`, userId);
 
                     // if the site was down initially it should notify members that it is now back online
@@ -92,6 +96,10 @@ async function startIntervalCheck(siteId, userId) {
                     console.log(`Mayday! Mayday! ${websiteUrl} has just collapsed trying again in ${monitoringSite.interval} minutes.`);
 
                     socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is down`);
+
+                    // function to update Monitoring status after requesting
+                    const updateStatus = await updateSiteStatus(monitoredSite.id, 2)
+                    console.log(updateStatus);
 
                     // send emails
                     const results = await membersEmails(websiteUrl, userId);
@@ -192,7 +200,29 @@ async function autoCleanUpResults(model) {
 //     .then(data => console.log(data))
 //     .catch(err => console.log(err));
 
+async function updateSiteStatus(monitorId, statusId) {
+    try {
+        const monitor = await Monitor.findByPk(monitorId);
+        if (!monitor) {
+            return { status: 'warning', data: 'Monitor not found' }
+        }
+        // return monitor
+        monitor.statusId = statusId
+        await monitor.save();
+        return {
+            status: 'success',
+            data: '',
+            msg: 'Monitor status updated successfully'
+        }
+
+    } catch (error) {
+        return {
+            status: 'error',
+            data: '',
+            msg: 'An error occured while updating Monitor status'
+        }
+    }
+}
 
 
-
-module.exports = { startIntervalCheck };
+module.exports = { startIntervalCheck, updateSiteStatus };

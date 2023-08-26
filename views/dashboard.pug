@@ -165,7 +165,10 @@ block content
                                         td.align-middle.text-center.text-sm
                                             span.text-xs.font-weight-bold #{site.User.firstName} #{site.User.lastName}
                                         td.align-middle.text-center.text-sm
-                                            span.text-xs.font-weight-bold #{site.Monitor_Status.name}
+                                            if (site.Monitor_Status.name == 'Live')
+                                                span.text-xs.font-weight-bold.text-success #{site.Monitor_Status.name}
+                                            if (site.Monitor_Status.name == 'Offline')
+                                                span.text-xs.font-weight-bold.text-danger #{site.Monitor_Status.name}
                                         //- td.align-middle
                                             .progress-wrapper.w-75.mx-auto
                                                 .progress-info
@@ -184,7 +187,7 @@ block content
                         |  this month
 
                 .card-body.p-3
-                    .timeline.timeline-one-side
+                    //- .timeline.timeline-one-side
                         .timeline-block.mb-3
                             span.timeline-step
                                 i.material-icons.text-success.text-gradient notifications
