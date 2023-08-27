@@ -270,8 +270,8 @@ block content
                                     return monitor.Monitor_Status.name =='Live';
                                 })
                                 online.text(live.length);
-                                console.log('total offline',alloffline.length);
-                                console.log('total Live',live.length);
+                                //- console.log('total offline',alloffline.length);
+                                //- console.log('total Live',live.length);
                             }
                         },
 
@@ -366,9 +366,13 @@ block content
 
             makeAjaxCall();
 
-            //- if(#{user.id}){
-            //-     socket.on(`siteStatus_#{user.id}`,(data)=>{
-            //-         makeAjaxCall();
-            //-     });
-            //- }
+            document.addEventListener('DOMContentLoaded',function(){
+                if(#{user.id}){
+                    socket.on(`siteStatus_#{user.id}`,(data)=>{
+                        console.log('refreshing');
+                        makeAjaxCall();
+                    });
+            }  
+            });
+
             //- })
