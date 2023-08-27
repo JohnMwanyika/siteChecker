@@ -86,7 +86,9 @@ script.
                     console.log(data.data)
                     if(data.status == "success"){
                         form[0].reset();
-                        window.location.reload()
+                        makeAjaxCall();
+                        $('#addMonitor').modal('hide');
+                        //- window.location.reload()
                     }
                     Toast.fire({
                         icon:data.status,

@@ -5,53 +5,53 @@ block content
             .card
                 .card-header.p-3.pt-2
                     .icon.icon-lg.icon-shape.bg-gradient-dark.shadow-dark.text-center.border-radius-xl.mt-n4.position-absolute
-                        i.material-icons.opacity-10 weekend
+                        i.material-icons.opacity-10 monitor_heart
                     .text-end.pt-1
                         p.text-sm.mb-0.text-capitalize Monitoring
                         - let totalWebsites = websites.length
                         h4.mb-0.totalMonitors 0
                 hr.dark.horizontal.my-0
                 .card-footer.p-3
-                    p.mb-0
+                    //- p.mb-0
                         span.text-success.text-sm.font-weight-bolder +55% 
                         | than last week
         .col-xl-3.col-sm-6.mb-xl-0.mb-4
             .card
                 .card-header.p-3.pt-2
                     .icon.icon-lg.icon-shape.bg-gradient-primary.shadow-primary.text-center.border-radius-xl.mt-n4.position-absolute
-                        i.material-icons.opacity-10 person
+                        i.material-icons.opacity-10 sensors_off
                     .text-end.pt-1
                         p.text-sm.mb-0.text-capitalize Offline
                         h4.mb-0(id='offline') 0
                 hr.dark.horizontal.my-0
                 .card-footer.p-3
-                    p.mb-0
+                    //- p.mb-0
                         span.text-success.text-sm.font-weight-bolder +3% 
                         | than last month
         .col-xl-3.col-sm-6.mb-xl-0.mb-4
             .card
                 .card-header.p-3.pt-2
                     .icon.icon-lg.icon-shape.bg-gradient-success.shadow-success.text-center.border-radius-xl.mt-n4.position-absolute
-                        i.material-icons.opacity-10 person
+                        i.material-icons.opacity-10 sensors
                     .text-end.pt-1
                         p.text-sm.mb-0.text-capitalize Online
                         h4.mb-0(id="live") 0
                 hr.dark.horizontal.my-0
                 .card-footer.p-3
-                    p.mb-0
+                    //- p.mb-0
                         span.text-danger.text-sm.font-weight-bolder -2%
                         |  than yesterday
         .col-xl-3.col-sm-6
             .card
                 .card-header.p-3.pt-2
                     .icon.icon-lg.icon-shape.bg-gradient-info.shadow-info.text-center.border-radius-xl.mt-n4.position-absolute
-                        i.material-icons.opacity-10 weekend
+                        i.material-icons.opacity-10 list_alt
                     .text-end.pt-1
                         p.text-sm.mb-0.text-capitalize All Services
                         h4.mb-0 #{totalWebsites}
                 hr.dark.horizontal.my-0
                 .card-footer.p-3
-                    p.mb-0
+                    //- p.mb-0
                         span.text-success.text-sm.font-weight-bolder +5% 
                         | than yesterday
     //- .row.mt-4
@@ -223,7 +223,7 @@ block content
     <script src="/assets/js/plugins/datatables.js"></script>
     script.
 
-        document.addEventListener('DOMContentLoaded',function(){
+        //- document.addEventListener('DOMContentLoaded',function(){
             const dataTableMonitor = new simpleDatatables.DataTable("#datatable-monitor", {
                 searchable: true,
                 fixedHeight: false
@@ -262,7 +262,7 @@ block content
 
                                 let alloffline = result.data.filter(function(monitor){
                                     //- console.log(monitor)
-                                    return monitor.Monitor_Status.name =='offline';
+                                    return monitor.Monitor_Status.name =='Offline';
                                 })
                                 offline.text(alloffline.length);
                                 let live = result.data.filter(function(monitor){
@@ -371,4 +371,4 @@ block content
             //-         makeAjaxCall();
             //-     });
             //- }
-        })
+            //- })
