@@ -191,8 +191,9 @@ module.exports = {
     removeTeam: async (req, res) => {
         console.log('############ DELETION REQUEST RECEIVED ############')
         const { teamId } = req.params;
+        console.log(teamId)
         try {
-            const team = await Team.findOne({ where: { id: teamId } });
+            const team = await Team.findByPk(teamId);
             if (!team) {
                 return res.json({
                     status: 'error',
@@ -202,12 +203,23 @@ module.exports = {
             if (team.name === 'Default') {
                 return res.json({ status: 'error', data: 'This is a system-generated team and cannot be removed' })
             }
+
+            // const hasMonitors = await team.hasMonitors({ where: { id: teamId } });
+            const hasMonitors = await team.countMonitors();
+            console.log('Weather or not team has monitors', hasMonitors);
+            if(hasMonitors > 0){
+                return res.json({
+                    status: 'warning',
+                    data: `${team.name}, you are about to delete has active monitors stop monitor before deleting team`
+                })
+            }
+
             const removedTeam = await Team.destroy({
                 where: {
                     id: teamId
                 }
             });
-            console.log('#################################', removedTeam);
+            // console.log('#################################', removedTeam);
             res.json({
                 status: 'success',
                 data: 'Team deleted successfully'
@@ -217,9 +229,8 @@ module.exports = {
             console.log(error);
             res.json({
                 status: 'error',
-                data: 'Team deletion failed, please try again'
+                data: 'Team deletion failed, please try again' + error.message
             })
-            // res.redirect('/dashboard/teams?info=error');
         }
     },
     startMonitoring: async (req, res) => {
