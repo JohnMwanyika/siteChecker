@@ -104,7 +104,7 @@ async function membersEmails(url, userId) {
 
 }
 
-async function checkWebsiteStatus(url, timeout = 15000, userId) { //TImeout has been set to 15 seconds
+async function checkWebsiteStatus(url, timeout = 20000, userId) { //TImeout has been set to 15 seconds
     try {
         const startTime = new Date().getTime(); // Track start time
         const response = await axios.get(url, { timeout });
