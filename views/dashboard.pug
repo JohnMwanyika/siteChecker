@@ -8,9 +8,8 @@ block content
                         i.material-icons.opacity-10 weekend
                     .text-end.pt-1
                         p.text-sm.mb-0.text-capitalize Monitoring
-                        - let totalMonitors = allSites.length
                         - let totalWebsites = websites.length
-                        h4.mb-0 #{totalMonitors}
+                        h4.mb-0.totalMonitors 0
                 hr.dark.horizontal.my-0
                 .card-footer.p-3
                     p.mb-0
@@ -23,7 +22,7 @@ block content
                         i.material-icons.opacity-10 person
                     .text-end.pt-1
                         p.text-sm.mb-0.text-capitalize Offline
-                        h4.mb-0 0
+                        h4.mb-0(id='offline') 0
                 hr.dark.horizontal.my-0
                 .card-footer.p-3
                     p.mb-0
@@ -36,7 +35,7 @@ block content
                         i.material-icons.opacity-10 person
                     .text-end.pt-1
                         p.text-sm.mb-0.text-capitalize Online
-                        h4.mb-0 0
+                        h4.mb-0(id="live") 0
                 hr.dark.horizontal.my-0
                 .card-footer.p-3
                     p.mb-0
@@ -108,7 +107,7 @@ block content
                             p.text-sm.mb-0
                                 i.fa.fa-check.text-info(aria-hidden="true")  
                                 span.spinner-border.spinner-border-sm(id=`monitorsLoader` role="status" aria-hidden="true")  
-                                span.font-weight-bold.ms-1#totalMonitors
+                                span.font-weight-bold.ms-1.totalMonitors
                                 //- span.font-weight-bold.ms-1 #{allSites.length} services
                                 span.font-weight-bold.ms-1  services
                                 |  currently monitoring
@@ -231,6 +230,9 @@ block content
             });
 
             let load = $('#monitorsLoader').hide();
+            let totalMonitors = $('.totalMonitors');
+            let online = $('#live');
+            let offline = $('#offline');
 
             function makeAjaxCall(){
                 $.ajax(
@@ -255,6 +257,21 @@ block content
                             if(result.status == 'success'){
                                 //- call function to update data
                                 updateTableData(dataTableMonitor,result.data);
+                                //- get total online
+                                totalMonitors.text(result.data.length);
+
+                                let alloffline = result.data.filter(function(monitor){
+                                    //- console.log(monitor)
+                                    return monitor.Monitor_Status.name =='offline';
+                                })
+                                offline.text(alloffline.length);
+                                let live = result.data.filter(function(monitor){
+                                    //- console.log(monitor)
+                                    return monitor.Monitor_Status.name =='Live';
+                                })
+                                online.text(live.length);
+                                console.log('total offline',alloffline.length);
+                                console.log('total Live',live.length);
                             }
                         },
 
