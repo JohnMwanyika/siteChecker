@@ -5,19 +5,23 @@
                 h5.modal-title.h4(id='memberModalLabel')
                 button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
             .modal-body.m-3
-                form(method="post", action=`/dashboard/Update-group` id=`memberForm`)
+                form(method="post", action=`` id='membersForm')
                     .mb-3
-                        label.form-label First Name
-                        input.form-control(type="text" value=`` name="firstName" placeholder="")#firstName
+                        .input-group.input-group-outline
+                            label.form-label First Name
+                            input.form-control(type="text" value=`` name="firstName" placeholder="")#firstName
                     .mb-3
-                        label.form-label Last Name
-                        input.form-control(type="text" value=`` name="lastName" placeholder="")#lastName
+                        .input-group.input-group-outline
+                            label.form-label Last Name
+                            input.form-control(type="text" value=`` name="lastName" placeholder="")#lastName
                     .mb-3
-                        label.form-label Email
-                        input.form-control(type="email" value=`` name="email" placeholder="")#email
+                        .input-group.input-group-outline
+                            label.form-label Email
+                            input.form-control(type="email" value=`` name="email" placeholder="")#email
                     .mb-3
-                        label.form-label Phone
-                        input.form-control(type="tel" value=`` name="phone" placeholder="")#phone
+                        .input-group.input-group-outline
+                            label.form-label Phone
+                            input.form-control(type="tel" value=`` name="phone" placeholder="")#phone
                     .mb-3
                         button.btn.btn-secondary.px-5(type="submit" id=`saveChanges`) save changes 
                             span.spinner-border.spinner-border-sm(id=`loader` role="status" aria-hidden="true")
@@ -28,7 +32,7 @@ script.
         // *****************************************AJAX SUBMIT GROUP MODAL***********************************************
 
         let loader = $(`#loader`).hide();
-        let form = $(`#memberForm`);
+        let form = $(`#membersForm`);
         let submitButton = $(`#saveChanges`);
 
         submitButton.on('click', function (event) {
@@ -59,6 +63,9 @@ script.
                             icon: result.status,
                             title: result.data
                         })
+                        //- window.location.reload();
+                        $('#memberModal').modal('hide');
+                        makeAjaxCall();
                     } else {
                         Toast.fire({
                             icon: `${result.status}`,

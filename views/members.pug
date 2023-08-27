@@ -52,17 +52,18 @@ block content
                             span.spinner-border.spinner-border-sm(id=`membersLoader` role="status" aria-hidden="true")
 
                             thead
-                                tr
+                                //- tr
                                     th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 First Name
                                     th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 Last Name
                                     th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 Email
                                     th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 Phone
+                                    th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 id
                             tbody
-                    include includes/modals/memberModal.pug
+                        include includes/modals/memberModal
 
         <script src="/assets/js/plugins/datatables.js"></script>
         script(type="text/javascript").
-            document.addEventListener('DOMContentLoaded',function(){
+            //- document.addEventListener('DOMContentLoaded',function(){
                 var dataTable = new simpleDatatables.DataTable("#datatable-members", {
                     searchable: true,
                     fixedHeight: true,
@@ -80,21 +81,25 @@ block content
                         // Add new rows to the table body
                         newData.forEach(function(data) {
                             phone = `0${data.phone.toString()}`
+                            id = `${data.id}`
                             table.insert(
                                 {
-                                    headings:["First Name","Last Name","Email","Phone"],
+                                    headings:["First Name","Last Name","Email","Phone","id"],
                                     data:[
                                         [
-                                            `${data.firstName}`,
+                                            `${data.firstName}`, //You can also use html
                                             data.lastName,
                                             data.email,
-                                            phone]
+                                            phone,
+                                            id
+                                        ]
                                     ]
                                 }
                             );
                         });
 
                         table.update(measureWidths=false);
+                        createModal(table);
                     }catch(error){
                         console.log(error);
                     }
@@ -199,19 +204,23 @@ block content
                 });
 
                 //- function to display modals for each member
-                createModal();
-                function createModal(){
-                    $('#allMembers tbody').on('click', 'tr', function() {
-                        const data = dataTable.row(this).data();
+                //- createModal();
+                function createModal(table){
+                    $('#datatable-members tbody').on('click', 'tr', function() {
+                        const data = this.children;
+                        //- console.log(data)
+                        for(let i = 0; i<data.length; i++){
+                            $('#memberModalLabel').text(data[0].data);
+                            $('#firstName').val(data[0].data);
+                            $('#lastName').val(data[1].data);
+                            $('#email').val(data[2].data);
+                            $('#phone').val(data[3].data);
+                            $('#membersForm').attr('action',`/dashboard/members/api/update/${data[4].data}`);
+                        }
+
                         // Show the modal with the group details
-                        $('#memberModalLabel').text(data.firstName);
-                        $('#memberForm').attr('action',`/dashboard/Update-group/${data.id}`);
-                        $('#firstName').val(data.firstName);
-                        $('#lastName').val(data.lastName);
-                        $('#emal').val(data.emal);
-                        //- $('#groupIntro')[0].value ='data.intro';
                         $('#memberModal').modal('show');
 
                     })
                 }
-            });
+            //- });
