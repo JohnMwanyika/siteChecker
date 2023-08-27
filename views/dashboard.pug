@@ -106,9 +106,12 @@ block content
                         .col-lg-6.col-7
                             h6 Monitored Websites
                             p.text-sm.mb-0
-                                i.fa.fa-check.text-info(aria-hidden="true")
-                                span.font-weight-bold.ms-1 #{allSites.length} services
-                                |  currently being monitoring
+                                i.fa.fa-check.text-info(aria-hidden="true")  
+                                span.spinner-border.spinner-border-sm(id=`monitorsLoader` role="status" aria-hidden="true")  
+                                span.font-weight-bold.ms-1#totalMonitors
+                                //- span.font-weight-bold.ms-1 #{allSites.length} services
+                                span.font-weight-bold.ms-1  services
+                                |  currently monitoring
 
                         .col-lg-6.col-5.my-auto.text-end
                             .dropdown.float-lg-end.pe-4
@@ -126,33 +129,25 @@ block content
                     .table-responsive
                         table.table.align-items-center.mb-0(id="datatable-monitor")
                             thead
-                                tr
+                                //- tr
                                     th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Websites/APIs
                                     th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 Monitoring Team
                                     th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Check Interval(Minutes)
                                     th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Created By
                                     th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Status
                             tbody
-                                each site in allSites
+                                //- each site in allSites
                                     tr
                                         td
                                             .d-flex.px-2.py-1
                                                 div
                                                     img.avatar.avatar-sm.me-3(src=`${site.Website.url}/favicon.ico` alt="favicon")
-                                                //- site Name
                                                 .d-flex.flex-column.justify-content-center
                                                     h6.mb-0.text-sm #{site.Website.name} 
                                         td
                                             .avatar-group.mt-2
                                                 | #{site.Team.name}
                                                 br
-                                                //- each user in site.Team.Users
-                                                //-     a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title=`${user.firstName} ${user.lastName}`)
-                                                //-         //- img(src="../assets/img/team-1.jpg" alt="team1")
-                                                //-         if (user.avatarPath)
-                                                //-             img(alt="user's avatar" src=`${user.avatarPath}`)
-                                                //-         else
-                                                //-             img(alt="Image placeholder" src="../../assets/img/team-1.jpg")
                                                 each user in site.Team.Members
                                                     a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title=`${user.firstName} ${user.lastName}`)
                                                         //- img(src="../assets/img/team-1.jpg" alt="team1")
@@ -228,7 +223,135 @@ block content
 
     <script src="/assets/js/plugins/datatables.js"></script>
     script.
-        const dataTableMonitor = new simpleDatatables.DataTable("#datatable-monitor", {
-            searchable: true,
-            fixedHeight: false
-        });
+
+        document.addEventListener('DOMContentLoaded',function(){
+            const dataTableMonitor = new simpleDatatables.DataTable("#datatable-monitor", {
+                searchable: true,
+                fixedHeight: false
+            });
+
+            let load = $('#monitorsLoader').hide();
+
+            function makeAjaxCall(){
+                $.ajax(
+                    {
+                        url:`/dashboard/api/monitors`,
+                        type:'get',
+
+                        beforeSend: function () {
+                            load.show(function () {
+                                //- $(this).prop("disabled", true);
+                            });
+                        },
+
+                        complete: function () {
+                            load.hide(function () {
+                                //- $(this).removeAttr('disabled');
+                            });
+                        },
+
+                        success:function(result){
+                            //- console.log('All members include',result);
+                            if(result.status == 'success'){
+                                //- call function to update data
+                                updateTableData(dataTableMonitor,result.data);
+                            }
+                        },
+
+                        error: function (xhr, status, error) {
+                            console.error('AJAX Error:', error);
+                        }
+                    }
+                )
+            };
+            //- function to insert new rows
+            function updateTableData(table, newData) {
+                try{
+                    // Clear the existing table body
+                    table.destroy();
+                    table.init()
+                    // Add new rows to the table body
+                    newData.forEach(function(data) {
+                        let name =
+                            `
+                            <td>
+                                <div class="d-flex px-2 py-1">
+                                    <div><img class="avatar avatar-sm me-3" src='${data.Website.url}/favicon.ico' alt="favicon"></div>
+                                        <div class="d-flex flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm">${data.Website.name}</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            `;
+
+                        let members =[];
+                        data.Team.Members.forEach(function(member){
+                            member =
+                                `
+                                    <a class="avatar avatar-xs rounded-circle" href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${member.firstName} ${member.lastName}">
+                                        <img alt="Image placeholder" src="../../assets/img/team-1.jpg"/>
+                                    </a>
+                                `
+                            members.push(member);
+                        })
+                        let team =
+                            `
+                            <td>
+                                <div class="avatar-group mt-2">${data.Team.name}
+                                    <br/>
+                                    ${members.join('')}
+                                </div>
+                            </td>
+                            `;
+                        let interval =
+                            `
+                            <td class="align-middle text-center text-sm">
+                                <span class="text-xs font-weight-bold">${data.interval} Minutes</span>
+                            </td>
+                            `;
+                        let status;
+                        if (data.Monitor_Status.name == 'Offline'){
+                            status =
+                                `
+                                <td class="align-middle text-center text-sm">
+                                    <span class="badge badge-sm badge-danger">${data.Monitor_Status.name}</span>
+                                </td>
+                                `;
+                        }else{
+                            status =`
+                                <td class="align-middle text-center text-sm">
+                                    <span class="badge badge-sm badge-success">${data.Monitor_Status.name}</span>
+                                </td>
+                                `;
+                        };
+
+                        table.insert(
+                            {
+                                headings:["Website/API","Monitoring Team","Check Interval","Status"],
+                                data:[
+                                    [
+                                        name, //You can also use html
+                                        team,
+                                        interval,
+                                        status
+                                    ]
+                                ]
+                            }
+                        );
+                    });
+
+                    table.update(measureWidths=false);
+                    //- createModal(table);
+                }catch(error){
+                    console.log(error);
+                }
+            };
+
+            makeAjaxCall();
+
+            //- if(#{user.id}){
+            //-     socket.on(`siteStatus_#{user.id}`,(data)=>{
+            //-         makeAjaxCall();
+            //-     });
+            //- }
+        })

@@ -207,7 +207,7 @@ module.exports = {
             // const hasMonitors = await team.hasMonitors({ where: { id: teamId } });
             const hasMonitors = await team.countMonitors();
             console.log('Weather or not team has monitors', hasMonitors);
-            if(hasMonitors > 0){
+            if (hasMonitors > 0) {
                 return res.json({
                     status: 'warning',
                     data: `${team.name}, you are about to delete has active monitors stop monitor before deleting team`
@@ -414,5 +414,30 @@ module.exports = {
             res.json({ status: 'error', data: 'An error occured while updating team notification' });
         }
 
+    },
+    fetchMonitorsApi: async (req, res) => {
+        try {
+            // get all sites being monitored
+            const monitors = await Monitor.findAll({
+                where: {
+                    createdBy: req.user.id
+                },
+                include: [
+                    { model: Team, include: [{ model: User }, { model: Member }] }, //include: { model: User, required: true } },
+                    { model: User },
+                    { model: Website, include: [{ model: SiteStatus }] },
+                    { model: Monitor_Status },
+                ]
+            });
+            if (!monitors) {
+                res.json({ status: 'warning', data: `You currently don't have any ongoing monitored sites. You can create a new monitor for your sites by clicking on the three dots above. ` });
+            }
+
+            // console.log(allSites)
+            res.json({ status: 'success', data: monitors });
+        } catch (error) {
+            console.log(error)
+            res.json({ status: 'error', data: 'We encountered an error while retrieving your currently monitored sites. To resolve this issue, please try refreshing the page.' })
+        }
     }
 }
