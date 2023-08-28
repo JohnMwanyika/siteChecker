@@ -50,7 +50,7 @@ async function startIntervalCheck(siteId, userId) {
                     // emitToUser('siteStatus', `${monitoringSite.Website.name} is up took ${siteResult.responseTime} seconds.`, userId);
 
                     // if the site was down initially it should notify members that it is now back online
-                    if (previousStatus == "Down" || previousStatus == "Timeout") {
+                    if (previousStatus == "Down") {
                         console.log(`Hurray!! ${websiteUrl} is back online and operational.`);
                         // send notification to connected clients
                         socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is back online.`);
@@ -59,6 +59,18 @@ async function startIntervalCheck(siteId, userId) {
                         const [recipients, phoneNumbers] = results.data;
                         const mailResponse = await sendMail(`Site Availability Restored: ${websiteUrl}`, `Dear Team Member,\nWe are pleased to inform you that ${websiteUrl} is back online and fully operational.\nBest regards,\nWebWatch.`, recipients);
                         const smsResult = await sendBulkSms(`Dear Team Member,\nWe are pleased to inform you that ${websiteUrl} is back online and fully operational.\nBest regards,\nWebWatch.`, ...phoneNumbers);
+                        console.log(smsResult);
+                    }
+                    // if the site was down initially it should notify members that it is now back online
+                    if (previousStatus == "Timeout") {
+                        console.log(`Hurray!! ${websiteUrl} has no delays and operational.`);
+                        // send notification to connected clients
+                        socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is operational.`);
+                        // send emails
+                        const results = await membersEmails(websiteUrl, userId);
+                        const [recipients, phoneNumbers] = results.data;
+                        const mailResponse = await sendMail(`Site Availability Restored: ${websiteUrl}`, `Dear Team Member,\nWe are pleased to inform you that the response time for ${websiteUrl} is within the expected range and everything appears to be functioning smoothly.\nBest regards,\nWebWatch.`, recipients);
+                        const smsResult = await sendBulkSms(`Dear Team Member,\nWe are pleased to inform you that the response time for ${websiteUrl} is within the expected range and everything appears to be functioning smoothly.\nBest regards,\nWebWatch.`, ...phoneNumbers);
                         console.log(smsResult);
                     }
                     // update preveous status with current status
@@ -221,6 +233,25 @@ async function updateSiteStatus(monitorId, statusId) {
             data: '',
             msg: 'An error occured while updating Monitor status'
         }
+    }
+}
+
+class Notification {
+    constructor(recipients, message) {
+        this.recipients = recipients;
+        this.message = message;
+    };
+    getRecipients() {
+        return this.recipients
+    }
+}
+
+class Sms extends Notification {
+    constructor(message){
+        this.message = message
+    }
+    sendSms(){
+
     }
 }
 
