@@ -20,7 +20,8 @@ module.exports = {
                 return;
             }
             // console.log(Person);
-            res.json(allUsers);
+            // res.json(allUsers);
+            res.render('users', { status: 'success', data: allUsers });
         } catch (error) {
             res.json({ message: { type: 'error', info: error.message } });
         }

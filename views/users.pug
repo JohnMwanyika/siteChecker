@@ -1,0 +1,242 @@
+extends dashLayout
+block content
+    .container-fluid.py-4
+        .row
+            .col-lg-6.col-12
+                .row
+                    .col-lg-6.col-md-6.col-12.mb-4
+                        .card
+                            .card-header.p-3.py-2
+                                .icon.icon-lg.icon-shape.bg-gradient-info.shadow.text-center.border-radius-xl.mt-n4.position-absolute
+                                    i.material-icons.text-white.opacity-10.
+                                        account_circle
+
+                                .text-end.pt-1
+                                    p.text-sm.mb-0.text-capitalize Users Active
+                                    h4.mb-0 1,600
+                            hr.dark.horizontal.my-0
+                            .card-footer.p-3
+                                p.mb-0
+                                    span.text-success.text-sm.font-weight-bolder +55% 
+                                    | than lask week
+                    .col-lg-6.col-md-6.col-12.mb-4
+                        .card
+                            .card-header.p-3.py-2
+                                .icon.icon-lg.icon-shape.bg-gradient-info.shadow.text-center.border-radius-xl.mt-n4.position-absolute
+                                    i.material-icons.text-white.opacity-10.
+                                        pan_tool
+
+                                .text-end.pt-1
+                                    p.text-sm.mb-0.text-capitalize Click Events
+                                    h4.mb-0 357
+                            hr.dark.horizontal.my-0
+                            .card-footer.p-3
+                                p.mb-0
+                                    span.text-success.text-sm.font-weight-bolder +124% 
+                                    | than lask week
+                .row.mt-2
+                    .col-lg-6.col-md-6.col-12
+                        .card
+                            .card-header.p-3.py-2
+                                .icon.icon-lg.icon-shape.bg-gradient-info.shadow.text-center.border-radius-xl.mt-n4.position-absolute
+                                    i.material-icons.text-white.opacity-10.
+                                        shopping_basket
+
+                                .text-end.pt-1
+                                    p.text-sm.mb-0.text-capitalize Purchases
+                                    h4.mb-0 2,300
+                            hr.dark.horizontal.my-0
+                            .card-footer.p-3
+                                p.mb-0
+                                    span.text-success.text-sm.font-weight-bolder +15% 
+                                    | than lask week
+                    .col-lg-6.col-md-6.col-12.mt-4.mt-md-0
+                        .card
+                            .card-header.p-3.py-2
+                                .icon.icon-lg.icon-shape.bg-gradient-info.shadow.text-center.border-radius-xl.mt-n4.position-absolute
+                                    i.material-icons.text-white.opacity-10.
+                                        thumb_up
+
+                                .text-end.pt-1
+                                    p.text-sm.mb-0.text-capitalize Likes
+                                    h4.mb-0 940
+                            hr.dark.horizontal.my-0
+                            .card-footer.p-3
+                                p.mb-0
+                                    span.text-success.text-sm.font-weight-bolder +90% 
+                                    | than lask week
+            .col-lg-6.col-12.mt-4.mt-lg-0
+                .card.h-100
+                    .card-header.pb-0.p-3
+                        h6.mb-0 Reviews
+                    .card-body.pb-0.p-3
+                        ul.list-group
+                            li.list-group-item.border-0.d-flex.align-items-center.px-0.mb-0
+                                .w-100
+                                    .d-flex.mb-2
+                                        span.me-2.text-sm.text-capitalize Positive reviews
+                                        span.ms-auto.text-sm 80%
+                                    div
+                                        .progress.progress-md
+                                            .progress-bar.bg-gradient-info.w-80(role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100")
+                            li.list-group-item.border-0.d-flex.align-items-center.px-0.mb-2
+                                .w-100
+                                    .d-flex.mb-2
+                                        span.me-2.text-sm.text-capitalize Neutral reviews
+                                        span.ms-auto.text-sm 17%
+                                    div
+                                        .progress.progress-md
+                                            .progress-bar.bg-gradient-dark.w-10(role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100")
+                            li.list-group-item.border-0.d-flex.align-items-center.px-0.mb-2
+                                .w-100
+                                    .d-flex.mb-2
+                                        span.me-2.text-sm.text-capitalize Negative reviews
+                                        span.ms-auto.text-sm 3%
+                                    div
+                                        .progress.progress-md
+                                            .progress-bar.bg-gradient-danger.w-5(role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100")
+                    .card-footer.pt-0.p-3.d-flex.align-items-center
+                        .w-60
+                            p.text-sm.mb-0
+                                | More than 
+                                b 1,500,000
+                                |  developers used Creative Tim's products and over 
+                                b 700,000
+                                |  projects were created.
+
+                        .w-40.text-end
+                            a.btn.bg-gradient-dark.mb-0(href="javascript:;") View all reviews
+        .row.my-4
+            .col-12
+                .card
+                    .table-responsive
+                        table.table.align-items-center.mb-0
+                            thead
+                                tr
+                                    th.text-uppercase.text-xxs.font-weight-bolder.opacity-7 Name
+                                    th.text-uppercase.text-xxs.font-weight-bolder.opacity-7.ps-2 Function
+                                    th.text-uppercase.text-xxs.font-weight-bolder.opacity-7.ps-2 Review
+                                    th.text-center.text-uppercase.text-xxs.font-weight-bolder.opacity-7 Email
+                                    th.text-center.text-uppercase.text-xxs.font-weight-bolder.opacity-7 Employed
+                                    th.text-center.text-uppercase.text-xxs.font-weight-bolder.opacity-7 Id
+                            tbody
+                                tr
+                                    td
+                                        .d-flex.px-2.py-1
+                                            div
+                                                img.avatar.avatar-sm.me-3(src="../../../assets/img/team-2.jpg" alt="avatar image")
+                                            .d-flex.flex-column.justify-content-center
+                                                h6.mb-0.font-weight-normal.text-sm John Michael
+                                    td
+                                        p.text-sm.font-weight-normal.mb-0 Manager
+                                    td
+                                        span.badge.badge-dot.me-4
+                                            i.bg-info
+                                            span.text-dark.text-xs positive
+                                    td.align-middle.text-center.text-sm
+                                        p.mb-0.font-weight-normal.text-sm
+                                            a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="f79d989f99b782849285d994989a") [email protected]
+                                    td.align-middle.text-center
+                                        p.text-sm.font-weight-normal.mb-0 23/04/18
+                                    td.align-middle.text-center
+                                        p.text-sm.font-weight-normal.mb-0 43431
+                                tr
+                                    td
+                                        .d-flex.px-2.py-1
+                                            div
+                                                img.avatar.avatar-sm.me-3(src="../../../assets/img/team-3.jpg" alt="avatar image")
+                                            .d-flex.flex-column.justify-content-center
+                                                h6.mb-0.font-weight-normal.text-sm Alexa Liras
+                                    td
+                                        p.text-sm.font-weight-normal.mb-0 Programator
+                                    td
+                                        span.badge.badge-dot.me-4
+                                            i.bg-info
+                                            span.text-dark.text-xs positive
+                                    td.align-middle.text-center.text-sm
+                                        p.mb-0.font-weight-normal.text-sm
+                                            a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="0d6c6168756c4d787e687f236e6260") [email protected]
+                                    td.align-middle.text-center
+                                        p.text-sm.font-weight-normal.mb-0 11/01/19
+                                    td.align-middle.text-center
+                                        p.text-sm.font-weight-normal.mb-0 93021
+                                tr
+                                    td
+                                        .d-flex.px-2.py-1
+                                            div
+                                                img.avatar.avatar-sm.me-3(src="../../../assets/img/team-4.jpg" alt="avatar image")
+                                            .d-flex.flex-column.justify-content-center
+                                                h6.mb-0.font-weight-normal.text-sm Laurent Perrier
+                                    td
+                                        p.text-sm.font-weight-normal.mb-0 Executive
+                                    td
+                                        span.badge.badge-dot.me-4
+                                            i.bg-dark
+                                            span.text-dark.text-xs neutral
+                                    td.align-middle.text-center.text-sm
+                                        p.mb-0.font-weight-normal.text-sm
+                                            a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="89e5e8fcfbece7fdc9fcfaecfba7eae6e4") [email protected]
+                                    td.align-middle.text-center
+                                        p.text-sm.font-weight-normal.mb-0 19/09/17
+                                    td.align-middle.text-center
+                                        p.text-sm.font-weight-normal.mb-0 10392
+                                tr
+                                    td
+                                        .d-flex.px-2.py-1
+                                            div
+                                                img.avatar.avatar-sm.me-3(src="../../../assets/img/team-3.jpg" alt="avatar image")
+                                            .d-flex.flex-column.justify-content-center
+                                                h6.mb-0.font-weight-normal.text-sm Michael Levi
+                                    td
+                                        p.text-sm.font-weight-normal.mb-0 Backend developer
+                                    td
+                                        span.badge.badge-dot.me-4
+                                            i.bg-info
+                                            span.text-dark.text-xs positive
+                                    td.align-middle.text-center.text-sm
+                                        p.mb-0.font-weight-normal.text-sm
+                                            a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="55383c363d34303915202630277b363a38") [email protected]
+                                    td.align-middle.text-center
+                                        p.text-sm.font-weight-normal.mb-0 24/12/08
+                                    td.align-middle.text-center
+                                        p.text-sm.font-weight-normal.mb-0 34002
+                                tr
+                                    td
+                                        .d-flex.px-2.py-1
+                                            div
+                                                img.avatar.avatar-sm.me-3(src="../../../assets/img/team-2.jpg" alt="avatar image")
+                                            .d-flex.flex-column.justify-content-center
+                                                h6.mb-0.font-weight-normal.text-sm Richard Gran
+                                    td
+                                        p.text-sm.font-weight-normal.mb-0 Manager
+                                    td
+                                        span.badge.badge-dot.me-4
+                                            i.bg-danger
+                                            span.text-dark.text-xs negative
+                                    td.align-middle.text-center.text-sm
+                                        p.mb-0.font-weight-normal.text-sm
+                                            a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="b3c1dad0dbd2c1d7f3c6c0d6c19dd0dcde") [email protected]
+                                    td.align-middle.text-center
+                                        p.text-sm.font-weight-normal.mb-0 04/10/21
+                                    td.align-middle.text-center
+                                        p.text-sm.font-weight-normal.mb-0 91879
+                                tr
+                                    td
+                                        .d-flex.px-2.py-1
+                                            div
+                                                img.avatar.avatar-sm.me-3(src="../../../assets/img/team-4.jpg" alt="avatar image")
+                                            .d-flex.flex-column.justify-content-center
+                                                h6.mb-0.font-weight-normal.text-sm Miriam Eric
+                                    td
+                                        p.text-sm.font-weight-normal.mb-0 Programtor
+                                    td
+                                        span.badge.badge-dot.me-4
+                                            i.bg-info
+                                            span.text-dark.text-xs positive
+                                    td.align-middle.text-center.text-sm
+                                        p.mb-0.font-weight-normal.text-sm
+                                            a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="c9a4a0bba0a8a489bcbaacbbe7aaa6a4") [email protected]
+                                    td.align-middle.text-center
+                                        p.text-sm.font-weight-normal.mb-0 14/09/20
+                                    td.align-middle.text-center
+                                        p.text-sm.font-weight-normal.mb-0 23042

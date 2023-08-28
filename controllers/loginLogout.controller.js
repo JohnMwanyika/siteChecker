@@ -14,10 +14,9 @@ module.exports = {
             } = req.body;
             const user = await User.findOne({
                 include: [
-                    {
-                        model: UserStatus,
-                        required: true
-                    }],
+                    { model: UserStatus },
+                    { model: Role }
+                ],
                 where: {
                     email: email,
                 }
