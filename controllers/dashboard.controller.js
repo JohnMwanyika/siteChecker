@@ -15,20 +15,20 @@ module.exports = {
             // get all monitoring teams for the current user
             const teams = await Team.findAll({ where: { createdBy: req.user.id }, });
             // get all sites being monitored
-            const allSites = await Monitor.findAll({
-                where: {
-                    createdBy: req.user.id
-                },
-                include: [
-                    { model: Team, include: [{ model: User }, { model: Member }] }, //include: { model: User, required: true } },
-                    { model: User },
-                    { model: Website, include: [{ model: SiteStatus }] },
-                    { model: Monitor_Status },
-                ]
-            });
+            // const allSites = await Monitor.findAll({
+            //     where: {
+            //         createdBy: req.user.id
+            //     },
+            //     include: [
+            //         { model: Team, include: [{ model: User }, { model: Member }] }, //include: { model: User, required: true } },
+            //         { model: User },
+            //         { model: Website, include: [{ model: SiteStatus }] },
+            //         { model: Monitor_Status },
+            //     ]
+            // });
 
             // console.log(allSites)
-            res.render('dashboard', { title: "Dashboard", allSites, websites, teams, });
+            res.render('dashboard', { title: "Dashboard", websites, teams, });
         } catch (error) {
             console.log(error)
         }

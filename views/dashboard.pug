@@ -128,11 +128,10 @@ block content
                     .table-responsive
                         table.table.align-items-center.mb-0(id="datatable-monitor")
                             thead
-                                //- tr
+                                tr
                                     th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Websites/APIs
                                     th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 Monitoring Team
                                     th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Check Interval(Minutes)
-                                    th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Created By
                                     th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Status
                             tbody
                                 //- each site in allSites
@@ -296,6 +295,10 @@ block content
                                     <div><img class="avatar avatar-sm me-3" src='${data.Website.url}/favicon.ico' alt="favicon"></div>
                                         <div class="d-flex flex-column justify-content-center">
                                         <h6 class="mb-0 text-sm">${data.Website.name}</h6>
+                                        <br/>
+                                        <p class='text-muted'>
+                                            <a class='text-xs' target='_blank' href='${data.Website.url}'>${data.Website.url}</a>
+                                        </p>
                                     </div>
                                 </div>
                             </td>
@@ -314,7 +317,7 @@ block content
                         let team =
                             `
                             <td>
-                                <div class="avatar-group mt-2">${data.Team.name}
+                                <div class="text-sm avatar-group">${data.Team.name}
                                     <br/>
                                     ${members.join('')}
                                 </div>
@@ -322,21 +325,21 @@ block content
                             `;
                         let interval =
                             `
-                            <td class="align-middle text-center text-sm">
-                                <span class="text-xs font-weight-bold">${data.interval} Minutes</span>
+                            <td class="text-center text-sm">
+                                <span class="text-xs">${data.interval} Minutes</span>
                             </td>
                             `;
                         let status;
                         if (data.Monitor_Status.name == 'Offline'){
                             status =
                                 `
-                                <td class="align-middle text-center text-sm">
+                                <td class="text-center text-sm">
                                     <span class="badge badge-sm badge-danger">${data.Monitor_Status.name}</span>
                                 </td>
                                 `;
                         }else{
                             status =`
-                                <td class="align-middle text-center text-sm">
+                                <td class="text-center text-sm">
                                     <span class="badge badge-sm badge-success">${data.Monitor_Status.name}</span>
                                 </td>
                                 `;
