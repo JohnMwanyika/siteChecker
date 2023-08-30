@@ -104,5 +104,25 @@ module.exports = {
             })
 
 
+    },
+    getUsersApi: async (req, res) => {
+        try {
+            console.log('Getting all users...')
+            const allUsers = await Person.findAll({
+                include: [
+                    { model: Monitor, include: { model: Team, include: { model: Member } } },
+                    { model: Website },
+                    { model: Team },
+                    { model: Member },
+                ]
+            });
+            if (allUsers.length == 0) {
+                res.json({ status: "success", data: "No users found" });
+                return;
+            }
+            res.json({ status: 'success', data: allUsers });
+        } catch (error) {
+            res.json({ status: 'error', data: '', msg: `An error occured while fetching users -${error.message}` });
+        }
     }
 }

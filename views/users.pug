@@ -240,3 +240,164 @@ block content
                                         p.text-sm.font-weight-normal.mb-0 14/09/20
                                     td.align-middle.text-center
                                         p.text-sm.font-weight-normal.mb-0 23042
+
+    <script src="/assets/js/plugins/datatables.js"></script>
+    script.
+
+        //- document.addEventListener('DOMContentLoaded',function(){
+            const dataTableMonitor = new simpleDatatables.DataTable("#datatable-monitor", {
+                searchable: true,
+                fixedHeight: false
+            });
+
+            let load = $('#monitorsLoader').hide();
+            let totalMonitors = $('.totalMonitors');
+            let online = $('#live');
+            let offline = $('#offline');
+
+            function makeAjaxCall(){
+                $.ajax(
+                    {
+                        url:`/dashboard/api/monitors`,
+                        type:'get',
+
+                        beforeSend: function () {
+                            load.show(function () {
+                                //- $(this).prop("disabled", true);
+                            });
+                        },
+
+                        complete: function () {
+                            load.hide(function () {
+                                //- $(this).removeAttr('disabled');
+                            });
+                        },
+
+                        success:function(result){
+                            //- console.log('All members include',result);
+                            if(result.status == 'success'){
+                                //- call function to update data
+                                updateTableData(dataTableMonitor,result.data);
+                                //- get total online
+                                totalMonitors.text(result.data.length);
+
+                                let alloffline = result.data.filter(function(monitor){
+                                    //- console.log(monitor)
+                                    return monitor.Monitor_Status.name =='Offline';
+                                })
+                                offline.text(alloffline.length);
+                                let live = result.data.filter(function(monitor){
+                                    //- console.log(monitor)
+                                    return monitor.Monitor_Status.name =='Live';
+                                })
+                                online.text(live.length);
+                                //- console.log('total offline',alloffline.length);
+                                //- console.log('total Live',live.length);
+                            }
+                        },
+
+                        error: function (xhr, status, error) {
+                            console.error('AJAX Error:', error);
+                        }
+                    }
+                )
+            };
+            //- function to insert new rows
+            function updateTableData(table, newData) {
+                try{
+                    // Clear the existing table body
+                    table.destroy();
+                    table.init()
+                    // Add new rows to the table body
+                    newData.forEach(function(data) {
+                        let name =
+                            `
+                            <td>
+                                <div class="d-flex px-2 py-1">
+                                    <div><img class="avatar avatar-sm me-3" src='${data.Website.url}/favicon.ico' alt="favicon"></div>
+                                        <div class="d-flex flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm">${data.Website.name}</h6>
+                                        <br/>
+                                        <p class='text-muted'>
+                                            <a class='text-xs' target='_blank' href='${data.Website.url}'>${data.Website.url}</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </td>
+                            `;
+
+                        let members =[];
+                        data.Team.Members.forEach(function(member){
+                            member =
+                                `
+                                    <a class="avatar avatar-xs rounded-circle" href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${member.firstName} ${member.lastName}">
+                                        <img alt="Image placeholder" src="../../assets/img/team-1.jpg"/>
+                                    </a>
+                                `
+                            members.push(member);
+                        })
+                        let team =
+                            `
+                            <td>
+                                <div class="text-sm avatar-group">${data.Team.name}
+                                    <br/>
+                                    ${members.join('')}
+                                </div>
+                            </td>
+                            `;
+                        let interval =
+                            `
+                            <td class="text-center text-sm">
+                                <span class="text-xs">${data.interval} Minutes</span>
+                            </td>
+                            `;
+                        let status;
+                        if (data.Monitor_Status.name == 'Offline'){
+                            status =
+                                `
+                                <td class="text-center text-sm">
+                                    <span class="badge badge-sm badge-danger">${data.Monitor_Status.name}</span>
+                                </td>
+                                `;
+                        }else{
+                            status =`
+                                <td class="text-center text-sm">
+                                    <span class="badge badge-sm badge-success">${data.Monitor_Status.name}</span>
+                                </td>
+                                `;
+                        };
+
+                        table.insert(
+                            {
+                                headings:["Website/API","Monitoring Team","Check Interval","Status"],
+                                data:[
+                                    [
+                                        name, //You can also use html
+                                        team,
+                                        interval,
+                                        status
+                                    ]
+                                ]
+                            }
+                        );
+                    });
+
+                    table.update(measureWidths=false);
+                    //- createModal(table);
+                }catch(error){
+                    console.log(error);
+                }
+            };
+
+            makeAjaxCall();
+
+            document.addEventListener('DOMContentLoaded',function(){
+                if(#{user.id}){
+                    socket.on(`siteStatus_#{user.id}`,(data)=>{
+                        console.log('refreshing');
+                        makeAjaxCall();
+                    });
+            }  
+            });
+
+            //- })
