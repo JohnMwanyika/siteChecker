@@ -28,20 +28,27 @@ module.exports = {
     },
     createOne: async (req, res) => {
         const { firstName, lastName, email, phone } = req.body;
-        const data = { firstName, lastName, email, phone }
-        const newUser = await Person.create(data)
-            .then(async (newUser) => {
-                const results = await createDefaultTeam(newUser.id);
-                console.log('created default team', results);
-                return newUser;
-            })
-            .then((newUser) => {
-                res.json({ status: 'success', data: newUser });
-                // res.send(`User ${newUser.name} created successfully id is ${newUser.id}`)
-            })
-            .catch((error) => {
-                res.json({ error: error.message })
-            })
+        const data = { firstName, lastName, email, phone };
+
+        try {
+            const existing = await Person.findOne({ where: { email } });
+
+            if (existing) {
+                return res.json({ status: 'warning', data: existing, msg: 'A user with similar email already exists, try another email' });
+            }
+
+            const newUser = await Person.create(data);
+
+            if (!newUser) {
+                return res.json({ status: 'warning', data: '', msg: 'An error occured while creating user please try again' });
+            }
+
+            const defaultTeamResponse = await createDefaultTeam(newUser.id);
+
+            res.json({ status: 'success', data: newUser, msg: `${newUser.firstName}, has been created successfully` });
+        } catch (error) {
+            res.json({ status: 'error', data: '', msg: `An error occured while creating user account-${error.message}` });
+        }
     },
     getOne: async (req, res) => {
         const { userId } = req.params;
@@ -72,7 +79,7 @@ module.exports = {
             const user = await Person.findByPk(userId);
 
             if (!user) {
-                return res.json({ status: 'warning', msg: `No user with id ${id}` });
+                return res.json({ status: 'warning', msg: `No user with id ${userId}` });
             }
 
             await Person.update(data, { where: { id: userId } });
@@ -86,10 +93,10 @@ module.exports = {
         const { userId } = req.params;
 
         try {
-            const user = await Person.findByPk(id);
+            const user = await Person.findByPk(userId);
 
             if (!user) {
-                return res.json({ status: 'warning', msg: `No user with id ${id}` })
+                return res.json({ status: 'warning', msg: `No user with id ${userId}` })
             }
 
             await Person.destroy({ where: { id: userId } });
