@@ -44,65 +44,61 @@ module.exports = {
             })
     },
     getOne: async (req, res) => {
-        const { id } = req.params;
-        const user = await Person.findByPk(id)
-            .then((user) => {
-                if (!user) {
-                    res.json({ status: 'error', message: `No user with id ${id}` })
-                    return;
-                }
-                console.log(user);
-                res.json({ status: 'success', data: user });
+        const { userId } = req.params;
+        try {
+            const user = await Person.findByPk(userId, {
+                include: [
+                    { model: Monitor, include: { model: Team, include: { model: Member } } },
+                    { model: Website },
+                    { model: Team },
+                    { model: Member },
+                ]
             })
+            if (!user) {
+                return res.json({ status: 'warning', data: '', msg: `User with id ${userId} is not found or has been removed` });
+            }
+
+            res.json({ status: 'success', data: user, msg: 'User has been found' });
+        } catch (error) {
+            res.json({ status: 'error', data: '', msg: `An error occured while retrieving this user-${error.message}` });
+        }
     },
     updateById: async (req, res) => {
-        const { id } = req.params;
+        const { userId } = req.params;
         const { name, age, gender, address } = req.body;
         const data = { name, age, gender, address }
-        const user = await Person.findByPk(id);
-        if (!user) {
-            res.json({ status: 'error', message: `No user with id ${id}` })
-            return;
-        }
-        const updatedUser = await Person.update(
-            { name, age, gender, address }, {
-            where: {
-                id: id
+
+        try {
+            const user = await Person.findByPk(userId);
+
+            if (!user) {
+                return res.json({ status: 'warning', msg: `No user with id ${id}` });
             }
-        })
-            .then((updatedUser) => {
-                console.log(updatedUser);
-                res.json({ status: 'success', data: updatedUser })
-            })
-            .catch((err) => {
-                res.json({ status: 'error', message: err.message })
-            })
+
+            await Person.update(data, { where: { id: userId } });
+            res.json({ status: 'success', data: '', msg: `${user.firstName} has been updated successfully` });
+
+        } catch (error) {
+            res.json({ status: 'error', data: '', msg: `An error occured while updating user-${error.message}` });
+        }
     },
     deleteUser: async (req, res) => {
-        const { id } = req.params;
-        const user = await Person.findByPk(id)
-            .then((user) => {
-                if (!user) {
-                    res.json({ status: 'error', message: `No user with id ${id}` })
-                    return;
-                }
-                return user;
-            }).then(async (user) => {
-                const deletedUser = await Person.destroy({
-                    where: {
-                        id: user.id,
-                    }
-                })
-                return deletedUser;
-            })
-            .then((data) => {
-                console.log(data);
-                res.json({ status: 'success', data: data })
-            })
-            .catch((err) => {
-                res.json({ status: 'error', message: err.message })
-            })
+        const { userId } = req.params;
 
+        try {
+            const user = await Person.findByPk(id);
+
+            if (!user) {
+                return res.json({ status: 'warning', msg: `No user with id ${id}` })
+            }
+
+            await Person.destroy({ where: { id: userId } });
+
+            res.json({ status: 'success', data: '', msg: 'User deleted successfully' });
+
+        } catch (error) {
+            res.json({ status: 'error', data: '', msg: `An error occured while deleting user-${error.message}` });
+        }
 
     },
     getUsersApi: async (req, res) => {
