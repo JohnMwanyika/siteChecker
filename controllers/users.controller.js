@@ -96,7 +96,7 @@ module.exports = {
             const user = await Person.findByPk(userId);
 
             if (!user) {
-                return res.json({ status: 'warning', msg: `No user with id ${userId}` })
+                return res.json({ status: 'warning', msg: `No user with id ${userId}` });
             }
 
             await Person.destroy({ where: { id: userId } });

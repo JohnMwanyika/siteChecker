@@ -110,7 +110,7 @@ block content
             .col-12
                 .card
                     .table-responsive
-                        table.table.align-items-center.mb-0
+                        table.table.align-items-center.mb-0(id="datatableUsers")
                             thead
                                 tr
                                     th.text-uppercase.text-xxs.font-weight-bolder.opacity-7 Name
@@ -243,14 +243,13 @@ block content
 
     <script src="/assets/js/plugins/datatables.js"></script>
     script.
-
+        
         //- document.addEventListener('DOMContentLoaded',function(){
-            const dataTableMonitor = new simpleDatatables.DataTable("#datatable-monitor", {
+            const dataTableUsers = new simpleDatatables.DataTable("#datatableUsers", {
                 searchable: true,
                 fixedHeight: false
             });
 
-            let load = $('#monitorsLoader').hide();
             let totalMonitors = $('.totalMonitors');
             let online = $('#live');
             let offline = $('#offline');
@@ -262,22 +261,18 @@ block content
                         type:'get',
 
                         beforeSend: function () {
-                            load.show(function () {
-                                //- $(this).prop("disabled", true);
-                            });
+                            showOverlaySpinner();
                         },
 
                         complete: function () {
-                            load.hide(function () {
-                                //- $(this).removeAttr('disabled');
-                            });
+                            hideOverlaySpinner();
                         },
 
                         success:function(result){
                             //- console.log('All members include',result);
                             if(result.status == 'success'){
                                 //- call function to update data
-                                updateTableData(dataTableMonitor,result.data);
+                                updateTableData(dataTableUsers,result.data);
                                 //- get total online
                                 totalMonitors.text(result.data.length);
 

@@ -34,6 +34,8 @@
     //- sweet alert
     script(src="/assets/sweetAlert/sweetalert2.all.min.js")
     link(rel="stylesheet" href="/assets/sweetAlert/sweetalert2.min.css")
+    //- include my custom spinner
+    link(rel="stylesheet" href="/assets/spinner/spinner.css")
     script.
         // sweet alert defaults
         let Toast = Swal.mixin({
@@ -50,21 +52,23 @@
     //- dropzoneJs
     script(src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js")
     link(rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css")
+        //- my spinnerjs file
+    <script src="/assets/spinner/spinner.js"></script>
     //- Socket.io
     script(src="/socket.io/socket.io.js")
-
-    //- style.
-    //-     @media screen and (max-width: 768px) {
-    //-         .body {
-    //-             width: 90%; /* Adjust width for smaller viewports */
-    //-             font-size: 14px; /* Adjust font size for better readability */
-    //-         }
-    //-     }
-
 
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
+    .overlay-spinner
+        .loadingio-spinner-double-ring-48ko84rz8u8
+            .ldio-ii7oxxrr1x
+                div
+                div
+                div
+                    div
+                div
+                    div
     include includes/sidebar
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <!-- Navbar -->
@@ -76,12 +80,15 @@
         </div>
     </main>
     include includes/settings
+
     //- <!--   Core JS Files   -->
     <script src="/assets/js/core/popper.min.js"></script>
     <script src="/assets/js/core/bootstrap.min.js"></script>
     <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
     <script src="/assets/js/plugins/chartjs.min.js"></script>
+
+
     //- <script src="/assets/js/chartData.js"></script>
 
     <script src="/assets/js/plugins/choices.min.js"></script>
@@ -99,17 +106,19 @@
             var NewUsers = document.getElementById(`users`);
             const Users = new Choices(NewUsers, {});
         }
-    //- <script src="/assets/js/plugins/datatables.js"></script>
-    //- script.
-    //-     const dataTableBasic = new simpleDatatables.DataTable("#datatable-search", {
-    //-         searchable: true,
-    //-         fixedHeight: false
-    //-     });
-    //-     const dataTableone = new simpleDatatables.DataTable("#datatable-one", {
-    //-         searchable: true,
-    //-         fixedHeight: false
-    //-     });
 
+    //- script.
+    //-     const overlaySpinner = document.querySelector('.overlay-spinner');
+
+    //-     // Function to show the overlay spinner
+    //-     function showOverlaySpinner() {
+    //-         overlaySpinner.style.display = 'flex';
+    //-     }
+
+    //-     // Function to hide the overlay spinner
+    //-     function hideOverlaySpinner() {
+    //-         overlaySpinner.style.display = 'none';
+    //-     }
 
     script.
         var win = navigator.platform.indexOf('Win') > -1;
@@ -148,6 +157,7 @@
                 })
             });
         }
+
     //- <script src="../assets/js/material-dashboard.min.js?v=3.1.0"></script>
     //- <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v52afc6f149f6479b8c77fa569edb01181681764108816" integrity="sha512-jGCTpDpBAYDGNYR5ztKt4BQPGef1P0giN6ZGVUi835kFF88FOmmn8jBQWNgrNd8g/Yu421NdgWhwQoaOPFflDw==" data-cf-beacon='{"rayId":"7d72e6dd8fd33cf5","version":"2023.4.0","r":1,"b":1,"token":"1b7cbb72744b40c580f8633c6b62637e","si":100}' crossorigin="anonymous"></script>
 </body>
