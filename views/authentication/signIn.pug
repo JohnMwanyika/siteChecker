@@ -67,17 +67,23 @@ block content
                             //-     a.nav-link.text-white(href="https://www.creative-tim.com/blog" target="_blank") Blog
 
     script.
-        Swal.fire({
-            title: 'Important!',
-            html: `Hey there! 👋 Just a quick heads-up: this version of the app you're using is a demo.<br><br>
-            We're on a free hosting right now, which might lead to some data hiccups and occasional slower loading.<br><br>
-            So, don't be surprised if we clear the database now and then. Even if you've signed up before, you might be asked again.<br><br>
-            Just a heads-up, this isn't the final production version.<br><br>
-            Thanks for being part of our testing phase! 🚀😊`,
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        })
+        const currentURL = window.location.href;
+        const currentPath = window.location.pathname;
+        const queryString = window.location.search;
+        if(currentPath =='/signin' && queryString == ''){
+            console.log(currentPath);
+            Swal.fire({
+                title: 'Important!',
+                html: `Hey there! 👋 Just a quick heads-up: this version of the app you're using is a demo.<br><br>
+                We're on a free hosting right now, which might lead to some data hiccups and occasional slower loading.<br><br>
+                So, don't be surprised if we clear the database now and then. Even if you've signed up before, you might be asked again.<br><br>
+                Just a heads-up, this isn't the final production version.<br><br>
+                Thanks for being part of our testing phase! 🚀😊`,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                }
+            }) 
+        }
