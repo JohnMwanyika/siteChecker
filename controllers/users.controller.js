@@ -1,5 +1,5 @@
 // const { Person } = require('../models');
-const { Website, SiteStatus, User: Person, Team, Member, Monitor } = require('../models/index.js');
+const { Website, SiteStatus, User: Person, Team, Member, Monitor, UserStatus, Role } = require('../models/index.js');
 const { createDefaultTeam } = require('../models/team.model.js');
 
 
@@ -117,6 +117,8 @@ module.exports = {
                     { model: Website },
                     { model: Team },
                     { model: Member },
+                    { model: UserStatus },
+                    { model: Role }
                 ]
             });
             if (allUsers.length == 0) {

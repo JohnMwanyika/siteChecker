@@ -13,7 +13,7 @@ block content
 
                                 .text-end.pt-1
                                     p.text-sm.mb-0.text-capitalize Users Active
-                                    h4.mb-0 1,600
+                                    h4.mb-0.totalUsers 0
                             hr.dark.horizontal.my-0
                             .card-footer.p-3
                                 p.mb-0
@@ -112,7 +112,7 @@ block content
                     .table-responsive
                         table.table.align-items-center.mb-0(id="datatableUsers")
                             thead
-                                tr
+                                //- tr
                                     th.text-uppercase.text-xxs.font-weight-bolder.opacity-7 Name
                                     th.text-uppercase.text-xxs.font-weight-bolder.opacity-7.ps-2 Function
                                     th.text-uppercase.text-xxs.font-weight-bolder.opacity-7.ps-2 Review
@@ -120,144 +120,142 @@ block content
                                     th.text-center.text-uppercase.text-xxs.font-weight-bolder.opacity-7 Employed
                                     th.text-center.text-uppercase.text-xxs.font-weight-bolder.opacity-7 Id
                             tbody
-                                tr
-                                    td
-                                        .d-flex.px-2.py-1
-                                            div
-                                                img.avatar.avatar-sm.me-3(src="../../../assets/img/team-2.jpg" alt="avatar image")
-                                            .d-flex.flex-column.justify-content-center
-                                                h6.mb-0.font-weight-normal.text-sm John Michael
-                                    td
-                                        p.text-sm.font-weight-normal.mb-0 Manager
-                                    td
-                                        span.badge.badge-dot.me-4
-                                            i.bg-info
-                                            span.text-dark.text-xs positive
-                                    td.align-middle.text-center.text-sm
-                                        p.mb-0.font-weight-normal.text-sm
-                                            a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="f79d989f99b782849285d994989a") [email protected]
-                                    td.align-middle.text-center
-                                        p.text-sm.font-weight-normal.mb-0 23/04/18
-                                    td.align-middle.text-center
-                                        p.text-sm.font-weight-normal.mb-0 43431
-                                tr
-                                    td
-                                        .d-flex.px-2.py-1
-                                            div
-                                                img.avatar.avatar-sm.me-3(src="../../../assets/img/team-3.jpg" alt="avatar image")
-                                            .d-flex.flex-column.justify-content-center
-                                                h6.mb-0.font-weight-normal.text-sm Alexa Liras
-                                    td
-                                        p.text-sm.font-weight-normal.mb-0 Programator
-                                    td
-                                        span.badge.badge-dot.me-4
-                                            i.bg-info
-                                            span.text-dark.text-xs positive
-                                    td.align-middle.text-center.text-sm
-                                        p.mb-0.font-weight-normal.text-sm
-                                            a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="0d6c6168756c4d787e687f236e6260") [email protected]
-                                    td.align-middle.text-center
-                                        p.text-sm.font-weight-normal.mb-0 11/01/19
-                                    td.align-middle.text-center
-                                        p.text-sm.font-weight-normal.mb-0 93021
-                                tr
-                                    td
-                                        .d-flex.px-2.py-1
-                                            div
-                                                img.avatar.avatar-sm.me-3(src="../../../assets/img/team-4.jpg" alt="avatar image")
-                                            .d-flex.flex-column.justify-content-center
-                                                h6.mb-0.font-weight-normal.text-sm Laurent Perrier
-                                    td
-                                        p.text-sm.font-weight-normal.mb-0 Executive
-                                    td
-                                        span.badge.badge-dot.me-4
-                                            i.bg-dark
-                                            span.text-dark.text-xs neutral
-                                    td.align-middle.text-center.text-sm
-                                        p.mb-0.font-weight-normal.text-sm
-                                            a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="89e5e8fcfbece7fdc9fcfaecfba7eae6e4") [email protected]
-                                    td.align-middle.text-center
-                                        p.text-sm.font-weight-normal.mb-0 19/09/17
-                                    td.align-middle.text-center
-                                        p.text-sm.font-weight-normal.mb-0 10392
-                                tr
-                                    td
-                                        .d-flex.px-2.py-1
-                                            div
-                                                img.avatar.avatar-sm.me-3(src="../../../assets/img/team-3.jpg" alt="avatar image")
-                                            .d-flex.flex-column.justify-content-center
-                                                h6.mb-0.font-weight-normal.text-sm Michael Levi
-                                    td
-                                        p.text-sm.font-weight-normal.mb-0 Backend developer
-                                    td
-                                        span.badge.badge-dot.me-4
-                                            i.bg-info
-                                            span.text-dark.text-xs positive
-                                    td.align-middle.text-center.text-sm
-                                        p.mb-0.font-weight-normal.text-sm
-                                            a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="55383c363d34303915202630277b363a38") [email protected]
-                                    td.align-middle.text-center
-                                        p.text-sm.font-weight-normal.mb-0 24/12/08
-                                    td.align-middle.text-center
-                                        p.text-sm.font-weight-normal.mb-0 34002
-                                tr
-                                    td
-                                        .d-flex.px-2.py-1
-                                            div
-                                                img.avatar.avatar-sm.me-3(src="../../../assets/img/team-2.jpg" alt="avatar image")
-                                            .d-flex.flex-column.justify-content-center
-                                                h6.mb-0.font-weight-normal.text-sm Richard Gran
-                                    td
-                                        p.text-sm.font-weight-normal.mb-0 Manager
-                                    td
-                                        span.badge.badge-dot.me-4
-                                            i.bg-danger
-                                            span.text-dark.text-xs negative
-                                    td.align-middle.text-center.text-sm
-                                        p.mb-0.font-weight-normal.text-sm
-                                            a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="b3c1dad0dbd2c1d7f3c6c0d6c19dd0dcde") [email protected]
-                                    td.align-middle.text-center
-                                        p.text-sm.font-weight-normal.mb-0 04/10/21
-                                    td.align-middle.text-center
-                                        p.text-sm.font-weight-normal.mb-0 91879
-                                tr
-                                    td
-                                        .d-flex.px-2.py-1
-                                            div
-                                                img.avatar.avatar-sm.me-3(src="../../../assets/img/team-4.jpg" alt="avatar image")
-                                            .d-flex.flex-column.justify-content-center
-                                                h6.mb-0.font-weight-normal.text-sm Miriam Eric
-                                    td
-                                        p.text-sm.font-weight-normal.mb-0 Programtor
-                                    td
-                                        span.badge.badge-dot.me-4
-                                            i.bg-info
-                                            span.text-dark.text-xs positive
-                                    td.align-middle.text-center.text-sm
-                                        p.mb-0.font-weight-normal.text-sm
-                                            a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="c9a4a0bba0a8a489bcbaacbbe7aaa6a4") [email protected]
-                                    td.align-middle.text-center
-                                        p.text-sm.font-weight-normal.mb-0 14/09/20
-                                    td.align-middle.text-center
-                                        p.text-sm.font-weight-normal.mb-0 23042
+                                //- tr
+                                //-     td
+                                //-         .d-flex.px-2.py-1
+                                //-             div
+                                //-                 img.avatar.avatar-sm.me-3(src="../../../assets/img/team-2.jpg" alt="avatar image")
+                                //-             .d-flex.flex-column.justify-content-center
+                                //-                 h6.mb-0.font-weight-normal.text-sm John Michael
+                                //-     td
+                                //-         p.text-sm.font-weight-normal.mb-0 Manager
+                                //-     td
+                                //-         span.badge.badge-dot.me-4
+                                //-             i.bg-info
+                                //-             span.text-dark.text-xs positive
+                                //-     td.align-middle.text-center.text-sm
+                                //-         p.mb-0.font-weight-normal.text-sm
+                                //-             a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="f79d989f99b782849285d994989a") [email protected]
+                                //-     td.align-middle.text-center
+                                //-         p.text-sm.font-weight-normal.mb-0 23/04/18
+                                //-     td.align-middle.text-center
+                                //-         p.text-sm.font-weight-normal.mb-0 43431
+                                //- tr
+                                //-     td
+                                //-         .d-flex.px-2.py-1
+                                //-             div
+                                //-                 img.avatar.avatar-sm.me-3(src="../../../assets/img/team-3.jpg" alt="avatar image")
+                                //-             .d-flex.flex-column.justify-content-center
+                                //-                 h6.mb-0.font-weight-normal.text-sm Alexa Liras
+                                //-     td
+                                //-         p.text-sm.font-weight-normal.mb-0 Programator
+                                //-     td
+                                //-         span.badge.badge-dot.me-4
+                                //-             i.bg-info
+                                //-             span.text-dark.text-xs positive
+                                //-     td.align-middle.text-center.text-sm
+                                //-         p.mb-0.font-weight-normal.text-sm
+                                //-             a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="0d6c6168756c4d787e687f236e6260") [email protected]
+                                //-     td.align-middle.text-center
+                                //-         p.text-sm.font-weight-normal.mb-0 11/01/19
+                                //-     td.align-middle.text-center
+                                //-         p.text-sm.font-weight-normal.mb-0 93021
+                                //- tr
+                                //-     td
+                                //-         .d-flex.px-2.py-1
+                                //-             div
+                                //-                 img.avatar.avatar-sm.me-3(src="../../../assets/img/team-4.jpg" alt="avatar image")
+                                //-             .d-flex.flex-column.justify-content-center
+                                //-                 h6.mb-0.font-weight-normal.text-sm Laurent Perrier
+                                //-     td
+                                //-         p.text-sm.font-weight-normal.mb-0 Executive
+                                //-     td
+                                //-         span.badge.badge-dot.me-4
+                                //-             i.bg-dark
+                                //-             span.text-dark.text-xs neutral
+                                //-     td.align-middle.text-center.text-sm
+                                //-         p.mb-0.font-weight-normal.text-sm
+                                //-             a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="89e5e8fcfbece7fdc9fcfaecfba7eae6e4") [email protected]
+                                //-     td.align-middle.text-center
+                                //-         p.text-sm.font-weight-normal.mb-0 19/09/17
+                                //-     td.align-middle.text-center
+                                //-         p.text-sm.font-weight-normal.mb-0 10392
+                                //- tr
+                                //-     td
+                                //-         .d-flex.px-2.py-1
+                                //-             div
+                                //-                 img.avatar.avatar-sm.me-3(src="../../../assets/img/team-3.jpg" alt="avatar image")
+                                //-             .d-flex.flex-column.justify-content-center
+                                //-                 h6.mb-0.font-weight-normal.text-sm Michael Levi
+                                //-     td
+                                //-         p.text-sm.font-weight-normal.mb-0 Backend developer
+                                //-     td
+                                //-         span.badge.badge-dot.me-4
+                                //-             i.bg-info
+                                //-             span.text-dark.text-xs positive
+                                //-     td.align-middle.text-center.text-sm
+                                //-         p.mb-0.font-weight-normal.text-sm
+                                //-             a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="55383c363d34303915202630277b363a38") [email protected]
+                                //-     td.align-middle.text-center
+                                //-         p.text-sm.font-weight-normal.mb-0 24/12/08
+                                //-     td.align-middle.text-center
+                                //-         p.text-sm.font-weight-normal.mb-0 34002
+                                //- tr
+                                //-     td
+                                //-         .d-flex.px-2.py-1
+                                //-             div
+                                //-                 img.avatar.avatar-sm.me-3(src="../../../assets/img/team-2.jpg" alt="avatar image")
+                                //-             .d-flex.flex-column.justify-content-center
+                                //-                 h6.mb-0.font-weight-normal.text-sm Richard Gran
+                                //-     td
+                                //-         p.text-sm.font-weight-normal.mb-0 Manager
+                                //-     td
+                                //-         span.badge.badge-dot.me-4
+                                //-             i.bg-danger
+                                //-             span.text-dark.text-xs negative
+                                //-     td.align-middle.text-center.text-sm
+                                //-         p.mb-0.font-weight-normal.text-sm
+                                //-             a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="b3c1dad0dbd2c1d7f3c6c0d6c19dd0dcde") [email protected]
+                                //-     td.align-middle.text-center
+                                //-         p.text-sm.font-weight-normal.mb-0 04/10/21
+                                //-     td.align-middle.text-center
+                                //-         p.text-sm.font-weight-normal.mb-0 91879
+                                //- tr
+                                //-     td
+                                //-         .d-flex.px-2.py-1
+                                //-             div
+                                //-                 img.avatar.avatar-sm.me-3(src="../../../assets/img/team-4.jpg" alt="avatar image")
+                                //-             .d-flex.flex-column.justify-content-center
+                                //-                 h6.mb-0.font-weight-normal.text-sm Miriam Eric
+                                //-     td
+                                //-         p.text-sm.font-weight-normal.mb-0 Programtor
+                                //-     td
+                                //-         span.badge.badge-dot.me-4
+                                //-             i.bg-info
+                                //-             span.text-dark.text-xs positive
+                                //-     td.align-middle.text-center.text-sm
+                                //-         p.mb-0.font-weight-normal.text-sm
+                                //-             a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="c9a4a0bba0a8a489bcbaacbbe7aaa6a4") [email protected]
+                                //-     td.align-middle.text-center
+                                //-         p.text-sm.font-weight-normal.mb-0 14/09/20
+                                //-     td.align-middle.text-center
+                                //-         p.text-sm.font-weight-normal.mb-0 23042
 
     <script src="/assets/js/plugins/datatables.js"></script>
     script.
-        
+
         //- document.addEventListener('DOMContentLoaded',function(){
             const dataTableUsers = new simpleDatatables.DataTable("#datatableUsers", {
                 searchable: true,
                 fixedHeight: false
             });
 
-            let totalMonitors = $('.totalMonitors');
-            let online = $('#live');
-            let offline = $('#offline');
+            let totalUsers = $('.totalUsers');
 
             function makeAjaxCall(){
                 $.ajax(
                     {
-                        url:`/dashboard/api/monitors`,
+                        url:`/dashboard/users/api`,
                         type:'get',
 
                         beforeSend: function () {
@@ -274,103 +272,131 @@ block content
                                 //- call function to update data
                                 updateTableData(dataTableUsers,result.data);
                                 //- get total online
-                                totalMonitors.text(result.data.length);
-
-                                let alloffline = result.data.filter(function(monitor){
-                                    //- console.log(monitor)
-                                    return monitor.Monitor_Status.name =='Offline';
-                                })
-                                offline.text(alloffline.length);
-                                let live = result.data.filter(function(monitor){
-                                    //- console.log(monitor)
-                                    return monitor.Monitor_Status.name =='Live';
-                                })
-                                online.text(live.length);
-                                //- console.log('total offline',alloffline.length);
-                                //- console.log('total Live',live.length);
+                                totalUsers.text(result.data.length);
                             }
                         },
 
                         error: function (xhr, status, error) {
-                            console.error('AJAX Error:', error);
+                            //- console.error('AJAX Error:', error);
+                            Toast({
+                                icon:'error',
+                                title:error
+                            });
                         }
                     }
                 )
             };
             //- function to insert new rows
-            function updateTableData(table, newData) {
+            function updateTableData(table, users) {
                 try{
                     // Clear the existing table body
                     table.destroy();
                     table.init()
                     // Add new rows to the table body
-                    newData.forEach(function(data) {
+                    users.forEach(function(user) {
+                        console.log(user)
                         let name =
                             `
                             <td>
                                 <div class="d-flex px-2 py-1">
-                                    <div><img class="avatar avatar-sm me-3" src='${data.Website.url}/favicon.ico' alt="favicon"></div>
+                                    <div><img class="avatar avatar-sm me-3" src='${user.avatarPath}' alt="favicon"></div>
                                         <div class="d-flex flex-column justify-content-center">
-                                        <h6 class="mb-0 text-sm">${data.Website.name}</h6>
+                                        <h6 class="mb-0 text-sm">${user.firstName} ${user.lastName}</h6>
                                         <br/>
                                         <p class='text-muted'>
-                                            <a class='text-xs' target='_blank' href='${data.Website.url}'>${data.Website.url}</a>
+                                            <a class='text-xs' target='_blank' href='#'>${user.Role.name}</a>
                                         </p>
                                     </div>
                                 </div>
                             </td>
                             `;
 
-                        let members =[];
-                        data.Team.Members.forEach(function(member){
-                            member =
-                                `
-                                    <a class="avatar avatar-xs rounded-circle" href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${member.firstName} ${member.lastName}">
-                                        <img alt="Image placeholder" src="../../assets/img/team-1.jpg"/>
-                                    </a>
-                                `
-                            members.push(member);
-                        })
-                        let team =
+                        //- let members =[];
+                        //- user.Teams.forEach(function(team){
+                        //-     member =
+                        //-         `
+                        //-             <a class="avatar avatar-xs rounded-circle" href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${member.firstName} ${member.lastName}">
+                        //-                 <img alt="Image placeholder" src="../../assets/img/team-1.jpg"/>
+                        //-             </a>
+                        //-         `
+                        //-     members.push(member);
+                        //- })
+                        let teams =
                             `
                             <td>
-                                <div class="text-sm avatar-group">${data.Team.name}
-                                    <br/>
-                                    ${members.join('')}
-                                </div>
+                                <div class="text-sm avatar-group">${user.Teams.length}</div>
                             </td>
                             `;
-                        let interval =
+                        let email =
                             `
                             <td class="text-center text-sm">
-                                <span class="text-xs">${data.interval} Minutes</span>
+                                <span class="text-xs">${user.email} Minutes</span>
+                            </td>
+                            `;
+                        let phone =
+                            `
+                            <td class="text-center text-sm">
+                                <span class="text-xs">${user.phone} Minutes</span>
                             </td>
                             `;
                         let status;
-                        if (data.Monitor_Status.name == 'Offline'){
+                        if (user.UserStatus.name == 'Inactive'){
                             status =
                                 `
                                 <td class="text-center text-sm">
-                                    <span class="badge badge-sm badge-danger">${data.Monitor_Status.name}</span>
+                                    <span class="badge badge-sm badge-danger">${user.UserStatus.name}</span>
                                 </td>
                                 `;
                         }else{
                             status =`
                                 <td class="text-center text-sm">
-                                    <span class="badge badge-sm badge-success">${data.Monitor_Status.name}</span>
+                                    <span class="badge badge-sm badge-success">${user.UserStatus.name}</span>
                                 </td>
                                 `;
                         };
 
+                        let createdAt = 
+                            `
+                            <td>
+                                <div class="text-sm avatar-group">${moment(user.createdAt).format("DD/MM/YY")}</div>
+                            </td>
+                            `;
+
+                        let websites = 
+                            `
+                            <td>
+                                <div class="text-sm avatar-group">${user.Websites.length}</div>
+                            </td>
+                            `;
+                        let monitors = 
+                            `
+                            <td>
+                                <div class="text-sm avatar-group">${user.Monitors.length}</div>
+                            </td>
+                            `;
+
+                        let id = 
+                            `
+                            <td>
+                                <div class="text-sm avatar-group">${user.id}</div>
+                            </td>
+                            `;
+                        
+
                         table.insert(
                             {
-                                headings:["Website/API","Monitoring Team","Check Interval","Status"],
+                                headings:["Full name","Email","Phone","Status","Created on","No. of websites","No.of teams","No of monitors","ID"],
                                 data:[
                                     [
                                         name, //You can also use html
-                                        team,
-                                        interval,
-                                        status
+                                        email,
+                                        phone,
+                                        status,
+                                        createdAt,
+                                        websites,
+                                        teams,
+                                        monitors,
+                                        id
                                     ]
                                 ]
                             }
