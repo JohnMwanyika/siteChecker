@@ -110,7 +110,7 @@ block content
             .col-12
                 .card
                     .table-responsive
-                        table.table.align-items-center.mb-0(id="datatableUsers")
+                        table.table-hover.table-sm.table.align-items-center.mb-0(id="datatableUsers")
                             thead
                                 //- tr
                                     th.text-uppercase.text-xxs.font-weight-bolder.opacity-7 Name
@@ -298,29 +298,16 @@ block content
                         let name =
                             `
                             <td>
-                                <div class="d-flex px-2 py-1">
-                                    <div><img class="avatar avatar-sm me-3" src='${user.avatarPath}' alt="favicon"></div>
-                                        <div class="d-flex flex-column justify-content-center">
-                                        <h6 class="mb-0 text-sm">${user.firstName} ${user.lastName}</h6>
-                                        <br/>
-                                        <p class='text-muted'>
-                                            <a class='text-xs' target='_blank' href='#'>${user.Role.name}</a>
-                                        </p>
+                                <div class="d-flex px-2 py-0">
+                                    <div>
+                                        <img class="avatar avatar-sm me-3" src='${user.avatarPath || '/assets/img/user.png'}' alt="favicon">
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm align-middle">${user.firstName} ${user.lastName}</h6>
                                     </div>
                                 </div>
                             </td>
                             `;
-
-                        //- let members =[];
-                        //- user.Teams.forEach(function(team){
-                        //-     member =
-                        //-         `
-                        //-             <a class="avatar avatar-xs rounded-circle" href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${member.firstName} ${member.lastName}">
-                        //-                 <img alt="Image placeholder" src="../../assets/img/team-1.jpg"/>
-                        //-             </a>
-                        //-         `
-                        //-     members.push(member);
-                        //- })
                         let teams =
                             `
                             <td>
@@ -330,27 +317,27 @@ block content
                         let email =
                             `
                             <td class="text-center text-sm">
-                                <span class="text-xs">${user.email} Minutes</span>
+                                <span class="text-xs">${user.email}</span>
                             </td>
                             `;
                         let phone =
                             `
                             <td class="text-center text-sm">
-                                <span class="text-xs">${user.phone} Minutes</span>
+                                <span class="text-xs">0${user.phone}</span>
                             </td>
                             `;
                         let status;
-                        if (user.UserStatus.name == 'Inactive'){
+                        if (user.UserStatus.status == 'Inactive'){
                             status =
                                 `
                                 <td class="text-center text-sm">
-                                    <span class="badge badge-sm badge-danger">${user.UserStatus.name}</span>
+                                    <span class="badge badge-sm badge-danger">${user.UserStatus.status}</span>
                                 </td>
                                 `;
                         }else{
                             status =`
                                 <td class="text-center text-sm">
-                                    <span class="badge badge-sm badge-success">${user.UserStatus.name}</span>
+                                    <span class="badge badge-sm badge-success">${user.UserStatus.status}</span>
                                 </td>
                                 `;
                         };
