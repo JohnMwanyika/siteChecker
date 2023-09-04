@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "sync": "node models/index.js"
+    "sync": "node models/index.js",
+    "test": "jest"
   },
   "dependencies": {
     "axios": "^1.4.0",
@@ -30,5 +31,8 @@
     "socket.io-client": "^4.7.2",
     "spin.js": "^4.1.1",
     "sqlite3": "^5.1.6"
+  },
+  "devDependencies": {
+    "jest": "^29.6.4"
   }
 }
