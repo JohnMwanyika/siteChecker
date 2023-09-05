@@ -1,5 +1,5 @@
 const {
-    User, Member
+    User, Member,Team
 } = require('../models/index');
 const bcrypt = require('bcrypt');
 const { createDefaultTeam } = require('../models/team.model');
@@ -39,8 +39,9 @@ module.exports = {
             });
 
             if (newUser) {
-                const results = await createDefaultTeam(newUser.id);
-                console.log('default team results', results);
+                // const results = await createDefaultTeam(newUser.id);
+                // console.log('default team results', results);
+                console.log('--------------Creating user as a member------------------------');
                 const userAsMember = await Member.create({
                     firstName: newUser.firstName,
                     lastName: newUser.lastName,
@@ -48,7 +49,16 @@ module.exports = {
                     phone: newUser.phone,
                     createdBy: newUser.id
                 });
-                
+                console.log(`--------------Member ${userAsMember.firstName} created successfully------------------`);
+
+                console.log('--------------Creating default Team------------------------');
+                const defaultTeam = await Team.create({ name: 'Default', description: 'This is a default team created by the system and cannot be deleted ,members added here this team will all receive notifications', createdBy: newUser.id });
+                console.log(`--------------${defaultTeam.name} team created successfully------------------`);
+
+                console.log('--------------Adding member to default team------------------------');
+                await defaultTeam.addMember(userAsMember.id);
+                console.log(`--------------Member ${userAsMember.firstName} has been added to Detault team------------------`);
+
                 return res.redirect('/signin?success=user_created');
             }
         } catch (error) {
