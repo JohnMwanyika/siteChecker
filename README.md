@@ -47,17 +47,17 @@ Visit the live demo: [Demo Link](https://webwatch.onrender.com)
 
 
 ## Overview
-Problem:
+**Problem:**
 In today's digital landscape, website downtime and performance issues can lead to missed opportunities and frustrated users. It's challenging to detect these problems in real-time and take swift action.
 
-Solution:
+**Solution:**
 WebWatch, your digital guardian, is the answer. This website monitoring application offers real-time tracking and instant alerts, ensuring that you're aware of any disruptions to your online presence. No more lost business due to unexpected downtime.
 
-My Role:
+**My Role:**
 As a dedicated junior software developer, I took the reins in crafting the backend functionality of WebWatch. I developed the logic to monitor websites, detect performance dips, and trigger notifications. With a keen eye for detail, I ensured that the monitoring intervals are customizable to fit the unique needs of each user.
 
-Technologies Utilized:
+**Technologies Utilized:**
 WebWatch is built on a solid foundation of JavaScript, leveraging its power for efficient real-time tracking. I incorporated backend technologies such as Node.js for server-side logic and Express.js for creating APIs. Additionally, I used PostgreSQL to manage the data behind the scenes, ensuring a reliable and scalable solution.
 
-The Impact:
+**The Impact:**
 With WebWatch, clients can rest easy knowing their websites are in safe hands. By offering proactive monitoring, instant alerts, and an intuitive interface, WebWatch enables users to swiftly address issues and keep their online presence thriving. My contribution to WebWatch underscores my commitment to enhancing user experiences and solving real-world problems through software development.
