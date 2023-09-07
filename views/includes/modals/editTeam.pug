@@ -9,7 +9,7 @@
                         p.mb-0 #{team.name}
                     .card-body
                         form(role="form text-left" method='post' action=`/dashboard/teams/${team.id}`)
-
+                            input(type="hidden" name="_csrf" value=`${csrfToken}`)
                             .input-group.input-group-dynamic.my-3
                                 if (team.name == 'Default')
                                     label.form-label Title (Locked)

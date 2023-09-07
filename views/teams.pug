@@ -82,7 +82,7 @@ block content
     script.
         // this function toggles between activating monitoring for a particular site
         function handleCheckboxChange(checkbox,teamId,notification) {
-            const payload = {};
+            const payload = {_csrf:'#{csrfToken}'};
 
             if (checkbox.checked) {
                 payload[notification] = '1';
