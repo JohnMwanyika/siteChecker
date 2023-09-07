@@ -1,5 +1,8 @@
 var createError = require('http-errors');
 var express = require('express');
+// include helmet
+const helmet = require('helmet');
+
 // include socketio
 const http = require('http');
 const socketIO = require('socket.io');
@@ -29,6 +32,7 @@ app.use(session({
   }),
 }));
 
+// app.disable('x-powered-by');
 // sequelize.sync().then(data=>console.log(data)).catch(err=>console.log(err));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -40,13 +44,17 @@ app.use(express.urlencoded({
   extended: false
 }));
 app.use(cookieParser());
+
+// include helmet------------------------------------------------------------
+// app.use(helmet());
+// include helmet------------------------------------------------------------
+// statics files folder
 app.use(express.static(path.join(__dirname, 'public')));
 // Serve static files from the "uploads" directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// index router
 app.use('/', indexRouter);
-// app.use('/dashboard', checkSession, dashboardRouter);
-// app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

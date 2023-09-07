@@ -26,7 +26,7 @@ async function createDefaultTeam(createdBy) {
             const { lastName } = await isExisting.getUser()
             return console.log(`Default team already exists! ,teamId is ${isExisting.id}, owner is ${lastName}`)
         } else {
-            const defaultTeam = await Team.create({ name: 'Default', description: 'This is a default team created by the system and cannot be deleted ,members added in this team will all receive notifications', createdBy });
+            const defaultTeam = await Team.create({ name: 'Default', description: 'This is a default team created by the system and cannot be deleted ,members added here this team will all receive notifications', createdBy });
             const team = await Team.findByPk(defaultTeam.id, { include: [{ model: User }] });
             const { lastName } = await team.getUser()
             return console.log(`Default Team created successfully! ,teamId is ${defaultTeam.id} ownerId is ${lastName}`)

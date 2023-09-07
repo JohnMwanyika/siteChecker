@@ -28,7 +28,7 @@ module.exports = {
             // });
 
             // console.log(allSites)
-            res.render('dashboard', { title: "Dashboard", websites, teams, });
+            res.render('dashboard', { title: "Dashboard", websites, teams });
         } catch (error) {
             console.log(error)
         }
@@ -235,8 +235,9 @@ module.exports = {
     },
     startMonitoring: async (req, res) => {
         console.log('################### REQUEST HAS BEEN RECEIVED ######################');
-        // const { siteId } = req.params; // websiteId for monitoring
-        const { siteId, interval } = req.body; // Monitor data from client REQUEST BODY
+        const { siteId, interval, _csrf } = req.body; // Monitor data from client REQUEST BODY
+        console.log(_csrf + "From Client")
+        console.log(req.session.csrfToken + "Original From Server")
         let { teamId } = req.body;
         const userId = req.session.user.id; // Currently logged-in user
 
