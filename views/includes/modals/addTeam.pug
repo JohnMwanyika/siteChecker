@@ -9,6 +9,7 @@
                         p.mb-0 Create Team
                     .card-body
                         form(role="form text-left" action='/dashboard/teams' method='post')
+                            input(type="hidden" name="_csrf" value=`${csrfToken}`)
                             .input-group.input-group-dynamic.my-3
                                 label.form-label Name
                                 input.form-control(type="text" name='title' onfocus="focused(this)" required onfocusout="defocused(this)")

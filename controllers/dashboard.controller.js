@@ -236,8 +236,8 @@ module.exports = {
     startMonitoring: async (req, res) => {
         console.log('################### REQUEST HAS BEEN RECEIVED ######################');
         const { siteId, interval, _csrf } = req.body; // Monitor data from client REQUEST BODY
-        console.log(_csrf + "From Client")
-        console.log(req.session.csrfToken + "Original From Server")
+        // console.log(_csrf + "From Client")
+        // console.log(req.session.csrfToken + "Original From Server")
         let { teamId } = req.body;
         const userId = req.session.user.id; // Currently logged-in user
 

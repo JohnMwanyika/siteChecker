@@ -8,6 +8,8 @@ const { generateCsrfToken, validateCsrfToken } = require('../middlewares/auth.mi
 
 const router = express.Router();
 
+// router.use(generateCsrfToken);
+router.use(validateCsrfToken);
 // sites
 router.get('/', generateCsrfToken, getDashboard);
 router.get('/sites', getSites);
@@ -16,11 +18,11 @@ router.post('/sites/:id', updateSite);
 
 // Teams
 router.post('/teams', createTeam)
-router.get('/teams', allTeams);
+router.get('/teams', generateCsrfToken, allTeams);
 router.post('/teams/:teamId', updateTeam)
 router.delete('/teams/remove/:teamId', removeTeam);
 
-router.post('/monitoring/start', validateCsrfToken, startMonitoring);
+router.post('/monitoring/start', startMonitoring);
 router.get('/monitoring/stop/:siteId', stopMonitoring);
 
 router.post('/teams/notification_update/:teamId', updateTeamNotification);

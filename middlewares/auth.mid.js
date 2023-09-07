@@ -10,17 +10,35 @@ const checkSession = (req, res, next) => {
     next();
 }
 
+// const generateCsrfToken = (req, res, next) => {
+//     // if (req.method === 'POST') {
+//     //     return next();
+//     // }
+//     const csrfToken = crypto.randomBytes(16).toString('hex');
+//     req.session.csrfToken = csrfToken;
+//     res.locals.csrfToken = csrfToken;
+//     next();
+// }
+
 const generateCsrfToken = (req, res, next) => {
-    const csrfToken = crypto.randomBytes(16).toString('hex');
-    req.session.csrfToken = csrfToken;
-    res.locals.csrfToken = csrfToken;
+    // Initialize sessions if not already done (ensure you've set up express-session middleware)
+    if (!req.session) {
+        throw new Error('Session middleware not properly initialized');
+    }
+
+    // Check if the request method is not 'POST'
+    if (req.method !== 'POST') {
+        const csrfToken = crypto.randomBytes(16).toString('hex');
+        req.session.csrfToken = csrfToken;
+        res.locals.csrfToken = csrfToken;
+    }
+
     next();
 }
 
 const validateCsrfToken = (req, res, next) => {
     if (req.method === 'POST' && req.session.csrfToken != req.body._csrf) {
-        // return res.status(403).send('CSRF token mismatch');
-        return res.json({ status: 'warning', data: 'CSRF token mismatch'+req.body._csrf });
+        return res.json({ status: 'warning', data: `CSRF token mismatch ${req.session.csrfToken} and ` + req.body._csrf });
     }
     next();
 }
