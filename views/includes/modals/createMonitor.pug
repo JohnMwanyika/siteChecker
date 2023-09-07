@@ -9,7 +9,7 @@
                     span(aria-hidden="true") ×
             .pt-4.modal-body
                 form(action="/dashboard/monitoring/start" method="post" id="newMonitor")
-                    input(type="text" name="_csrf" value=`${csrfToken}`)
+                    input(type="hidden" name="_csrf" value=`${csrfToken}`)
                     .input-group.input-group-static.mb-4.text-start
                         label Select Website/API
                         select.form-control#website-choices(name="siteId" placeholder="Departure")
