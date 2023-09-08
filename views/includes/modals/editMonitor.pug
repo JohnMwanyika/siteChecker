@@ -1,41 +1,41 @@
-//- .kanban-item.border-radius-md(data-eid="_task_1_title_id" data-class="border-radius-md")
-//-     p.text.mb-0 Click me to change title
-.modal.fade(data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" id=`addMonitor`)
+.modal.fade(data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" id=`monitorModal`)
     .modal-dialog
         .modal-content
             .modal-header
-                h5.h5.modal-title Start a new monitor
+                h5.h5.modal-title(id="monitorModalLabel") Start a new monitor
                 button.btn-close.text-dark(type="button" data-bs-dismiss="modal" aria-label="Close")
                     span(aria-hidden="true") ×
             .pt-4.modal-body
-                form(action="/dashboard/monitoring/start" method="post" id="newMonitor")
+                form(action="/dashboard/monitoring/start" method="post" id="monitorForm")
                     input(type="hidden" name="_csrf" value=`${csrfToken}`)
-                    .input-group.input-group-static.mb-4.text-start
-                        label Select Website/API
-                        select.form-control#website-choices(name="siteId" placeholder="Departure")
+                    //- .input-group.input-group-static.mb-4.text-start
+                        label Website 
+                        input.form-control(id="website" placeholder="in minutes" type="text" disabled onfocus="focused(this)" onfocusout="defocused(this)")
+                        //- select.form-control#website-choices(name="siteId" placeholder="Departure")
                             for site in websites
                                 option(value=`${site.id}`, selected) #{site.name}
 
                     .input-group.input-group-static.mb-4.text-start
                         label Select Monitoring Team
-                        select.form-control#team-choices(name="teamId" placeholder="Departure")
+                        select.form-control#team-choices2(name="teamId" placeholder="Departure")
+                            option(value="" selected)
                             for team in teams
-                                option(value=`${team.id}`, selected) #{team.name}
+                                option(value=`${team.id}`) #{team.name}
 
                     .input-group.input-group-static.mb-4
                         label Check Interval
-                        input.form-control#interval(placeholder="in minutes" name="interval" type="number" onfocus="focused(this)" onfocusout="defocused(this)")
+                        input.form-control(id="checkInterval" placeholder="in minutes" name="interval" type="number" onfocus="focused(this)" onfocusout="defocused(this)")
 
                     .text-end
-                        button.m-1.btn.btn-primary#submitbtn(data-toggle="modal" type="submit" data-target="#jkanban-info-modal")
+                        button.m-1.btn.btn-primary#submitbtn2(data-toggle="modal" type="submit" data-target="#jkanban-info-modal")
                             | Save changes 
-                            span.spinner-border.spinner-border-sm(role="status" aria-hidden="true")#spina
+                            span.spinner-border.spinner-border-sm(role="status" aria-hidden="true")#spinna
 
                         button.m-1.btn.btn-secondary(type="button" data-bs-dismiss="modal" data-target="#addMonitor").
 
                             Close
 script.
-    let loading = $('#spina').hide();
+    let loading2 = $('#spinna').hide();
 
     Toast = Swal.mixin({
         toast: true,
@@ -51,17 +51,17 @@ script.
 
 
 
-    $("#submitbtn").click(function(event){
+    $("#submitbtn2").click(function(event){
         event.preventDefault();
         //- get form
-        var form = $("#newMonitor");
+        var form = $("#monitorForm");
         //- make sure empty form is not submitted
-        if ($('#website-choices').val() == "" || $('#team-choices').val() == "") {
+        if ($('#team-choices2').val() == "") {
             Toast.fire({
                 icon: "error",
                 title: "All fields are required"
             });
-        }else if ($('#interval').val() < 5 ){
+        }else if ($('#checkInterval').val() < 5 ){
             Toast.fire({
                 icon: "error",
                 title: "Check interval cannot be less than 5 minutes"
@@ -72,15 +72,14 @@ script.
                 type:form.attr('method'),
                 data: form.serialize(),
                 beforeSend: function(){
-                    loading.show(function(){
+                    loading2.show(function(){
                         $("#submitbtn").prop("disabled", true);
                     });
                 },
                 complete: function(){
-                    loading.hide(function(){
+                    loading2.hide(function(){
                         $("#submitbtn").removeAttr('disabled');
                     });
-                    //- listenToCallback();
                 },
                 success: function(data){
                     console.log(data.data)

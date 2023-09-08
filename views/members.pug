@@ -100,7 +100,7 @@ block content
                         });
 
                         table.update(measureWidths=false);
-                        createModal(table);
+                        createModal();
                     }catch(error){
                         console.log(error);
                     }
@@ -146,7 +146,7 @@ block content
                 //- this function fetches latest members
                 makeAjaxCall();
 
-                    //- function to submit new member
+                //- function to submit new member
                 var Loader = $('#Loader').hide();
                 var memberForm = $('#memberForm');
                 //- Ajax Submit Stk push
@@ -209,7 +209,7 @@ block content
                 function createModal(table){
                     $('#datatable-members tbody').on('click', 'tr', function() {
                         const data = this.children;
-                        //- console.log(data)
+                        //- console.log(data);
                         for(let i = 0; i<data.length; i++){
                             $('#memberModalLabel').text(data[0].data);
                             $('#firstName').val(data[0].data);

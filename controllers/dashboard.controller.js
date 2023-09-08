@@ -313,6 +313,23 @@ module.exports = {
             });
         }
     },
+    editMonitor: async (req, res) => {
+        const { monitorId } = req.params;
+        const { teamId, interval } = req.body;
+        console.log('Team Id is ' + teamId)
+        try {
+            const monitor = await Monitor.findByPk(monitorId);
+            if (!monitor) {
+                return res.json({ status: 'warning', data: 'Monitor not found' });
+            }
+            await Monitor.update({ teamId, interval }, {
+                where: { id: monitorId }
+            })
+            res.json({ status: 'success', data: 'Service updated successfully' })
+        } catch (error) {
+            res.json({ status: 'error', data: 'An error occured while editing monitor' })
+        }
+    },
     stopMonitoring: async (req, res) => {
         const { siteId } = req.params
         try {
