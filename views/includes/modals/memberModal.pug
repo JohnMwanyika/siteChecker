@@ -6,6 +6,7 @@
                 button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
             .modal-body.m-3
                 form(method="post", action=`` id='membersForm')
+                    input(type="hidden" name="_csrf" value=`${csrfToken}`)
                     .mb-3
                         .input-group.input-group-outline
                             label.form-label First Name

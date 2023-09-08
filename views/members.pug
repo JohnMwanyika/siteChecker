@@ -16,6 +16,7 @@ block content
                                 p Use an address that will receive website status.
                         .form__content
                             form(method='post' action='#' id="memberForm")
+                                input(type="hidden" name="_csrf" value=`${csrfToken}`)
                                 .row.mt-3
                                     .col-12.col-sm-4
                                         .avatar.avatar-xxl.position-relative
