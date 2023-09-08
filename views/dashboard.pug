@@ -240,15 +240,17 @@ block content
                         type:'get',
 
                         beforeSend: function () {
-                            load.show(function () {
-                                //- $(this).prop("disabled", true);
-                            });
+                            showSpinner('.overlay-spinner');
+                            //- load.show(function () {
+                            //-     //- $(this).prop("disabled", true);
+                            //- });
                         },
 
                         complete: function () {
-                            load.hide(function () {
-                                //- $(this).removeAttr('disabled');
-                            });
+                            hideSpinner('.overlay-spinner');
+                            //- load.hide(function () {
+                            //-     //- $(this).removeAttr('disabled');
+                            //- });
                         },
 
                         success:function(result){
