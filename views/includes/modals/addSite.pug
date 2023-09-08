@@ -10,6 +10,7 @@
                         p.mb-0 Create New Site
                     .card-body
                         form(role="form text-left" method='post' action='/dashboard/sites')
+                            input(type="hidden" name="_csrf" value=`${csrfToken}`)
                             .input-group.input-group-outline.my-3
                                 label.form-label Name
                                 input.form-control(type="text" name='name' onfocus="focused(this)" onfocusout="defocused(this)")

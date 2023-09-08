@@ -12,7 +12,7 @@ const router = express.Router();
 router.use(validateCsrfToken);
 // sites
 router.get('/', generateCsrfToken, getDashboard);
-router.get('/sites', getSites);
+router.get('/sites',generateCsrfToken, getSites);
 router.post('/sites', newSite);
 router.post('/sites/:id', updateSite);
 

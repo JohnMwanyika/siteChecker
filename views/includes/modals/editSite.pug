@@ -9,6 +9,7 @@
                         p.mb-0 #{site.name}
                     .card-body
                         form(role="form text-left" method='post' action=`/dashboard/sites/${site.id}`)
+                            input(type="hidden" name="_csrf" value=`${csrfToken}`)
                             .input-group.input-group-outline.my-3
                                 label.form-label Name
                                 input.form-control(type="text" name='name' value=`${site.name}` onfocus="focused(this)" onfocusout="defocused(this)")
