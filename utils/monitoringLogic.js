@@ -116,8 +116,8 @@ async function startIntervalCheck(siteId, userId) {
                     // send emails
                     const results = await membersEmails(websiteUrl, userId);
                     const [recipients, phoneNumbers] = results.data;
-                    const mailResponse = await sendMail(`Urgent: Downtime Alert for ${websiteUrl}`, `Dear Team Member,\n\nKindly be informed that there is an issue with ${websiteUrl} as it is currently experiencing downtime or is unreachable. We will conduct another assessment in ${monitoringSite.interval} minute.\n\nBest regards,\nWebWatch.`, recipients);
-                    const smsResult = await sendBulkSms(`Dear Team Member,\nKindly be informed that there is an issue with ${websiteUrl} as it is currently experiencing downtime or is unreachable. We will conduct another assessment in ${monitoringSite.interval} minute.\nBest regards,\nWebWatch.`, ...phoneNumbers);
+                    const mailResponse = await sendMail(`Urgent: Downtime Alert for ${websiteUrl}`, `Dear Team Member,\n\nKindly be informed that there is an issue with ${websiteUrl} as it is currently experiencing downtime or is unreachable. We will conduct another assessment in ${monitoringSite.interval} minutes.\n\nBest regards,\nWebWatch.`, recipients);
+                    const smsResult = await sendBulkSms(`Dear Team Member,\nKindly be informed that there is an issue with ${websiteUrl} as it is currently experiencing downtime or is unreachable. We will conduct another assessment in ${monitoringSite.interval} minutes.\nBest regards,\nWebWatch.`, ...phoneNumbers);
                     console.log(smsResult);
                     // set results to Down
                     const createdResult = createResult(monitoringSite.siteId, 'Down');
