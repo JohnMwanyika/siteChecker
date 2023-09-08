@@ -126,7 +126,7 @@ block content
                                 include includes/modals/createMonitor
                 .card-body.px-0.pb-2
                     .table-responsive
-                        table.table.align-items-center.mb-0(id="datatable-monitor")
+                        table.table-hover.table.align-items-center.mb-0(id="datatable-monitor")
                             thead
                                 tr
                                     th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Websites/APIs
@@ -134,6 +134,7 @@ block content
                                     th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Check Interval(Minutes)
                                     th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Status
                                     th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 ID
+                                    th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Action
                             tbody
                                 //- each site in allSites
                                     tr
@@ -384,7 +385,8 @@ block content
                         $('#checkInterval').val(parseInt(data[2].textContent));
                         //- $('#lastName').val(data[1].data);
                         //- $('#email').val(data[2].data);
-                        $('#team-choices2').val(data[1].textContent);
+                        $('#team-choices2 option:selected').text(data[1].textContent);
+                        //- setSelectedOption(data[1].textContent);
                         $('#monitorForm').attr('action',`/dashboard/monitoring/update/${data[4].data}`);
                     }
 
@@ -393,4 +395,19 @@ block content
 
                 })
             }
+            function setSelectedOption(option) {
+                console.log(option)
+                const selectElement = document.getElementById("team-choices2");
+                const optionToSelect = option; // The value of the option you want to select
+
+                // Loop through the options and set the selected property accordingly
+                for (let i = 0; i < selectElement.options.length; i++) {
+                    const option = selectElement.options[i];
+                    if (option.text === optionToSelect) {
+                        option.selected = true;
+                    } else {
+                        option.selected = false; // Deselect other options
+                    }
+                }
+            };
             //- })

@@ -18,7 +18,7 @@
                     .input-group.input-group-static.mb-4.text-start
                         label Select Monitoring Team
                         select.form-control#team-choices2(name="teamId" placeholder="Departure")
-                            option(value="" selected)
+                            //- option(value="" selected)
                             for team in teams
                                 option(value=`${team.id}`) #{team.name}
 
