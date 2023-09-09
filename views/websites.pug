@@ -60,7 +60,7 @@ block content
                                             include includes/modals/editSite
 
     <script src="/assets/js/plugins/datatables.js"></script>
-                             
+
     script.
 
         Toast = Swal.mixin({
@@ -82,11 +82,13 @@ block content
 
         // this function toggles between activating monitoring for a particular site
         function handleCheckboxChange(siteId,teamId,checkbox) {
+            const _csrf = '#{csrfToken}';
             if (checkbox.checked) {
                 axios.post(`/dashboard/monitoring/start`, {
                     siteId:siteId,
                     teamId:null,
                     interval:5,
+                    _csrf
                     }, )
                     .then((response) => {
                         Toast.fire({icon:response.data.status,title:response.data.data});
@@ -98,7 +100,7 @@ block content
 
             } 
             else {
-                axios.get(`/dashboard/monitoring/stop/${siteId}`)
+                axios.get(`/dashboard/monitoring/stop/${siteId}`,{_csrf})
                     .then((response) => {
                         if(response.data.status == 'warning'){
                             Toast.fire({icon:response.data.status,title:response.data.data});
