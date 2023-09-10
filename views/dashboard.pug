@@ -133,8 +133,8 @@ block content
                                     th.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7.ps-2 Monitoring Team
                                     th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Check Interval(Minutes)
                                     th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Status
-                                    th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 ID
                                     th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 Action
+                                    th.text-center.text-uppercase.text-secondary.text-xxs.font-weight-bolder.opacity-7 ID
                             tbody
                                 //- each site in allSites
                                     tr
@@ -339,6 +339,14 @@ block content
                                 </td>
                                 `;
                         };
+                        let action =
+                            `
+                            <td class="text-center text-sm">
+                                <span class="text-xs">
+                                    <a href="#"><i class="material-icons opacity-10">visibility</i></a>
+                                </span>
+                            </td>
+                            `;
 
                         table.insert(
                             {
@@ -349,7 +357,8 @@ block content
                                         team,
                                         interval,
                                         status,
-                                        id
+                                        action,
+                                        id,
                                     ]
                                 ]
                             }
@@ -387,7 +396,7 @@ block content
                         //- $('#email').val(data[2].data);
                         $('#team-choices2 option:selected').text(data[1].textContent);
                         //- setSelectedOption(data[1].textContent);
-                        $('#monitorForm').attr('action',`/dashboard/monitoring/update/${data[4].data}`);
+                        $('#monitorForm').attr('action',`/dashboard/monitoring/update/${data[5].data}`);
                     }
 
                     // Show the modal with the group details
