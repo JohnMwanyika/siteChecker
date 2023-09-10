@@ -18,6 +18,7 @@ const { initializeMonitoring } = require('./utils/autoMonitor')
 const { sequelize } = require('./config/config');
 // getting routers from reouter folder
 const indexRouter = require('./routes/index.route');
+const { activePage } = require('./middlewares/activePage.mid');
 // const dashboardRouter = require('./routes/dashboard.route');
 // const usersRouter = require('./routes/users');
 
@@ -53,6 +54,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Serve static files from the "uploads" directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// middleware to set active sidebar link
+app.use(activePage);
 // index router
 app.use('/', indexRouter);
 

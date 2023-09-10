@@ -8,17 +8,17 @@ aside.sidenav.navbar.navbar-vertical.navbar-expand-xs.border-0.border-radius-xl.
     .collapse.navbar-collapse.w-auto#sidenav-collapse-main
         ul.navbar-nav
             li.nav-item
-                a.nav-link.text-white.active.bg-gradient-primary(href="/dashboard")
+                a.nav-link.text-white(href="/dashboard" class=(activePage === '/dashboard' ? 'active bg-gradient-primary' : ''))
                     .text-white.text-center.me-2.d-flex.align-items-center.justify-content-center
                         i.material-icons.opacity-10 dashboard
                     span.nav-link-text.ms-1 Dashboard
             li.nav-item
-                a.nav-link.text-white(href="/dashboard/sites")
+                a.nav-link.text-white(href="/dashboard/sites" class=(activePage === '/dashboard/sites' ? 'active bg-gradient-primary' : ''))
                     .text-white.text-center.me-2.d-flex.align-items-center.justify-content-center
                         i.material-icons.opacity-10 table_view
                     span.nav-link-text.ms-1 My Sites
             li.nav-item
-                a.nav-link.text-white(href="/dashboard/teams")
+                a.nav-link.text-white(href="/dashboard/teams" class=(activePage === '/dashboard/teams' ? 'active bg-gradient-primary' : ''))
                     .text-white.text-center.me-2.d-flex.align-items-center.justify-content-center
                         i.material-icons.opacity-10 groups
                     span.nav-link-text.ms-1 Teams
@@ -26,12 +26,12 @@ aside.sidenav.navbar.navbar-vertical.navbar-expand-xs.border-0.border-radius-xl.
             li.nav-item.mt-3
                 h6.ps-4.ms-2.text-uppercase.text-xs.text-white.font-weight-bolder.opacity-8 Members
             li.nav-item
-                a.nav-link.text-white(href="/dashboard/members")
+                a.nav-link.text-white(href="/dashboard/members" class=(activePage === '/dashboard/members' ? 'active bg-gradient-primary' : ''))
                     .text-white.text-center.me-2.d-flex.align-items-center.justify-content-center
                         i.material-icons.opacity-10 manage_accounts
                     span.nav-link-text.ms-1 All members
             li.nav-item
-                a.nav-link.text-white(href="/dashboard/members")
+                a.nav-link.text-white(href="/dashboard/members/new" class=(activePage === '/dashboard/members/new' ? 'active bg-gradient-primary' : ''))
                     .text-white.text-center.me-2.d-flex.align-items-center.justify-content-center
                         i.material-icons.opacity-10 person_add
                     span.nav-link-text.ms-1 Add member
@@ -39,7 +39,7 @@ aside.sidenav.navbar.navbar-vertical.navbar-expand-xs.border-0.border-radius-xl.
                 li.nav-item.mt-3
                     h6.ps-4.ms-2.text-uppercase.text-xs.text-white.font-weight-bolder.opacity-8 User Management
                 li.nav-item
-                    a.nav-link.text-white(href="/dashboard/users")
+                    a.nav-link.text-white(href="/dashboard/users" class=(activePage === '/dashboard/users' ? 'active bg-gradient-primary' : ''))
                         .text-white.text-center.me-2.d-flex.align-items-center.justify-content-center
                             i.material-icons.opacity-10 manage_accounts
                         span.nav-link-text.ms-1 Users
@@ -56,7 +56,7 @@ aside.sidenav.navbar.navbar-vertical.navbar-expand-xs.border-0.border-radius-xl.
             li.nav-item.mt-3
                 h6.ps-4.ms-2.text-uppercase.text-xs.text-white.font-weight-bolder.opacity-8 Account pages
             li.nav-item
-                a.nav-link.text-white(href="/dashboard/profile")
+                a.nav-link.text-white(href="/dashboard/profile" class=(activePage === '/dashboard/profile' ? 'active bg-gradient-primary' : ''))
                     .text-white.text-center.me-2.d-flex.align-items-center.justify-content-center
                         i.material-icons.opacity-10 person
                     span.nav-link-text.ms-1 Profile

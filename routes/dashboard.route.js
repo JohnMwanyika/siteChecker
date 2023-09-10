@@ -23,7 +23,7 @@ router.post('/teams/:teamId', updateTeam)
 router.delete('/teams/remove/:teamId', removeTeam);
 
 router.post('/monitoring/start', startMonitoring);
-router.post('/monitoring/update/:monitorId', editMonitor)
+router.post('/monitoring/update/:monitorId',generateCsrfToken, editMonitor)
 router.get('/monitoring/stop/:siteId', stopMonitoring);
 
 router.post('/teams/notification_update/:teamId', updateTeamNotification);
