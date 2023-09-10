@@ -54,7 +54,7 @@ Team.belongsToMany(Member, { through: 'member_teams' });
 Member.belongsToMany(Team, { through: 'member_teams' });
 
 
-console.log(Object.getOwnPropertyNames(User.prototype));
+console.log(Object.getOwnPropertyNames(Team.prototype));
 async function syncDb() {
   await sequelize.sync({ alter: true });
   return 'Database synced successfully';

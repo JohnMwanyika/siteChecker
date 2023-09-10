@@ -322,12 +322,23 @@ module.exports = {
             if (!monitor) {
                 return res.json({ status: 'warning', data: 'Monitor not found' });
             }
+
+            // check team
+            const team = await Team.findByPk(teamId, { where: { createdBy: req.user.id } });
+
+            if (!team) return res.json({ status: 'warning', data: 'Team not found' });
+
+            const teamMembers = await team.countMembers();
+            // console.log(teamMembers)
+            // check if team has members
+            if (teamMembers < 1) return res.json({ status: 'warning', data: 'Selected team must have atleast one member!' });
+
             await Monitor.update({ teamId, interval }, {
                 where: { id: monitorId }
             })
             res.json({ status: 'success', data: 'Service updated successfully' })
         } catch (error) {
-            res.json({ status: 'error', data: 'An error occured while editing monitor' })
+            res.json({ status: 'error', data: `An error occured while editing monitor - ${error.message}` })
         }
     },
     stopMonitoring: async (req, res) => {
