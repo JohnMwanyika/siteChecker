@@ -236,24 +236,5 @@ async function updateSiteStatus(monitorId, statusId) {
     }
 }
 
-class Notification {
-    constructor(recipients, message) {
-        this.recipients = recipients;
-        this.message = message;
-    };
-    getRecipients() {
-        return this.recipients
-    }
-}
-
-class Sms extends Notification {
-    constructor(message){
-        this.message = message
-    }
-    sendSms(){
-
-    }
-}
-
 
 module.exports = { startIntervalCheck, updateSiteStatus };
