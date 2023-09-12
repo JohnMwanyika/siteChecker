@@ -60,9 +60,10 @@ class Sms extends Notification {
     constructor(message, ...recipients) {
         super(message, ...recipients);
     }
-    async sendSms() {
+    async send() {
         try {
-            let response = await sendBulkSms(this.message, this.recipients);
+            // console.log(`Sending ${this.message} to` + this.recipients)
+            let response = await sendBulkSms(this.message, ...this.recipients);
             return { status: 'success', message: response };
         } catch (error) {
             return { status: 'error', message: error.message };
@@ -76,7 +77,7 @@ class Email extends Notification {
         this.subject = subject;
     };
 
-    async sendEmail() {
+    async send() {
         try {
             let response = await sendMail(this.subject, this.message, this.recipients);
             return { status: 'success', message: response };
@@ -87,10 +88,12 @@ class Email extends Notification {
 };
 
 
-// const emailJohn = new Email('Hello John', 'Greetings John from test email notification object', 'mwanyikajohn@outlook.com', '5476benja@gmail.com');
+const emailJohn = new Email('Hello John', 'Greetings John from test email notification object', 'mwanyikajohn@outlook.com', '5476benja@gmail.com');
 // console.log(emailJohn)
-// // console.log(emailJohn.sendEmail().then(data=>console.log(data)).catch(error=>console.log(error)));
-// const textJohn = new Sms('Hello John from Notification object', '0707438654', '0773946048');
+// console.log(emailJohn.send().then(data=>console.log(data)).catch(error=>console.log(error)));
+
+const textJohn = new Sms('Hello John from Notification object', '0707438654', '0773946048');
+// console.log(textJohn.sendSms());
 // // console.log(textJohn.sendSms().then(data=>console.log(data)).catch(error=>console.log(error)));
 
 

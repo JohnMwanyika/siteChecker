@@ -389,7 +389,7 @@ module.exports = {
         console.log(req.body)
         try {
             // check existing
-            const existingMember = await Member.findOne({ where: { email } });
+            const existingMember = await Member.findOne({ where: { email, createdBy: req.user.id } });
             if (existingMember) {
                 return res.json({ status: 'warning', data: 'Member with similar email exists please try another' });
             }

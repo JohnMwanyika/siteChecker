@@ -55,7 +55,7 @@ async function sendBulkSms(message, ...recipients) {
     console.log(recipients)
 
     return recipients.forEach(async (number) => {
-      console.log('sending to ',number)
+      console.log('sending to ', number)
       const response = await sendSms(message, number);
       console.log(response)
     })

@@ -31,9 +31,9 @@ const { sendMail } = require('./send_mail.js');
 //         return false; // Website is down (request error)
 //     };
 // };
-// membersEmails('http://localhost:3000', 1)
-//     .then(data => console.log(data))
-//     .catch(error => console.log(error))
+membersEmails('https://gebeya.com', 1)
+    .then(data => console.log(data))
+    .catch(error => console.log(error))
 
 async function membersEmails(url, userId) {
     try {
@@ -49,12 +49,6 @@ async function membersEmails(url, userId) {
                     model: Team, include: [
                         { model: Member, attributes: ['email', 'firstName', 'phone'] },
                     ],
-                    // where: {
-                    //     [Op.or]: [
-                    //         { email: '1' },
-                    //         { sms: '1' }
-                    //     ]
-                    // }
                 }
             ],
             where: { siteId: website.id }
@@ -67,7 +61,7 @@ async function membersEmails(url, userId) {
         const phoneNumbers = [];
         // if no notification service selected
         if (monitor.Team.email == '0' && monitor.Team.sms == '0') {
-            return { status: 'warning', data: [emails, phoneNumbers], msg: `${url} experienced downtime; no action taken due to missing default notification service.` }
+            return { status: 'warning', data: [emails, phoneNumbers], msg: `A new activity for ${url}; no action taken due to missing default notification service.` }
         }
         // if only email selected
         if (monitor.Team.email == '1' && monitor.Team.sms == '0') {
