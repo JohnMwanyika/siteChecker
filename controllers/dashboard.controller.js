@@ -156,37 +156,37 @@ module.exports = {
         const { teamId } = req.params;
         const { title, description, userIds } = req.body;
         console.log(`#### ############ UserIds ${userIds}`);
-        const newMembers = [...new Set(userIds)];
-        console.log(`New Ids are as follows ${newMembers}`);
+
         try {
+            if (!userIds) {
+                return res.redirect('/dashboard/teams?info=member-empty');
+            }
+
             const team = await Team.findByPk(teamId);
             if (!team) {
-                return res.redirect('/dashboard/teams?info=not-found'); //team not found
-            }
-
-            const allMembers = await Member.findAll({ where: { id: newMembers } });
-            console.log("All members include -", allMembers);
-            // check if the members exists
-            if (allMembers.length === 0) {
                 return res.redirect('/dashboard/teams?info=not-found');
             }
-            // directly update selected members of the Default team
-            if (team.name === 'Default') {
-                await team.setMembers(allMembers);
-                return res.redirect('/dashboard/teams?info=success');
+
+            // const myMembers = await Member.findAll({ where: { createdBy: req.user.id } });
+            // const myMembersIds = myMembers.map(member => member.id);
+
+            let newMembers = userIds;
+            if (Array.isArray(userIds)) {
+                newMembers = [...new Set(userIds)];
             }
-            // Update title and description of user defined teams if neccessary
-            team.name = title.trim();
-            team.description = description.trim();
-            await team.save();
-            // update team members of user defined teams
-            await team.setMembers(allMembers);
-            res.redirect('/dashboard/teams?info=success');
+
+            if (team.name !== 'Default') {
+                team.name = title.trim();
+                team.description = description.trim();
+                await team.save();
+            }
+
+            await team.setMembers(newMembers);
+            return res.redirect('/dashboard/teams?info=success');
         } catch (error) {
             console.log(error);
-            res.redirect('/dashboard/teams?info=error');
+            return res.redirect('/dashboard/teams?info=error');
         }
-
     },
     removeTeam: async (req, res) => {
         console.log('############ DELETION REQUEST RECEIVED ############')
