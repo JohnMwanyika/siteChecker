@@ -37,6 +37,7 @@ const generateCsrfToken = (req, res, next) => {
 }
 
 const validateCsrfToken = (req, res, next) => {
+    console.log(req.session.csrfToken, req.body)
     if (req.method === 'POST' && req.session.csrfToken != req.body._csrf) {
         return res.json({ status: 'warning', data: `CSRF token mismatch ${req.session.csrfToken} and ` + req.body._csrf });
     }
