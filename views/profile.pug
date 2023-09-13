@@ -126,7 +126,9 @@ block content
                                             url: "/dashboard/profile/upload/avatar",
                                             maxFiles:1,
                                             dictMaxFilesExceeded: "You can only upload one file.",
-                                            autoProcessQue:true,
+                                            params:{
+                                                //- _csrf:'#{csrfToken}'
+                                            },
                                             uploadprogress: function(file, progress) {
                                                 let progressBar = document.querySelector('.progress-bar');
                                                 progressBar.style.width = progress + "%";
@@ -140,16 +142,16 @@ block content
                                             progressBar.className = 'progress-bar';
                                             file.previewElement.appendChild(progressBar);
                                         })
-                                        myDropzone.on('sending',function(file,xhr,formData){
-                                            const csrfToken = '#{csrfToken}';
-                                            formData.append('_csrf', csrfToken);
-                                        })
+                                        //- myDropzone.on('sending',function(file,xhr,formData){
+                                        //-     const csrfToken = '#{csrfToken}';
+                                        //-     formData.append('_csrf', csrfToken);
+                                        //- })
                                         myDropzone.on('complete',function(file){
                                             let response = file.xhr.response;
                                             let res = JSON.parse(response)
                                             Toast.fire({icon:res.status,title:res.data});
-                                            //- myDropzone.removeFile(file);
-                                            console.log(response)
+                                            myDropzone.removeFile(file);
+                                            setTimeout(location.reload(),3000) //reload after3 secs
                                         })
                                     })
 
