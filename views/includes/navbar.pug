@@ -88,5 +88,6 @@ nav.navbar.navbar-main.navbar-expand-lg.px-0.mx-4.shadow-none.border-radius-xl#n
                             span.d-sm-inline.d-none Sign In
                     else
                         a.nav-link.text-body.font-weight-bold.px-0(href="/signout")
+                            img(src=`${user.avatarPath}`, alt="", srcset="")
                             i.fa.fa-user.me-sm-1
                             span.d-sm-inline.d-none Sign Out

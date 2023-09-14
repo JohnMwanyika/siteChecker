@@ -37,7 +37,7 @@ async function startIntervalCheck(siteId, userId) {
                 const websiteUrl = monitoringSite.Website.url;
 
                 // CHECK WEBSITE STATUS FUNCTION #######################################################################
-                const siteResult = await checkWebsiteStatus(websiteUrl, timeout = 16000, userId); //userId is used by the memberEmails function only
+                const siteResult = await checkWebsiteStatus(websiteUrl, timeout = 40000, userId); //userId is used by the memberEmails function only
                 console.log(siteResult);
                 if (siteResult.status === true) {
 
