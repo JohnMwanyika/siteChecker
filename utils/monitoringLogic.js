@@ -280,7 +280,7 @@ async function startIntervalCheck(siteId, userId) {
 
             const websiteUrl = monitoringSite.Website.url;
             siteResult = await checkWebsiteStatus(websiteUrl, 20000, userId);
-            console.log("Monitoring##", monitoredSite.toJSON())
+            // console.log("Monitoring##", monitoredSite.toJSON())
 
             if (siteResult.status === true) {
                 await handleUpStatus(websiteUrl, userId, monitoringSite);
@@ -292,7 +292,7 @@ async function startIntervalCheck(siteId, userId) {
         } catch (error) {
             console.error(error);
         }
-    }, monitoredSite.interval * 5 * 1000);
+    }, monitoredSite.interval * 60 * 1000);
 
     console.log(`############## Monitoring has been started for ${monitoredSite.Website.url} ##############`);
     return {
