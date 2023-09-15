@@ -114,7 +114,7 @@ async function checkWebsiteStatus(url, timeout = 40000, userId) { //TImeout has 
     } catch (error) {
         // console.log(error)
         if (error.code === 'ECONNABORTED') {
-            return { status: 'timeout', responseTime: timeout }; // Website is up but took longer to respond
+            return { status: 'timeout', responseTime: timeout }; // Website might be up but taking longer to respond
         } else {
             return { status: false, responseTime: `An error occured while checking site status please trying again -${error.message}`, }; // Website is down (request error)
         }

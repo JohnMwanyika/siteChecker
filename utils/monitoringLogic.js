@@ -212,13 +212,8 @@ async function autoCleanUpResults(model) {
 
 async function updateSiteStatus(monitorId, statusId) {
     try {
-        const monitor = await Monitor.findByPk(monitorId);
-        if (!monitor) {
-            return { status: 'warning', data: 'Monitor not found' }
-        }
-        // return monitor
-        monitor.statusId = statusId;
-        await monitor.save();
+        await Monitor.update({ statusId }, { where: { id: monitorId } });
+        
         return {
             status: 'success',
             data: '',
@@ -284,11 +279,11 @@ async function startIntervalCheck(siteId, userId) {
             }
 
             const websiteUrl = monitoringSite.Website.url;
-            siteResult = await checkWebsiteStatus(websiteUrl, 16000, userId);
+            siteResult = await checkWebsiteStatus(websiteUrl, 20000, userId);
 
             if (siteResult.status === true) {
                 await handleUpStatus(websiteUrl, userId, monitoringSite);
-            } else if (siteResult.status === 'timeout') {
+            } else if (siteResult.status == 'timeout') {
                 await handleTimeoutStatus(websiteUrl, userId, monitoringSite);
             } else {
                 await handleDownStatus(websiteUrl, userId, monitoringSite);
@@ -296,7 +291,7 @@ async function startIntervalCheck(siteId, userId) {
         } catch (error) {
             console.error(error);
         }
-    }, monitoredSite.interval * 60 * 1000);
+    }, monitoredSite.interval * 5 * 1000);
 
     console.log(`############## Monitoring has been started for ${monitoredSite.Website.url} ##############`);
     return {
@@ -308,26 +303,35 @@ async function startIntervalCheck(siteId, userId) {
 async function handleUpStatus(websiteUrl, userId, monitoringSite) {
     try {
         if (previousStatus == "Down") {
-            console.log(`Hurray!! ${websiteUrl} is back online and operational.`);
-            socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is back online.`);
-
+            previousStatus = "Up";
+            const updatedStatus = await updateSiteStatus(monitoringSite.id, 1);
+            console.log(updatedStatus);
+            await createResult(monitoringSite.siteId, 'Up');
             // send emails and sms
             const results = await membersEmails(websiteUrl, userId);
             const [recipients, phoneNumbers] = results.data;
             const mailResponse = await sendMail(`Site Availability Restored: ${websiteUrl}`, `Dear Team Member,\nWe are pleased to inform you that the response time for ${websiteUrl} is within the expected range and everything appears to be functioning smoothly.\nBest regards,\nWebWatch.`, recipients);
             const smsResult = await sendBulkSms(`Dear Team Member,\nWe are pleased to inform you that the response time for ${websiteUrl} is within the expected range and everything appears to be functioning smoothly.\nBest regards,\nWebWatch.`, ...phoneNumbers);
             console.log(smsResult);
+
+            console.log(`Hurray!! ${websiteUrl} is back online and operational.`);
+            socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is back online.`);
             return;
         }
         if (previousStatus == "Timeout") {
-            console.log(`Hurray!! ${websiteUrl} has no delays and operational.`);
-            socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is now responding.`);
+            previousStatus = "Up";
+            const updatedStatus = await updateSiteStatus(monitoringSite.id, 1);
+            console.log(updatedStatus);
+            await createResult(monitoringSite.siteId, 'Up');
             // send emails and sms
             const results = await membersEmails(websiteUrl, userId);
             const [recipients, phoneNumbers] = results.data;
             const mailResponse = await sendMail(`Site Availability Restored: ${websiteUrl}`, `Dear Team Member,\nWe are pleased to inform you that the response time for ${websiteUrl} is within the expected range and everything appears to be functioning smoothly.\nBest regards,\nWebWatch.`, recipients);
             const smsResult = await sendBulkSms(`Dear Team Member,\nWe are pleased to inform you that the response time for ${websiteUrl} is within the expected range and everything appears to be functioning smoothly.\nBest regards,\nWebWatch.`, ...phoneNumbers);
             console.log(smsResult);
+
+            console.log(`Hurray!! ${websiteUrl} has no delays and operational.`);
+            socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is now responding.`);
             return;
         }
 
@@ -345,8 +349,11 @@ async function handleUpStatus(websiteUrl, userId, monitoringSite) {
         return { status: 'error', data: error.message };
     }
 }
+
 async function handleTimeoutStatus(websiteUrl, userId, monitoringSite) {
     try {
+        previousStatus = "Timeout";
+
         console.log(`Mayday! ${websiteUrl} is taking too long to respond trying again in ${monitoringSite.interval} minutes.`);
         socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is taking longer than expected, request took more than ${siteResult.responseTime} seconds. Trying again in ${monitoringSite.interval} minutes.`);
         const updatedStatus = await updateSiteStatus(monitoringSite.id, 3);
@@ -359,16 +366,17 @@ async function handleTimeoutStatus(websiteUrl, userId, monitoringSite) {
         const smsResult = await sendBulkSms(`Dear Team Member,\nWe have detected a delay in the response time for ${websiteUrl}. Our monitoring system has detected this issue, and we will recheck the status in ${monitoringSite.interval} minutes.\nBest regards,\nWebWatch.`, ...phoneNumbers);
         console.log(smsResult);
 
-        previousStatus = "Timeout";
         await createResult(monitoringSite.siteId, 'Timeout');
     } catch (error) {
-        console.log("Error while hadnling Up status", error)
+        console.log("Error while handling Timeout status", error)
         return { status: 'error', data: error.message };
     }
 }
 
 async function handleDownStatus(websiteUrl, userId, monitoringSite) {
     try {
+        previousStatus = "Down";
+
         console.log(`Mayday! Mayday! ${websiteUrl} has just collapsed trying again in ${monitoringSite.interval} minutes.`);
         socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is down`);
         const updatedStatus = await updateSiteStatus(monitoringSite.id, 2);
@@ -381,10 +389,9 @@ async function handleDownStatus(websiteUrl, userId, monitoringSite) {
         const smsResult = await sendBulkSms(`Dear Team Member,\nKindly be informed that there is an issue with ${websiteUrl} as it is currently experiencing downtime or is unreachable. We will conduct another assessment in ${monitoringSite.interval} minutes.\nBest regards,\nWebWatch.`, ...phoneNumbers);
         console.log(smsResult);
 
-        previousStatus = "Down";
         await createResult(monitoringSite.siteId, 'Down');
     } catch (error) {
-        console.log("Error while hadnling Up status", error)
+        console.log("Error while handling Down status", error)
         return { status: 'error', data: error.message };
     }
 }
