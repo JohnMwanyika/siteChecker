@@ -213,7 +213,7 @@ async function autoCleanUpResults(model) {
 async function updateSiteStatus(monitorId, statusId) {
     try {
         await Monitor.update({ statusId }, { where: { id: monitorId } });
-        
+
         return {
             status: 'success',
             data: '',
@@ -225,7 +225,7 @@ async function updateSiteStatus(monitorId, statusId) {
         return {
             status: 'error',
             data: '',
-            msg: 'An error occured while updating Monitor status'
+            msg: 'An error occured while updating Monitor status' + error.message
         }
     }
 }
@@ -280,6 +280,7 @@ async function startIntervalCheck(siteId, userId) {
 
             const websiteUrl = monitoringSite.Website.url;
             siteResult = await checkWebsiteStatus(websiteUrl, 20000, userId);
+            console.log("Monitoring##", monitoredSite.toJSON())
 
             if (siteResult.status === true) {
                 await handleUpStatus(websiteUrl, userId, monitoringSite);
@@ -302,7 +303,7 @@ async function startIntervalCheck(siteId, userId) {
 
 async function handleUpStatus(websiteUrl, userId, monitoringSite) {
     try {
-        if (previousStatus == "Down") {
+        if (previousStatus == "Down" && monitoringSite.statusId == 2) {
             previousStatus = "Up";
             const updatedStatus = await updateSiteStatus(monitoringSite.id, 1);
             console.log(updatedStatus);
@@ -318,7 +319,7 @@ async function handleUpStatus(websiteUrl, userId, monitoringSite) {
             socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is back online.`);
             return;
         }
-        if (previousStatus == "Timeout") {
+        if (previousStatus == "Timeout" && monitoringSite.statusId == 3) {
             previousStatus = "Up";
             const updatedStatus = await updateSiteStatus(monitoringSite.id, 1);
             console.log(updatedStatus);
@@ -392,7 +393,7 @@ async function handleDownStatus(websiteUrl, userId, monitoringSite) {
         await createResult(monitoringSite.siteId, 'Down');
     } catch (error) {
         console.log("Error while handling Down status", error)
-        return { status: 'error', data: error.message };
+        return { status: 'error', data:"Error while handling Down status "+error.message };
     }
 }
 
