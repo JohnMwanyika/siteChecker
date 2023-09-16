@@ -1,4 +1,5 @@
 const axios = require('axios');
+const https = require('https'); // Import the 'https' module
 const { Op } = require('sequelize');
 const { Website, SiteStatus, User, Team, Monitor, Monitor_Status, Member } = require('../models/index.js');
 const { sendMail } = require('./send_mail.js');
@@ -31,9 +32,9 @@ const { sendMail } = require('./send_mail.js');
 //         return false; // Website is down (request error)
 //     };
 // };
-membersEmails('https://gebeya.com', 1)
-    .then(data => console.log(data))
-    .catch(error => console.log(error))
+// membersEmails('https://gebeya.com', 1)
+//     .then(data => console.log(data))
+//     .catch(error => console.log(error))
 
 async function membersEmails(url, userId) {
     try {
@@ -98,13 +99,13 @@ async function membersEmails(url, userId) {
 
 }
 
-async function checkWebsiteStatus(url, timeout = 40000, userId) { //TImeout has been set 40 seconds
-    try {
-        const startTime = new Date().getTime(); // Track start time
-        const response = await axios.get(url, { timeout });
-        const endTime = new Date().getTime(); // Track end time
+async function checkWebsiteStatus1(url, timeout = 40000, userId) { //TImeout has been set 40 seconds
+    const startTime = new Date().getTime(); // Track start time
+    const response = await axios.get(url, { timeout });
+    const endTime = new Date().getTime(); // Track end time
 
-        const responseTime = (endTime - startTime) / 1000; // Calculate response time in seconds
+    const responseTime = (endTime - startTime) / 1000; // Calculate response time in seconds
+    try {
 
         if (response.status >= 200 && response.status < 400) {
             return { status: true, responseTime }; // Website is up
@@ -112,7 +113,13 @@ async function checkWebsiteStatus(url, timeout = 40000, userId) { //TImeout has 
             return { status: false, responseTime, }; // Website is down
         }
     } catch (error) {
-        // console.log(error)
+        console.log(error.code)
+        if (error.code == 'ENOTFOUND') {
+            return { status: false, responseTime, msg: `Failed to check site status -${error.message}` }
+        }
+        if (error.code == 'UNABLE_TO_VERIFY_LEAF_SIGNATURE') {
+            return { status: true, responseTime }; // Website is up
+        }
         if (error.code === 'ECONNABORTED') {
             return { status: 'timeout', responseTime: timeout }; // Website might be up but taking longer to respond
         } else {
@@ -121,11 +128,53 @@ async function checkWebsiteStatus(url, timeout = 40000, userId) { //TImeout has 
     }
 }
 
+async function checkWebsiteStatus(url, timeout = 40000, userId) {
+    let responseTime; // Declare responseTime here
+
+    try {
+        const startTime = new Date().getTime(); // Track start time
+        const response = await axios.get(url, { timeout, httpsAgent: new https.Agent({ rejectUnauthorized: false }) });
+        const endTime = new Date().getTime(); // Track end time
+
+        responseTime = (endTime - startTime) / 1000; // Calculate response time in seconds
+
+        if (response.status >= 200 && response.status < 400) {
+            return { status: true, responseTime };
+        } else {
+            return { status: false, responseTime };
+        }
+    } catch (error) {
+        // Handle errors here, and responseTime is still accessible
+        console.log(error.code);
+        if (error.code == 'ENOTFOUND') {
+            return { status: false, responseTime, msg: `Failed to check site status - ${error.message}` };
+        }
+        if (error.code == 'UNABLE_TO_VERIFY_LEAF_SIGNATURE') {
+            return { status: true, responseTime };
+        }
+        if (error.code === 'ECONNABORTED') {
+            return { status: 'timeout', responseTime: timeout };
+        } else {
+            return { status: false, responseTime, msg: `An error occurred while checking site status - ${error.message}` };
+        }
+    }
+}
+
+
+
+
 module.exports = {
     checkWebsiteStatus,
     membersEmails
 };
 
+// checkWebsiteStatus('https://cpsb.taitataveta.go.ke')
+//     .then(result => {
+//         console.log('Website Status:', result);
+//     })
+//     .catch(error => {
+//         console.log('Error:', error);
+//     });
 
 // Start periodic website status checks
 // setInterval(() => {

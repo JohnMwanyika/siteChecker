@@ -253,7 +253,7 @@ module.exports = {
             // find team details
             const selectedTeam = await Team.findOne({ include: [{ model: User }, { model: Member }], where: { id: teamId } });
             if (selectedTeam) {
-                console.log('selected team and users #########', selectedTeam)
+                // console.log('selected team and users #########', selectedTeam)
                 if (selectedTeam.Members.length < 1) { //if the selected team does not contain users throw an equivalent error
                     return res.json({ status: 'error', data: `Add members to '${selectedTeam.name}' team before assigning it!` })
                 }
