@@ -139,23 +139,23 @@ async function checkWebsiteStatus(url, timeout = 40000, userId) {
         responseTime = (endTime - startTime) / 1000; // Calculate response time in seconds
 
         if (response.status >= 200 && response.status < 400) {
-            return { status: true, responseTime };
+            return { status: true, responseTime, msg: `${url} is up` };
         } else {
-            return { status: false, responseTime };
+            return { status: false, responseTime, msg: `${url} is Down` };
         }
     } catch (error) {
         // Handle errors here, and responseTime is still accessible
         console.log(error.code);
         if (error.code == 'ENOTFOUND') {
-            return { status: false, responseTime, msg: `Failed to check site status - ${error.message}` };
+            return { status: 'net_error', responseTime, msg: `Failed to check ${url} status due to network issues - ${error.message}` };
         }
         if (error.code == 'UNABLE_TO_VERIFY_LEAF_SIGNATURE') {
-            return { status: true, responseTime };
+            return { status: true, responseTime, msg: `Failed to check ${url} status due to invalid SSL certificates` };
         }
         if (error.code === 'ECONNABORTED') {
-            return { status: 'timeout', responseTime: timeout };
+            return { status: 'timeout', responseTime: timeout, msg: `${url} is taking too long to respond` };
         } else {
-            return { status: false, responseTime, msg: `An error occurred while checking site status - ${error.message}` };
+            return { status: 'error', responseTime, msg: `An error occurred while checking ${url} status - ${error.message}` };
         }
     }
 }
@@ -168,13 +168,13 @@ module.exports = {
     membersEmails
 };
 
-// checkWebsiteStatus('https://cpsb.taitataveta.go.ke')
-//     .then(result => {
-//         console.log('Website Status:', result);
-//     })
-//     .catch(error => {
-//         console.log('Error:', error);
-//     });
+checkWebsiteStatus('https://cpsb.taitataveta.go.ke')
+    .then(result => {
+        console.log('Website Status:', result);
+    })
+    .catch(error => {
+        console.log('Error:', error);
+    });
 
 // Start periodic website status checks
 // setInterval(() => {
