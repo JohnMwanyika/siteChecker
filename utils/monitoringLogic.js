@@ -235,7 +235,8 @@ async function getMonitoredSite(siteId) {
         const monitoredSite = await Monitor.findOne({
             where: { siteId },
             include: [
-                { model: Website }
+                { model: Website },
+                { model: Monitor_Status }
             ],
         });
         return monitoredSite;
@@ -279,15 +280,17 @@ async function startIntervalCheck(siteId, userId) {
             }
 
             const websiteUrl = monitoringSite.Website.url;
-            siteResult = await checkWebsiteStatus(websiteUrl, 20000, userId);
+            siteResult = await checkWebsiteStatus(websiteUrl);
             // console.log("Monitoring##", monitoredSite.toJSON())
 
             if (siteResult.status === true) {
                 await handleUpStatus(websiteUrl, userId, monitoringSite);
             } else if (siteResult.status == 'timeout') {
                 await handleTimeoutStatus(websiteUrl, userId, monitoringSite);
-            } else {
+            } else if (siteResult.status == false) {
                 await handleDownStatus(websiteUrl, userId, monitoringSite);
+            } else {
+                console.log(siteResult)
             }
         } catch (error) {
             console.error(error);
@@ -303,7 +306,7 @@ async function startIntervalCheck(siteId, userId) {
 
 async function handleUpStatus(websiteUrl, userId, monitoringSite) {
     try {
-        if (previousStatus == "Down" && monitoringSite.statusId == 2) {
+        if (previousStatus == "Down" && monitoringSite.Monitor_Status.name == 'Offline') {
             previousStatus = "Up";
             const updatedStatus = await updateSiteStatus(monitoringSite.id, 1);
             console.log(updatedStatus);
@@ -319,7 +322,7 @@ async function handleUpStatus(websiteUrl, userId, monitoringSite) {
             socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is back online.`);
             return;
         }
-        if (previousStatus == "Timeout" && monitoringSite.statusId == 3) {
+        if (previousStatus == "Timeout" && monitoringSite.Monitor_Status.name == 'Timeout') {
             previousStatus = "Up";
             const updatedStatus = await updateSiteStatus(monitoringSite.id, 1);
             console.log(updatedStatus);
@@ -393,7 +396,7 @@ async function handleDownStatus(websiteUrl, userId, monitoringSite) {
         await createResult(monitoringSite.siteId, 'Down');
     } catch (error) {
         console.log("Error while handling Down status", error)
-        return { status: 'error', data:"Error while handling Down status "+error.message };
+        return { status: 'error', data: "Error while handling Down status " + error.message };
     }
 }
 

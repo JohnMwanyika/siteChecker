@@ -136,12 +136,14 @@ async function populateNewDb() {
       where: {
         name: 'Live',
         name: 'Offline',
+        name:'Timeout'
       }
     });
     if (monitorStatuses < 1) {
       const newMonStatus = await Monitor_Status.bulkCreate([
         { name: 'Live', description: 'This website/API is active and operational', color: 'success' },
         { name: 'Offline', description: 'This website/API is inactive the respective team has been notified.', color: 'danger' },
+        { name: 'Timeout', description: 'This website/API is taking too long to respond, respective team has been notified.', color: 'warning' },
       ])
 
       if (newMonStatus) {
