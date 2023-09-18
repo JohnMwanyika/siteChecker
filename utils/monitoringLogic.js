@@ -290,10 +290,12 @@ async function startIntervalCheck(siteId, userId) {
             } else if (siteResult.status == false) {
                 await handleDownStatus(websiteUrl, userId, monitoringSite);
             } else {
-                console.log(siteResult)
+                await handleErrors(siteResult, userId);
+                console.log("Alert*********", siteResult)
             }
         } catch (error) {
-            console.error(error);
+            await handleErrors(error, userId);
+            console.error("Alert*********", error);
         }
     }, monitoredSite.interval * 60 * 1000);
 
@@ -400,9 +402,9 @@ async function handleDownStatus(websiteUrl, userId, monitoringSite) {
     }
 }
 
-// function handleErrors(error, userId, monitoringSite) {
-//     socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is down`);
-// }
+async function handleErrors(error, userId) {
+    socket.ioObject.emit('error_' + userId, `${error.msg}`);
+}
 
 async function sendNotifications(subject, message, results) {
     const [recipients, phoneNumbers] = results.data;

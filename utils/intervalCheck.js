@@ -1,8 +1,20 @@
 const axios = require('axios');
+const axiosRetry = require('axios-retry');
 const https = require('https'); // Import the 'https' module
 const { Op } = require('sequelize');
 const { Website, SiteStatus, User, Team, Monitor, Monitor_Status, Member } = require('../models/index.js');
 const { sendMail } = require('./send_mail.js');
+
+axiosRetry(axios, {
+    retries: 3,
+    retryDelay: axiosRetry.exponentialDelay, // Optional delay between retries
+    shouldResetTimeout: true, // Reset the timeout for each retry
+    retryCondition: (error) => {
+        console.log('Retrying', +1);
+        // Retry on timeout errors (ECONNABORTED)
+        return axiosRetry.isNetworkError(error) || (error.code === 'ECONNABORTED') || (error.code === 'ECONNRESET') || (error.code === 'ENOTFOUND');
+    },
+});
 
 // membersEmails('https://gebeya.com', 1)
 //     .then(data => console.log(data))
@@ -90,13 +102,14 @@ async function checkWebsiteStatus(url, timeout = 30000, userId) {
         }
     } catch (error) {
         // Handle errors here, and responseTime is still accessible
-        console.log(error.code, error.toJSON());
+        // console.log(error.code, error.toJSON());
         if (error.code == 'ERR_BAD_REQUEST') {
             // return { status: 'bad_request', responseTime, msg: `Failed to check ${url} status due to bad request - ${error.message}` };
             return { status: true, responseTime, msg: `${url} is up` };
         }
-        if (error.code == 'ENOTFOUND') {
-            return { status: 'net_error', responseTime, msg: `Failed to check ${url} status due to network issues - ${error.message}` };
+        if (error.code == 'ENOTFOUND' || error.code == 'ECONNRESET') {
+            // return { status: 'net_error', responseTime, msg: error.message };
+            return { status: 'net_error', responseTime, msg: `Failed to check ${url} status due to network problems` };
         }
         if (error.code == 'UNABLE_TO_VERIFY_LEAF_SIGNATURE') {
             return { status: true, responseTime, msg: `Failed to check ${url} status due to invalid SSL certificates` };
