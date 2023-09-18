@@ -297,14 +297,19 @@ module.exports = {
             const updatedWebsite = website.setSiteStatus(2) //change site status to Monitoring
 
             // re-Initialize the monitoring logic to append the newly created above
-            const monitorResults = await initializeMonitoring();
+            // const monitorResults = await initializeMonitoring();
+            const monitorResults = await startIntervalCheck(siteId, userId)
             console.log('Initialize monitoring results', monitorResults)
 
             console.log(`############## Monitoring has been started for ${website.url} ##############`);
             res.json({
-                status: 'success',
-                data: `Monitoring started for ${website.url}`,
+                status: monitorResults.status,
+                data: monitorResults.data,
             });
+            // res.json({
+            //     status: 'success',
+            //     data: `Monitoring started for ${website.url} \n ${monitorResults}`,
+            // });
         } catch (error) {
             console.log(error);
             res.json({

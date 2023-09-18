@@ -3,35 +3,7 @@ const https = require('https'); // Import the 'https' module
 const { Op } = require('sequelize');
 const { Website, SiteStatus, User, Team, Monitor, Monitor_Status, Member } = require('../models/index.js');
 const { sendMail } = require('./send_mail.js');
-// const {
-//     sendMail
-// } = require('../utils/send_mail');
 
-
-// const mails = ['mwanyikajohn@outlook.com', '5476benja@outlook.com'];
-
-// sendMail('Application letter', 'Applying for the above mentioned post', mails)
-//     .then(() => {
-//         console.log('Sent mail')
-//     })
-//     .catch((err) => {
-//         console.log('Error sending Mail');
-//     });
-
-// Function to check the website status
-// async function checkWebsiteStatus(url) {
-//     try {
-
-//         const response = await axios.get(url);
-//         if (response.status >= 200 && response.status < 400) {
-//             return true; // Website is up
-//         } else {
-//             return false; // Website is down
-//         }
-//     } catch (error) {
-//         return false; // Website is down (request error)
-//     };
-// };
 // membersEmails('https://gebeya.com', 1)
 //     .then(data => console.log(data))
 //     .catch(error => console.log(error))
@@ -99,34 +71,7 @@ async function membersEmails(url, userId) {
 
 }
 
-// async function checkWebsiteStatus1(url, timeout = 40000, userId) { //TImeout has been set 40 seconds
-//     const startTime = new Date().getTime(); // Track start time
-//     const response = await axios.get(url, { timeout });
-//     const endTime = new Date().getTime(); // Track end time
 
-//     const responseTime = (endTime - startTime) / 1000; // Calculate response time in seconds
-//     try {
-
-//         if (response.status >= 200 && response.status < 400) {
-//             return { status: true, responseTime }; // Website is up
-//         } else {
-//             return { status: false, responseTime, }; // Website is down
-//         }
-//     } catch (error) {
-//         console.log(error.code)
-//         if (error.code == 'ENOTFOUND') {
-//             return { status: false, responseTime, msg: `Failed to check site status -${error.message}` }
-//         }
-//         if (error.code == 'UNABLE_TO_VERIFY_LEAF_SIGNATURE') {
-//             return { status: true, responseTime }; // Website is up
-//         }
-//         if (error.code === 'ECONNABORTED') {
-//             return { status: 'timeout', responseTime: timeout }; // Website might be up but taking longer to respond
-//         } else {
-//             return { status: false, responseTime: `An error occured while checking site status please trying again -${error.message}`, }; // Website is down (request error)
-//         }
-//     }
-// }
 
 async function checkWebsiteStatus(url, timeout = 30000, userId) {
     let responseTime; // Declare responseTime here
@@ -145,7 +90,11 @@ async function checkWebsiteStatus(url, timeout = 30000, userId) {
         }
     } catch (error) {
         // Handle errors here, and responseTime is still accessible
-        console.log(error.code);
+        console.log(error.code, error.toJSON());
+        if (error.code == 'ERR_BAD_REQUEST') {
+            // return { status: 'bad_request', responseTime, msg: `Failed to check ${url} status due to bad request - ${error.message}` };
+            return { status: true, responseTime, msg: `${url} is up` };
+        }
         if (error.code == 'ENOTFOUND') {
             return { status: 'net_error', responseTime, msg: `Failed to check ${url} status due to network issues - ${error.message}` };
         }
@@ -153,7 +102,7 @@ async function checkWebsiteStatus(url, timeout = 30000, userId) {
             return { status: true, responseTime, msg: `Failed to check ${url} status due to invalid SSL certificates` };
         }
         if (error.code === 'ECONNABORTED') {
-            return { status: 'timeout', responseTime: timeout/1000, msg: `${url} is taking too long to respond` };
+            return { status: 'timeout', responseTime: timeout / 1000, msg: `${url} is taking too long to respond` };
         } else {
             return { status: 'error', responseTime, msg: `An error occurred while checking ${url} status - ${error.message}` };
         }

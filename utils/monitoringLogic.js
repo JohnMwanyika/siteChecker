@@ -400,6 +400,10 @@ async function handleDownStatus(websiteUrl, userId, monitoringSite) {
     }
 }
 
+// function handleErrors(error, userId, monitoringSite) {
+//     socket.ioObject.emit('siteStatus_' + userId, `${monitoringSite.Website.name} is down`);
+// }
+
 async function sendNotifications(subject, message, results) {
     const [recipients, phoneNumbers] = results.data;
     const mailResponse = await sendMail(subject, message, recipients);
