@@ -155,6 +155,7 @@ block content
             }
 
             results.forEach((data, index) => {
+                console.log(index,data)
                 setTimeout(function () {
                     const listItem = createListItem(data);
                     container.append(listItem);

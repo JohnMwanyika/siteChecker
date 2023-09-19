@@ -10,13 +10,13 @@ module.exports = {
             const website = await monitoringSite.getWebsite();
             // console.log("Website being monitored", website);
 
-            const results = await website.getResults();
-            // const results = await Results.findAll({
-            //     where: { siteId: website.id },
-            //     order: [
-            //         ['createdAt', 'DESC']
-            //     ]
-            // })
+            // const results = await website.getResults();
+            const results = await Results.findAll({
+                where: { siteId: website.id },
+                order: [
+                    ['createdAt', 'DESC']
+                ]
+            })
             console.log(results);
 
             res.json({ status: 'success', data: results });
