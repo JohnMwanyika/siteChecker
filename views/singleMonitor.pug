@@ -145,9 +145,15 @@ block content
         //- function to append the list items to the container
         function populateResults(results) {
             const container = $('#container');
+            //- clear the existing once before appending
             container.empty();
-            results.forEach((data) => {
-                container.append(createListItem(data));
+
+            results.forEach((data, index) => {
+                setTimeout(function () {
+                    const listItem = createListItem(data);
+                    container.append(listItem);
+                    listItem.addClass('animate__animated animate__fadeOutDown');
+                }, index * 200); // Delay each item by 200 milliseconds * index
             });
         }
         //- function to create the list Item
@@ -157,7 +163,7 @@ block content
             const btnClass = data.type === 'Up' ? 'btn-outline-success' : (data.type === 'Down' ? 'btn-outline-danger' : 'btn-outline-warning');
             return `
                 <li class="border-bottom list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div class="d-flex align-items-center">
+                    <div class="animate__animated animate__fadeInDown d-flex align-items-center">
                         <button class="btn btn-icon-only btn-rounded ${btnClass} mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center">
                             <i class="material-icons text-lg">${icon}</i>
                         </button>
@@ -176,3 +182,26 @@ block content
         function formatDate(inputDate) {
             return moment(inputDate).format('DD MMMM YYYY, [at] hh:mm A');
         }
+
+        //- function populateResults(results) {
+        //-     const container = $('#container');
+        //-     container.empty();
+
+        //-     // Function to append a single item with a delay
+        //-     function appendItemWithDelay(index) {
+        //-         if (index < results.length) {
+        //-             setTimeout(function () {
+        //-                 const data = results[index];
+        //-                 const listItem = createListItem(data);
+        //-                 container.append(listItem);
+        //-                 // Add the 'animate__animated' class to trigger the animation
+        //-                 listItem.addClass('animate__animated animate__fadeInDown');
+        //-                 // Call the next item with a delay
+        //-                 appendItemWithDelay(index + 1);
+        //-             }, 200); // Adjust the delay time as needed (e.g., 200 milliseconds)
+        //-         }
+        //-     }
+
+        //-     // Start appending items with a delay, beginning from index 0
+        //-     appendItemWithDelay(0);
+        //- }
