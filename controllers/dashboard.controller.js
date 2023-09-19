@@ -1,8 +1,5 @@
-const { checkWebsiteStatus } = require('../utils/intervalCheck');
 const { Website, SiteStatus, User, Team, Monitor, Monitor_Status, Member } = require('../models/index.js');
-const { sendMail } = require('../utils/send_mail.js');
 const { startIntervalCheck } = require('../utils/monitoringLogic');
-const { initializeMonitoring } = require('../utils/autoMonitor');
 module.exports = {
     getDashboard: async (req, res) => {
         try {

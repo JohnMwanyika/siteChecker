@@ -7,7 +7,7 @@ block content
                 .card-header.pb-0.px-3
                     h6.mb-0 Billing Information (#{id})
                 .card-body.pt-4.p-3
-                    ul.list-group
+                    //- ul.list-group
                         li.list-group-item.border-0.d-flex.p-4.mb-2.bg-gray-100.border-radius-lg
                             .d-flex.flex-column
                                 h6.mb-3.text-sm Oliver Liam
@@ -73,14 +73,15 @@ block content
                 .card-header.pb-0.px-3
                     .row
                         .col-md-6
-                            h6.mb-0 Your Transaction's
+                            h6.mb-0 Previous Outcomes
                         .col-md-6.d-flex.justify-content-start.justify-content-md-end.align-items-center
                             i.material-icons.me-2.text-lg date_range
                             |  
                             small 23 - 30 March 2020
                 .card-body.pt-4.p-3
                     h6.text-uppercase.text-body.text-xs.font-weight-bolder.mb-3 Newest
-                    ul.list-group
+                    ul.list-group#container
+                    //- ul.list-group#container
                         li.list-group-item.border-0.d-flex.justify-content-between.ps-0.mb-2.border-radius-lg
                             .d-flex.align-items-center
                                 button.btn.btn-icon-only.btn-rounded.btn-outline-danger.mb-0.me-3.p-3.btn-sm.d-flex.align-items-center.justify-content-center
@@ -101,8 +102,8 @@ block content
                             .d-flex.align-items-center.text-success.text-gradient.text-sm.font-weight-bold.
                                 + $ 2,000
 
-                    h6.text-uppercase.text-body.text-xs.font-weight-bolder.my-3 Yesterday
-                    ul.list-group
+                    //- h6.text-uppercase.text-body.text-xs.font-weight-bolder.my-3 Yesterday
+                    //- ul.list-group
                         li.list-group-item.border-0.d-flex.justify-content-between.ps-0.mb-2.border-radius-lg
                             .d-flex.align-items-center
                                 button.btn.btn-icon-only.btn-rounded.btn-outline-success.mb-0.me-3.p-3.btn-sm.d-flex.align-items-center.justify-content-center
@@ -142,3 +143,70 @@ block content
                                     span.text-xs 26 March 2020, at 05:00 AM
                             .d-flex.align-items-center.text-dark.text-sm.font-weight-bold.
                                 Pending
+
+
+    script.
+
+        makeAjaxCall('#{id}');
+
+        function makeAjaxCall(id){
+            $.ajax(
+                {
+                    url:`/dashboard/monitor/results/${id}`,
+                    type:'get',
+
+                    beforeSend: function () {
+                        showSpinner('.overlay-spinner');
+                    },
+
+                    complete: function () {
+                        hideSpinner('.overlay-spinner');
+                    },
+
+                    success:function(result){
+                        if(result.status == 'success'){
+                            //- console.log(result);
+                            populateResults(result.data);
+                        }
+                    },
+
+                    error: function (xhr, status, error) {
+                        console.error('AJAX Error:', error);
+                    }
+                }
+            )
+        };
+
+        //- function to append the list items to the container
+        function populateResults(results) {
+            const container = $('#container');
+            results.forEach((data) => {
+                container.append(createListItem(data));
+            });
+        }
+        //- function to create the list Item
+        function createListItem(data) {
+            const myDate = formatDate(data.createdAt);
+            const icon = data.type === 'Up' ? 'expand_less' : 'expand_more';
+            const btnClass = data.type === 'Up' ? 'btn-outline-success' : (data.type === 'Down' ? 'btn-outline-danger' : 'btn-outline-warning');
+            return `
+                <li class="border-bottom list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-icon-only btn-rounded ${btnClass} mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center">
+                            <i class="material-icons text-lg">${icon}</i>
+                        </button>
+                        <div class="d-flex flex-column">
+                            <h6 class="mb-1 text-dark text-sm">${data.type}</h6>
+                            <span class="text-xs">${myDate}</span>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center text-danger text-gradient text-sm font-weight-bold">
+                        $ 2,500
+                    </div>
+                </li>
+            `;
+        };
+
+        function formatDate(inputDate) {
+            return moment(inputDate).format('DD MMMM YYYY, [at] hh:mm A');
+        }

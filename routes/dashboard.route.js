@@ -5,6 +5,7 @@ const usersRouter = require('../routes/users');
 const membersRouter = require('./members.route');
 const { getDashboard, getSites, newSite, updateSite, createTeam, allTeams, updateTeam, removeTeam, startMonitoring, editMonitor, stopMonitoring, updateTeamNotification, fetchMonitorsApi, singleMonitor } = require('../controllers/dashboard.controller');
 const { generateCsrfToken, validateCsrfToken } = require('../middlewares/auth.mid');
+const { getResultsById } = require('../controllers/results.controller');
 
 const router = express.Router();
 
@@ -31,6 +32,7 @@ router.post('/teams/notification_update/:teamId', updateTeamNotification);
 router.get('/api/monitors', fetchMonitorsApi);
 
 router.get('/monitor/:monitorId', singleMonitor);
+router.get('/monitor/results/:monitorId', getResultsById);
 
 
 
