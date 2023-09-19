@@ -18,6 +18,9 @@ block content
                                     | Created On: 
                                     span.text-dark.ms-sm-2.font-weight-bold #{moment(monitor.createdAt).format('DD MMMM YYYY, [at] hh:mm A')}
                                 span.mb-2.text-xs
+                                    | Updated: 
+                                    span.text-dark.ms-sm-2.font-weight-bold #{moment(monitor.updatedAt).startOf('minute').fromNow()}
+                                span.mb-2.text-xs
                                     | Website Url: 
                                     a(href=`${website.url}` target="_blank") 
                                         span.ms-sm-2.font-weight-bold #{website.url}
@@ -155,7 +158,7 @@ block content
                 setTimeout(function () {
                     const listItem = createListItem(data);
                     container.append(listItem);
-                    listItem.addClass('animate__animated animate__fadeOutDown');
+                    //- listItem.addClass('animate__animated animate__fadeOutDown');
                 }, index * 200); // Delay each item by 200 milliseconds * index
             });
         }

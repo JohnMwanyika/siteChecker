@@ -11,10 +11,17 @@ module.exports = {
             // console.log("Website being monitored", website);
 
             const results = await website.getResults();
-            // console.log(results);
+            // const results = await Results.findAll({
+            //     where: { siteId: website.id },
+            //     order: [
+            //         ['createdAt', 'DESC']
+            //     ]
+            // })
+            console.log(results);
 
             res.json({ status: 'success', data: results });
         } catch (error) {
+            console.log(error)
             res.json({ status: 'error', data: `An error occured while fetching results - ${error.message}` });
         }
     }
