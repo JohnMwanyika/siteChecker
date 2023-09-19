@@ -147,6 +147,9 @@ block content
             const container = $('#container');
             //- clear the existing once before appending
             container.empty();
+            if(results.length < 1){
+                return container.append(`<p class="text-center p-5 bg-light">No results to display!</p>`);
+            }
 
             results.forEach((data, index) => {
                 setTimeout(function () {
@@ -182,26 +185,3 @@ block content
         function formatDate(inputDate) {
             return moment(inputDate).format('DD MMMM YYYY, [at] hh:mm A');
         }
-
-        //- function populateResults(results) {
-        //-     const container = $('#container');
-        //-     container.empty();
-
-        //-     // Function to append a single item with a delay
-        //-     function appendItemWithDelay(index) {
-        //-         if (index < results.length) {
-        //-             setTimeout(function () {
-        //-                 const data = results[index];
-        //-                 const listItem = createListItem(data);
-        //-                 container.append(listItem);
-        //-                 // Add the 'animate__animated' class to trigger the animation
-        //-                 listItem.addClass('animate__animated animate__fadeInDown');
-        //-                 // Call the next item with a delay
-        //-                 appendItemWithDelay(index + 1);
-        //-             }, 200); // Adjust the delay time as needed (e.g., 200 milliseconds)
-        //-         }
-        //-     }
-
-        //-     // Start appending items with a delay, beginning from index 0
-        //-     appendItemWithDelay(0);
-        //- }
