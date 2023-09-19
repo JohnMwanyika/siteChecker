@@ -61,3 +61,22 @@ WebWatch is built on a solid foundation of JavaScript, leveraging its power for 
 
 **The Impact:**
 With WebWatch, clients can rest easy knowing their websites are in safe hands. By offering proactive monitoring, instant alerts, and an intuitive interface, WebWatch enables users to swiftly address issues and keep their online presence thriving. My contribution to WebWatch underscores my commitment to enhancing user experiences and solving real-world problems through software development.
+
+**New 18th Sep 2023**
+
+Added:
+    - User can now edit active monitors.(check interval and Group)
+    - Most errors are caught gracefully and alerts displayed to clients on realtime.
+    - Retry mechanism ( 3 trials for failed requests before sending notifications).
+    - User can now upload their avatars.
+    - Protection of all routes against CSRF(cross site request forgery).
+
+Fixed:
+    - sites with Invalid SSL reporting as unavailable.
+    - sites requiring authentication reporting as unavailable.
+    - New users unable to assing members to their groups.
+    - Errors on creation of user as a member.
+
+Refactored:
+    - Break Monitoring algorithm to smaller fuctions that are easy to read and maintain.
+    - Notification module is now a simplified class that can be instantiated and imported in any other file.
