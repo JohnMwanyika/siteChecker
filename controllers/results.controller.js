@@ -8,10 +8,10 @@ module.exports = {
             const monitoringSite = await Monitor.findByPk(monitorId);
             // get the website being monitored
             const website = await monitoringSite.getWebsite();
-            console.log("Website being monitored", website);
+            // console.log("Website being monitored", website);
 
             const results = await website.getResults();
-            console.log(results);
+            // console.log(results);
 
             res.json({ status: 'success', data: results });
         } catch (error) {

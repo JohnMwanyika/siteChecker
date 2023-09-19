@@ -473,7 +473,23 @@ module.exports = {
     },
     singleMonitor: async (req, res) => {
         const { monitorId } = req.params;
-        console.log(monitorId)
-        return res.render('singleMonitor', { title: 'Single Monitor', id: monitorId });
+        try {
+            console.log(monitorId)
+            const monitor = await Monitor.findByPk(monitorId, {
+                include: [
+                    { model: User },
+                    { model: Team, include: Member }
+                ]
+            });
+            if (!monitor) {
+                return res.render('error', { title: 'Not found' });
+            }
+            const website = await monitor.getWebsite();
+            console.log(monitor.toJSON(), website.toJSON());
+
+            return res.render('singleMonitor', { title: 'Single Monitor', id: monitorId, monitor, website });
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

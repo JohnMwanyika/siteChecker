@@ -1,26 +1,41 @@
-extends dashLayout.pug
+extends dashLayout
 block content
 
     .row
         .col-md-7.mt-4
             .card
                 .card-header.pb-0.px-3
-                    h6.mb-0 Billing Information (#{id})
+                    h6.mb-0 Monitor Overview
                 .card-body.pt-4.p-3
-                    //- ul.list-group
+                    ul.list-group
                         li.list-group-item.border-0.d-flex.p-4.mb-2.bg-gray-100.border-radius-lg
                             .d-flex.flex-column
-                                h6.mb-3.text-sm Oliver Liam
+                                h6.mb-3.text-sm #{website.name} (#{id})
                                 span.mb-2.text-xs
-                                    | Company Name: 
-                                    span.text-dark.font-weight-bold.ms-sm-2 Viking Burrito
+                                    | Created By: 
+                                    span.text-dark.font-weight-bold.ms-sm-2 #{monitor.User.firstName} #{monitor.User.lastName}
                                 span.mb-2.text-xs
-                                    | Email Address: 
+                                    | Created On: 
+                                    span.text-dark.ms-sm-2.font-weight-bold #{moment(monitor.createdAt).format('DD MMMM YYYY, [at] hh:mm A')}
+                                span.mb-2.text-xs
+                                    | Website Url: 
+                                    a(href=`${website.url}` target="_blank") 
+                                        span.ms-sm-2.font-weight-bold #{website.url}
+                                span.mb-2.text-xs
+                                    | Checking every: 
+                                    span.text-dark.ms-sm-2.font-weight-bold #{monitor.interval} Minutes
+                                span.mb-2.text-xs
+                                    | Team: 
+                                    span.text-dark.ms-sm-2.font-weight-bold #{monitor.Team.name}
+                                span.mb-2.text-xs
+                                    | Members: 
                                     span.text-dark.ms-sm-2.font-weight-bold
-                                        a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="b3dcdfdac5d6c1f3d1c6c1c1dac7dc9dd0dcde") [email protected]
-                                span.text-xs
-                                    | VAT Number: 
-                                    span.text-dark.ms-sm-2.font-weight-bold FRB1235476
+                                    br
+                                    .avatar-group
+                                        each member in monitor.Team.Members
+                                            a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom", title=`${member.firstName} ${member.lastName}`)
+                                                img(alt="Image placeholder" src="../../assets/img/team-1.jpg")
+
                             .ms-auto.text-end
                                 a.btn.btn-link.text-danger.text-gradient.px-3.mb-0(href="javascript:;")
                                     i.material-icons.text-sm.me-2 delete
@@ -28,52 +43,13 @@ block content
                                 a.btn.btn-link.text-dark.px-3.mb-0(href="javascript:;")
                                     i.material-icons.text-sm.me-2 edit
                                     | Edit
-                        li.list-group-item.border-0.d-flex.p-4.mb-2.mt-3.bg-gray-100.border-radius-lg
-                            .d-flex.flex-column
-                                h6.mb-3.text-sm Lucas Harper
-                                span.mb-2.text-xs
-                                    | Company Name: 
-                                    span.text-dark.font-weight-bold.ms-sm-2 Stone Tech Zone
-                                span.mb-2.text-xs
-                                    | Email Address: 
-                                    span.text-dark.ms-sm-2.font-weight-bold
-                                        a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="58342d3b392b182b2c37363d752c3d3b30763b3735") [email protected]
-                                span.text-xs
-                                    | VAT Number: 
-                                    span.text-dark.ms-sm-2.font-weight-bold FRB1235476
-                            .ms-auto.text-end
-                                a.btn.btn-link.text-danger.text-gradient.px-3.mb-0(href="javascript:;")
-                                    i.material-icons.text-sm.me-2 delete
-                                    | Delete
-                                a.btn.btn-link.text-dark.px-3.mb-0(href="javascript:;")
-                                    i.material-icons.text-sm.me-2 edit
-                                    | Edit
-                        li.list-group-item.border-0.d-flex.p-4.mb-2.mt-3.bg-gray-100.border-radius-lg
-                            .d-flex.flex-column
-                                h6.mb-3.text-sm Ethan James
-                                span.mb-2.text-xs
-                                    | Company Name: 
-                                    span.text-dark.font-weight-bold.ms-sm-2 Fiber Notion
-                                span.mb-2.text-xs
-                                    | Email Address: 
-                                    span.text-dark.ms-sm-2.font-weight-bold
-                                        a.__cf_email__(href="https://demos.creative-tim.com/cdn-cgi/l/email-protection" data-cfemail="cca9b8a4ada28caaa5aea9bee2afa3a1") [email protected]
-                                span.text-xs
-                                    | VAT Number: 
-                                    span.text-dark.ms-sm-2.font-weight-bold FRB1235476
-                            .ms-auto.text-end
-                                a.btn.btn-link.text-danger.text-gradient.px-3.mb-0(href="javascript:;")
-                                    i.material-icons.text-sm.me-2 delete
-                                    | Delete
-                                a.btn.btn-link.text-dark.px-3.mb-0(href="javascript:;")
-                                    i.material-icons.text-sm.me-2 edit
-                                    | Edit
+
         .col-md-5.mt-4
             .card.h-100.mb-4
                 .card-header.pb-0.px-3
                     .row
                         .col-md-6
-                            h6.mb-0 Previous Outcomes
+                            h6.mb-0 Outcomes
                         .col-md-6.d-flex.justify-content-start.justify-content-md-end.align-items-center
                             i.material-icons.me-2.text-lg date_range
                             |  
@@ -81,28 +57,9 @@ block content
                 .card-body.pt-4.p-3
                     h6.text-uppercase.text-body.text-xs.font-weight-bolder.mb-3 Newest
                     ul.list-group#container
-                    //- ul.list-group#container
-                        li.list-group-item.border-0.d-flex.justify-content-between.ps-0.mb-2.border-radius-lg
-                            .d-flex.align-items-center
-                                button.btn.btn-icon-only.btn-rounded.btn-outline-danger.mb-0.me-3.p-3.btn-sm.d-flex.align-items-center.justify-content-center
-                                    i.material-icons.text-lg expand_more
-                                .d-flex.flex-column
-                                    h6.mb-1.text-dark.text-sm Netflix
-                                    span.text-xs 27 March 2020, at 12:30 PM
-                            .d-flex.align-items-center.text-danger.text-gradient.text-sm.font-weight-bold.
-                                - $ 2,500
+                    //- All outcomes will be looped here
 
-                        li.list-group-item.border-0.d-flex.justify-content-between.ps-0.mb-2.border-radius-lg
-                            .d-flex.align-items-center
-                                button.btn.btn-icon-only.btn-rounded.btn-outline-success.mb-0.me-3.p-3.btn-sm.d-flex.align-items-center.justify-content-center
-                                    i.material-icons.text-lg expand_less
-                                .d-flex.flex-column
-                                    h6.mb-1.text-dark.text-sm Apple
-                                    span.text-xs 27 March 2020, at 04:30 AM
-                            .d-flex.align-items-center.text-success.text-gradient.text-sm.font-weight-bold.
-                                + $ 2,000
-
-                    //- h6.text-uppercase.text-body.text-xs.font-weight-bolder.my-3 Yesterday
+                    //- h6.text-uppercase.text-body.text-xs.font-weight-bolder.my-3 Previous
                     //- ul.list-group
                         li.list-group-item.border-0.d-flex.justify-content-between.ps-0.mb-2.border-radius-lg
                             .d-flex.align-items-center
@@ -147,6 +104,14 @@ block content
 
     script.
 
+        document.addEventListener('DOMContentLoaded',function(){
+            if(#{user.id}){
+                socket.on(`siteStatus_#{user.id}`,(data)=>{
+                    console.log('refreshing');
+                    makeAjaxCall(#{id});
+                });
+        }  
+        });
         makeAjaxCall('#{id}');
 
         function makeAjaxCall(id){
@@ -180,6 +145,7 @@ block content
         //- function to append the list items to the container
         function populateResults(results) {
             const container = $('#container');
+            container.empty();
             results.forEach((data) => {
                 container.append(createListItem(data));
             });
@@ -187,7 +153,7 @@ block content
         //- function to create the list Item
         function createListItem(data) {
             const myDate = formatDate(data.createdAt);
-            const icon = data.type === 'Up' ? 'expand_less' : 'expand_more';
+            const icon = data.type === 'Up' ? 'expand_less' : data.type === 'Down' ? 'expand_more' : 'priority_high';
             const btnClass = data.type === 'Up' ? 'btn-outline-success' : (data.type === 'Down' ? 'btn-outline-danger' : 'btn-outline-warning');
             return `
                 <li class="border-bottom list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
@@ -201,7 +167,7 @@ block content
                         </div>
                     </div>
                     <div class="d-flex align-items-center text-danger text-gradient text-sm font-weight-bold">
-                        $ 2,500
+
                     </div>
                 </li>
             `;

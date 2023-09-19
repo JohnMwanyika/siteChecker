@@ -1,3 +1,4 @@
+const moment = require('moment');
 // require crypto
 const crypto = require('crypto');
 
@@ -7,18 +8,10 @@ const checkSession = (req, res, next) => {
     }
     req.user = req.session.user;
     res.locals.user = req.user;
+    res.locals.moment = moment;
     next();
 }
 
-// const generateCsrfToken = (req, res, next) => {
-//     // if (req.method === 'POST') {
-//     //     return next();
-//     // }
-//     const csrfToken = crypto.randomBytes(16).toString('hex');
-//     req.session.csrfToken = csrfToken;
-//     res.locals.csrfToken = csrfToken;
-//     next();
-// }
 
 const generateCsrfToken = (req, res, next) => {
     // Initialize sessions if not already done (ensure you've set up express-session middleware)
