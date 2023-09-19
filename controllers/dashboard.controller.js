@@ -473,5 +473,10 @@ module.exports = {
             console.log(error)
             res.json({ status: 'error', data: 'We encountered an error while retrieving your currently monitored sites. To resolve this issue, please try refreshing the page.' })
         }
+    },
+    singleMonitor: async (req, res) => {
+        const { monitorId } = req.params;
+        console.log(monitorId)
+        return res.render('singleMonitor', { title: 'Single Monitor', id: monitorId });
     }
 }
