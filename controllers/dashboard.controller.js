@@ -485,11 +485,12 @@ module.exports = {
                 return res.render('error', { title: 'Not found' });
             }
             const website = await monitor.getWebsite();
-            console.log(monitor.toJSON(), website.toJSON());
+            // console.log(monitor.toJSON(), website.toJSON());
 
             return res.render('singleMonitor', { title: 'Single Monitor', id: monitorId, monitor, website });
         } catch (error) {
             console.log(error);
+            res.render('error', { title: error.message });
         }
     }
 }

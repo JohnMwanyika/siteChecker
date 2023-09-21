@@ -59,7 +59,7 @@ block content
                             small 23 - 30 March 2020
                 .card-body.pt-4.p-3
                     h6.text-uppercase.text-body.text-xs.font-weight-bolder.mb-3 Newest
-                    //- div#results
+                    div#results
                         //- search
                         //- input.search(type="text")
                         //- All outcomes will be looped here
@@ -77,74 +77,67 @@ block content
 
                         //- pagination
                         ul.pagination
-                    #data-container
-                    #pagination-container(class="paginationjs-theme-blue paginationjs-small")
 
 
 
     script.
 
         document.addEventListener('DOMContentLoaded',function(){
-
-            // Options for Pagination.js
-            const options = {
-                pageSize: 5, // Number of items per page
-                pageSize: 5,
-                showSizeChanger: true,
-                dataSource: function (done) {
-                    // Fetch data via AJAX (replace with your actual AJAX call)
-                    $.ajax({
-                        url: '/dashboard/monitor/results/#{id}', // Replace with your API endpoint
-                        type: 'GET',
-                        dataType: 'json',
-                        beforeSend:function(){
-                            $('#data-container').html('Fetching results...')
-                        },
-                        success: function (response) {
-                            console.log(response)
-                            // Assuming your API returns an array of data
-                            const data = response.data; // Adjust this based on your API response structure
-                            done(data); // Pass the data to Pagination.js
-                        },
-                        error: function () {
-                            // Handle AJAX error
-                            done([]);
-                        }
-                    });
-                },
-                callback: function (data, pagination) {
-                    console.log('callback',data)
-                    // Callback function to display data
-                    displayData(data);
-                }
-            };
-
-            // Initialize Pagination.js
-            $('#pagination-container').pagination(options);
-
-            // Function to display data for the current page
-            function displayData(data) {
-                const container = $('#data-container');
-                container.empty();
-                if (data.length < 1) {
-                    container.append(`<p class="text-center p-5 bg-light">No results to display!</p>`);
-                }
-
-                data.forEach((item) => {
-                    const listItem = createListItem(item);
-                    container.append(listItem);
+            if(#{user.id}){
+                socket.on(`siteStatus_#{user.id}`,(data)=>{
+                    console.log('refreshing');
+                    makeAjaxCall(#{id});
                 });
             }
 
-            //- // Function to create a list item
-            //- function createListItem(data) {
-            //-     // Adjust this function as needed to create the HTML structure for each item
-            //-     return `
-            //-         <li class="border-bottom list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-            //-             <!-- Your HTML structure here -->
-            //-         </li>
-            //-     `;
-            //- }
+            makeAjaxCall('#{id}');
+
+            function makeAjaxCall(id){
+                $.ajax(
+                    {
+                        url:`/dashboard/monitor/results/${id}`,
+                        type:'get',
+
+                        beforeSend: function () {
+                            showSpinner('.overlay-spinner');
+                        },
+
+                        complete: function () {
+                            hideSpinner('.overlay-spinner');
+                        },
+
+                        success:function(result){
+                            if(result.status == 'success'){
+                                //- console.log(result);
+                                populateResults(result.data);
+                            }
+                        },
+
+                        error: function (xhr, status, error) {
+                            console.error('AJAX Error:', error);
+                        }
+                    }
+                )
+            };
+
+            //- function to append the list items to the container
+            function populateResults(results) {
+                const container = $('#container');
+                //- clear the existing once before appending
+                container.empty();
+                if(results.length < 1){
+                    return container.append(`<p class="text-center p-5 bg-light">No results to display!</p>`);
+                }
+
+                results.forEach((data, index) => {
+                    //- console.log(index,data)
+                    setTimeout(function () {
+                        const listItem = createListItem(data);
+                        container.append(listItem);
+                        //- listItem.addClass('animate__animated animate__fadeOutDown');
+                    }, index * 200); // Delay each item by 200 milliseconds * index
+                });
+            }
             //- function to create the list Item
             function createListItem(data) {
                 const myDate = formatDate(data.createdAt);
@@ -166,9 +159,10 @@ block content
                         </div>
                     </li>
                 `;
-                function formatDate(inputDate) {
-                    return moment(inputDate).format('DD MMMM YYYY, [at] hh:mm A');
-                }
             };
+
+            function formatDate(inputDate) {
+                return moment(inputDate).format('DD MMMM YYYY, [at] hh:mm A');
+            }
 
         });
