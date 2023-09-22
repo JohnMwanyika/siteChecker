@@ -37,7 +37,7 @@ block content
                                     .avatar-group
                                         each member in monitor.Team.Members
                                             a.avatar.avatar-xs.rounded-circle(href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="bottom", title=`${member.firstName} ${member.lastName}`)
-                                                img(alt="Image placeholder" src="../../assets/img/team-1.jpg")
+                                                img(alt="Image placeholder" src="/assets/img/team-1.jpg")
 
                             .ms-auto.text-end
                                 a.btn.btn-link.text-danger.text-gradient.px-3.mb-0(href="javascript:;")
@@ -100,22 +100,21 @@ block content
                         type: 'GET',
                         dataType: 'json',
                         beforeSend:function(){
-                            $('#data-container').html('Fetching results...')
+                            $('#data-container').html('<p">Fetching results...</p>')
                         },
                         success: function (response) {
-                            console.log(response)
-                            // Assuming your API returns an array of data
-                            const data = response.data; // Adjust this based on your API response structure
+                            //- console.log(response)
+                            const data = response.data;
                             done(data); // Pass the data to Pagination.js
                         },
-                        error: function () {
+                        error: function (e) {
+                            console.log(e);
                             // Handle AJAX error
                             done([]);
                         }
                     });
                 },
                 callback: function (data, pagination) {
-                    console.log('callback',data)
                     // Callback function to display data
                     displayData(data);
                 }
@@ -159,13 +158,14 @@ block content
                                 <span class="on text-xs">${myDate}</span>
                             </div>
                         </div>
-                        <div class="d-flex align-items-center text-danger text-gradient text-sm font-weight-bold">
-
-                        </div>
+                        <small class="d-flex align-items-center text-danger text-gradient text-sm">
+                            
+                        </small>
                     </li>
                 `;
                 function formatDate(inputDate) {
                     return moment(inputDate).format('DD MMMM YYYY, [at] hh:mm A');
+                    //- return moment(inputDate).startOf('minute').fromNow()
                 }
             };
 
