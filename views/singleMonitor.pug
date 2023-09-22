@@ -53,7 +53,7 @@ block content
                     .row
                         .col-md-6
                             h6.mb-0 Outcomes
-                        .col-md-6.d-flex.justify-content-start.justify-content-md-end.align-items-center
+                        //- .col-md-6.d-flex.justify-content-start.justify-content-md-end.align-items-center
                             i.material-icons.me-2.text-lg date_range
                             |  
                             small 23 - 30 March 2020
@@ -130,21 +130,17 @@ block content
                     container.append(`<p class="text-center p-5 bg-light">No results to display!</p>`);
                 }
 
-                data.forEach((item) => {
-                    const listItem = createListItem(item);
-                    container.append(listItem);
-                });
+                // Iterate through the results using for...of
+                for (const [index, item] of data.entries()) {
+                    setTimeout(function () {
+                        const listItem = createListItem(item);
+                        container.append(listItem);
+                        // Add the 'animate__animated' class to trigger the animation
+                        listItem.addClass('animate__animated animate__fadeInDown');
+                    }, index * 200); // Delay each item by 200 milliseconds * index
+                }
             }
 
-            //- // Function to create a list item
-            //- function createListItem(data) {
-            //-     // Adjust this function as needed to create the HTML structure for each item
-            //-     return `
-            //-         <li class="border-bottom list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-            //-             <!-- Your HTML structure here -->
-            //-         </li>
-            //-     `;
-            //- }
             //- function to create the list Item
             function createListItem(data) {
                 const myDate = formatDate(data.createdAt);
