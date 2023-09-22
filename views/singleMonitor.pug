@@ -77,8 +77,8 @@ block content
 
                         //- pagination
                         ul.pagination
-                    #data-container
-                    #pagination-container(class="paginationjs-theme-blue paginationjs-small")
+                    #data-container.overflow-auto(style="height:250px;")
+                    #pagination-container.pt-4
 
 
 
@@ -88,9 +88,11 @@ block content
 
             // Options for Pagination.js
             const options = {
-                pageSize: 5, // Number of items per page
-                pageSize: 5,
+                pageSize: 10, // Number of items per page
                 showSizeChanger: true,
+                autoHidePrevious: true,
+                autoHideNext: true,
+                className: 'paginationjs-theme-blue paginationjs-small',
                 dataSource: function (done) {
                     // Fetch data via AJAX (replace with your actual AJAX call)
                     $.ajax({
@@ -136,7 +138,7 @@ block content
                         const listItem = createListItem(item);
                         container.append(listItem);
                         // Add the 'animate__animated' class to trigger the animation
-                        listItem.addClass('animate__animated animate__fadeInDown');
+                        //- listItem.addClass('animate__animated animate__fadeInDown');
                     }, index * 200); // Delay each item by 200 milliseconds * index
                 }
             }

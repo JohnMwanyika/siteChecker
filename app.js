@@ -50,9 +50,10 @@ app.use(cookieParser());
 // app.use(helmet());
 // include helmet------------------------------------------------------------
 // statics files folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/public')));
+// app.use("assets", express.static("/public/assets/"));
 // Serve static files from the "uploads" directory
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 // middleware to set active sidebar link
 app.use(activePage);

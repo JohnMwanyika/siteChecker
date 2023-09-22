@@ -22,16 +22,17 @@ router.post('/teams', createTeam)
 router.get('/teams', generateCsrfToken, allTeams);
 router.post('/teams/:teamId', updateTeam)
 router.delete('/teams/remove/:teamId', removeTeam);
-
+// monitoring activities
 router.post('/monitoring/start', startMonitoring);
 router.post('/monitoring/update/:monitorId', generateCsrfToken, editMonitor)
 router.get('/monitoring/stop/:siteId', stopMonitoring);
 
 router.post('/teams/notification_update/:teamId', updateTeamNotification);
-
+// fetch all monitors
 router.get('/api/monitors', fetchMonitorsApi);
-
+// get single monitor
 router.get('/monitor/:monitorId', singleMonitor);
+// get results
 router.get('/monitor/results/:monitorId', getResultsById);
 
 
