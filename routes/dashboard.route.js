@@ -11,8 +11,12 @@ const { getResultsById } = require('../controllers/results.controller');
 
 const router = express.Router();
 
+
 // router.use(generateCsrfToken);
-// router.use(validateCsrfToken);
+router.use(validateCsrfToken);
+// monitor Router
+router.use('/monitor', monitorRouter);
+
 // sites
 router.get('/', generateCsrfToken, getDashboard);
 router.get('/sites', generateCsrfToken, getSites);
@@ -26,7 +30,7 @@ router.post('/teams/:teamId', updateTeam)
 router.delete('/teams/remove/:teamId', removeTeam);
 // monitoring activities
 router.post('/monitoring/start', startMonitoring);
-router.post('/monitoring/update/:monitorId', generateCsrfToken, editMonitor)
+router.post('/monitoring/update/:monitorId', generateCsrfToken, editMonitor);
 router.get('/monitoring/stop/:siteId', stopMonitoring);
 
 router.post('/teams/notification_update/:teamId', updateTeamNotification);
@@ -47,7 +51,5 @@ router.use('/users', usersRouter);
 // Member route handler
 router.use('/members', membersRouter);
 
-// monitor Router
-router.use('/monitor', monitorRouter);
 
 module.exports = router;

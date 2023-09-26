@@ -102,7 +102,7 @@ async function checkWebsiteStatus(url, timeout = 30000, userId) {
         }
     } catch (error) {
         // Handle errors here, and responseTime is still accessible
-        // console.log(error.code, error.toJSON());
+        console.log(error.code, error.toJSON());
         if (error.code == 'ERR_BAD_REQUEST') {
             // return { status: 'bad_request', responseTime, msg: `Failed to check ${url} status due to bad request - ${error.message}` };
             return { status: true, responseTime, msg: `${url} is up` };

@@ -50,8 +50,8 @@ app.use(cookieParser());
 // app.use(helmet());
 // include helmet------------------------------------------------------------
 // statics files folder
-app.use(express.static(path.join(__dirname, '/public')));
-// app.use("assets", express.static("/public/assets/"));
+// app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(__dirname + '/public'));
 // Serve static files from the "uploads" directory
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
